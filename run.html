@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>千牛二维码</title>
+    <script src="http:////cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0
+    }
+    
+    .container {
+        padding: 25px 0;
+        text-align: center
+    }
+    
+    .mybutton {
+        background-color: Transparent;
+        background-repeat: no-repeat;
+        border: none;
+        cursor: pointer;
+        overflow: hidden;
+        outline: none;
+    }
+    
+    h1 {
+        font-size: 24px;
+        font-family: Arial;
+        color: rgba(0, 0, 0, 0.8);
+        text-align: center
+    }
+    
+    .desc {
+        font-size: 16px;
+        margin: 20px auto;
+        width: 380px;
+        line-height: 39px;
+        text-align: left
+    }
+    
+    .img,
+    .img img {
+        margin: 0 auto;
+        width: 240px;
+        height: 240px;
+        display: block;
+        vertical-align: middle;
+        color: darkred
+    }
+    
+    a {
+        color: #c12127
+    }
+    </style>
+</head>
+
+<body>
+    <br/>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <h1>单个页面的 二维码</h1>
+            <div id="J_img" class="img">
+            </div>
+        </div>
+        <div class="col-md-4 col-md-offset-0">
+            <h1>单个页面的 二维码(降级H5)</h1>
+            <div id="J_img_h5" class="img" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3" style="margin-top:50px">
+            <a id="J_img_text" />
+        </div>
+        <div class="col-md-4 col-md-offset-7" style="margin-top:-25px">
+            <a id="J_img_text_h5" />
+        </div>
+    </div>
+    <font color="gray">
+        <div style="width: 50%; margin: 0 auto; padding:50px;font-size:18px">
+            <ol>
+                <li>使用千牛, 快速查看效果</li>
+                <li>
+                    <font>
+                        <p>使用Weex Playground请
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">点击扫码</button>
+                        </p>
+                </li>
+                <li>有疑问请加群：119365316（插件体验升级isv沟通群）</li>
+            </ol>
+        </div>
+        </font>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Weex Playground</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="J_img_weex" class="img" style="padding-bottom: 40px"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+        function showWeexDebugQrcode() {
+            alert('fff')
+        }
+        (function() {
+            function getURLParameter(name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+            }
+            var wxUrl = getURLParameter('we');
+            var avalibleJs = getURLParameter('avalible').split(',');
+            var wxOutputPath = getURLParameter('dist') || 'build';
+            var jsUrl = location.protocol + '//' + location.host + wxOutputPath + wxUrl
+            var imgDom = document.getElementById('J_img');
+            var dropdown = $('ul.dropdown-menu')[0];
+            var with_wx_tpl = location.host + location.pathname + '?_wx_tpl=' + jsUrl;
+                // "&_wx_devtool=ws://" + location.hostname + ":8088/debugProxy/native";
+            var h5Url = location.hostname + ':' + '8080' +
+                wxOutputPath + wxUrl.substr(0, wxUrl.indexOf('.')) + '.html';
+            console.log('weex url: http://' + with_wx_tpl);
+            console.log('\nh5 url: http://' + h5Url + '__qap=js');
+            if (wxUrl) {
+                jQuery('#J_img').qrcode('http://' + with_wx_tpl);
+                jQuery("#J_img_text").attr("href", jsUrl)
+                jQuery("#J_img_text").text(jsUrl)
+
+                jQuery('#J_img_h5').qrcode('http://' + h5Url);
+                jQuery("#J_img_text_h5").attr("href", 'http://' + h5Url)
+                jQuery("#J_img_text_h5").text('http://' + h5Url)
+
+                //http://30.5.80.102:3000/run.html?
+                //http://30.5.80.102:8088/devtool_fake.html?_wx_devtool=ws://30.5.80.102:8088/debugProxy/native
+                jQuery('#J_img_weex').qrcode("http://" + location.host +"/run.html?_wx_devtool=ws://" 
+                    + location.hostname + ":8088/debugProxy/native");
+
+                var splitResult = location.href.split('we=');
+                $('button.dropdown-toggle')[0].innerHTML = splitResult[1].substr(0, splitResult[1].indexOf('.js') + 3);
+                avalibleJs.forEach(function(element, index, array) {
+                    var linkTo = splitResult[0] + 'we=' + element + '.js' + splitResult[1].substr(splitResult[1].indexOf('.js') + 3);
+                    dropdown.innerHTML += '<li><a href="' + linkTo + '">' + element + '.js</a></li>';
+                });
+            } else {
+                imgDom.innerHTML = '出错啦! 页面打开方式不对,请通过 fie start 来打开页面!'
+            }
+        })();
+        </script>
+</body>
+
+</html>
