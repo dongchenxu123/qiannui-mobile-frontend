@@ -4,7 +4,7 @@
     "readmeFilename": "README.md",
 
     "qapConfig":{
-        "appkey": "1323324720",
+        "appkey": "21588060",
         "firstPage": "we://index.js",
         "h5Dir": "./h5",
         "packageDir": "./package",
