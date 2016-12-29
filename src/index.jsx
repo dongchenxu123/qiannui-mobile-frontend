@@ -6,7 +6,7 @@ import {View, Text, Button, Modal} from 'nuke';
 import QN from 'QAP-SDK';
 import { getAuthSign, getSellerUser,UserInfo,ProfileReport,WuxianBalance } from './api'
 
-
+var subway_token = '';
 
 class Demo extends Component {
     constructor(props) {
@@ -15,29 +15,27 @@ class Demo extends Component {
       this.state = {};
     }
 
-    handleTOPInvokeUserInfo(){
-        //Modal.alert(JSON.stringify(document.URL));
-        UserInfo().then((result) => {
-          Modal.alert(JSON.stringify(result));
-          Modal.alert(2222);
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
-    }
+   
     handleTOPInvoke(){
      
-      getAuthSign().then((result) => {
+     if(subway_token ==""){
+         getAuthSign().then((result) => {
+            subway_token = result;
             Modal.toast(JSON.stringify(result));
            
         }, (error) => {
             Modal.toast(JSON.stringify(error));
            
         });
+     }else{
+        Modal.alert(subway_token);
+     }
+     
     }
 
      handleGetCustBase(){
-         ProfileReport().then((result) => {
+
+         ProfileReport(subway_token).then((result) => {
             Modal.alert(JSON.stringify(result));
            
         }, (error) => {

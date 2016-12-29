@@ -60,7 +60,7 @@ export function getProfileBalance(){
         });  
 }
 
-export function getProfileReport(){
+export function getProfileReport(subway_token){
     return QN.top.batch({
             query: [
                 {
@@ -68,22 +68,22 @@ export function getProfileReport(){
                     fields:'start_time,end_time,subway_token,source',
                     start_time:lastMonth, //todo 需要改成最近一周
                     end_time:yesterday,
-                    subway_token:app.subway_token,
+                    subway_token:subway_token,
                     source:'SUMMARY'
                 }, {
                     method:'taobao.simba.rpt.custeffect.get',
                     fields:'start_time,end_time,subway_token,source',
                     start_time:lastMonth,//todo 需要改成最近一周
                     end_time:yesterday,
-                    subway_token:app.subway_token,
+                    subway_token:subway_token,
                     source:'SUMMARY'
                 }
             ]
         }).then(result => {
            /* var baseData = result[0].simba_rpt_custbase_get_response.rpt_cust_base_list;
             var effect = result[1].simba_rpt_custeffect_get_response.rpt_cust_effect_list;*/
-            return formatbaseData();
-            //return result;
+            //return formatbaseData();
+            return result;
         }, error => {
             Modal.toast(error);
         });
