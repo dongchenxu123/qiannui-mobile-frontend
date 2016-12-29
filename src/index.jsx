@@ -1,8 +1,12 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text, Modal} from 'nuke';
+import {View, Text, Button, Modal} from 'nuke';
+
 import QN from 'QAP-SDK';
+import { getAuthSign, getSellerUser,UserInfo,ProfileReport,WuxianBalance } from './api'
+
+
 
 class Demo extends Component {
     constructor(props) {
@@ -10,22 +14,51 @@ class Demo extends Component {
     
       this.state = {};
     }
+
+    handleTOPInvokeUserInfo(){
+        //Modal.alert(JSON.stringify(document.URL));
+        UserInfo().then((result) => {
+          Modal.alert(JSON.stringify(result));
+          Modal.alert(2222);
+        }, (error) => {
+            Modal.alert(JSON.stringify(error));
+            Modal.alert(1);
+        });
+    }
+    handleTOPInvoke(){
+     
+      getAuthSign().then((result) => {
+            Modal.toast(JSON.stringify(result));
+           
+        }, (error) => {
+            Modal.toast(JSON.stringify(error));
+           
+        });
+    }
+
+     handleGetCustBase(){
+         ProfileReport().then((result) => {
+            Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+            Modal.alert(JSON.stringify(error));
+            Modal.alert(1);
+        });
+
+        
+     }
+
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    欢迎使用千牛!
-                </Text>
-                <Text style={styles.instructions}>
-                    编辑src/index.jsx文件，开始QAP之旅，
-                </Text>
-                <Text style={styles.instructions}>
-                    点击手机千牛右上角刷新，
-                </Text>
-                <Text style={styles.instructions}>
-                    或者刷新浏览器立即查看效果
-                </Text>
+            <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary">subway_token</Button>         
+              
+          <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary">报表</Button>    
+
+
             </View>
+
+           
         );
     }
 }
@@ -51,4 +84,5 @@ const styles = {
 
 mount(<Demo />, 'body');
 
-export default Demo;
+
+export default Demo

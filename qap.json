@@ -1,5 +1,5 @@
 {
-	"appKey":"1323324720",
+	"appKey":"21588060",
 	"version":"1.0",
 	"pages":[
 		{
@@ -14,5 +14,5 @@
 			"url":"http://at.alicdn.com/t/font_1474198576_7440977.ttf"
 		}
 	],
-	"WebRootPath":"http://path/to/callback/url"
+	"WebRootPath":"qianniu.xibao.com"
 }
