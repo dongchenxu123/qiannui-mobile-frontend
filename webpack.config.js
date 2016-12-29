@@ -85,6 +85,8 @@ var config = {
                 path.resolve(__dirname, "src"),
                 nukeReg
             ]
+        },{
+        	test: /\.(jpg|png)$/, loader: "url?limit=81920"
         }]
     },
 
