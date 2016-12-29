@@ -29,7 +29,7 @@ export function getSellerUser(){
         .catch(error=>{
             Modal.toast(error);
         });  
-}
+};
 
 
 export function getUserInfo(){
@@ -45,7 +45,7 @@ export function getUserInfo(){
                 Modal.toast(error);
             });
             
-}
+};
 
 export function getProfileBalance(){
     return QN.top.invoke({
@@ -58,7 +58,7 @@ export function getProfileBalance(){
         .catch(error => {
             Modal.toast(error);
         });  
-}
+};
 
 export function getProfileReport(subway_token){
     return QN.top.batch({
@@ -86,7 +86,7 @@ export function getProfileReport(subway_token){
         }, error => {
             Modal.toast(error);
         });
-}
+};
 
   /**
      * 格式化数据
