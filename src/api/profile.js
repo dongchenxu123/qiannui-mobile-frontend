@@ -60,20 +60,22 @@ export function getProfileBalance(){
         });  
 }
 
-export function getProfileReport(subway_token){
+export function getProfileReport(subway_token, start_date= null, end_date= null){
+    start_date = start_date != null ? start_date :lastMonth;
+    end_date = end_date != null ? end_date : lastMonth;
     return QN.top.batch({
             query: [
                 {
                     method:'taobao.simba.rpt.custbase.get',
                     fields:'start_time,end_time,subway_token,source',
-                    start_time:lastMonth, //todo 需要改成最近一周
+                    start_time:start_date, //todo 需要改成最近一周
                     end_time:yesterday,
                     subway_token:subway_token,
                     source:'SUMMARY'
                 }, {
                     method:'taobao.simba.rpt.custeffect.get',
                     fields:'start_time,end_time,subway_token,source',
-                    start_time:lastMonth,//todo 需要改成最近一周
+                    start_time:end_date,//todo 需要改成最近一周
                     end_time:yesterday,
                     subway_token:subway_token,
                     source:'SUMMARY'
