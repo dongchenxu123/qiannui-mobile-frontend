@@ -25,7 +25,7 @@ var nukeReg = isWin ? new RegExp(/node_modules\\.*nuke.*/) : new RegExp(/node_mo
 function getDevEntry(cwd) {
 
     var entry = {};
-    glob.sync('*.jsx', { cwd: cwd }).forEach(function(item, i) {
+    glob.sync('**/*.jsx', { cwd: cwd }).forEach(function(item, i) {
         var file = item.replace('.jsx', '');
         entry[file] = [
             item
