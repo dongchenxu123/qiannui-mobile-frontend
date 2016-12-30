@@ -2,18 +2,13 @@
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, Image, TouchableHighlight} from 'nuke-components';;
-import { Tabbar, Button, Icon, ListView, Iconfont } from 'nuke';
+import { Tabbar, Button, Icon, ListView, Iconfont, Modal } from 'nuke';
 import QN from 'QAP-SDK';
 import { getAuthSign, getSellerUser,UserInfo,ProfileReport,WuxianBalance } from '../api'
-import {browser, browserActive, appCont, appContActive, home, homeActive, my, myActive, shareLight, shareLightActive} from '../static/static';
-import HealthyView from './healthy';
-import UserView from './user'
 var subway_token = '';
-
 class Api extends Component {
     constructor(props) {
       super(props);
-    
       this.state = {
       	activeKey: "m3"
       };
