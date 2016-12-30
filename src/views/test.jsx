@@ -24,12 +24,11 @@ class Api extends Component {
             mode: 'cors',
             dataType: 'json',
         })
-        .then(response => {
-                Modal.alert(response.json());
+        .then(response => {     
             return response.json(); // => 返回一个 `Promise` 对象
         })
         .then(data => {
-        Modal.alert(3);
+            Modal.alert(data);
             console.log(data); // 真正地数据结果
         })
         .catch(error => {
