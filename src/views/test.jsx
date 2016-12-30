@@ -15,7 +15,29 @@ class Api extends Component {
       this.state = {};
     }
 
-   
+   componentDidMount(){
+        var myHeaders = new Headers();
+        myHeaders.append('Accept', 'application/json, text/javascript');
+        QN.fetch('http://qianniu.why.xibao100.com/test', {
+            headers:myHeaders,
+            method: 'GET',
+            mode: 'cors',
+            dataType: 'json',
+        })
+        .then(response => {
+                Modal.alert(response.json());
+            return response.json(); // => 返回一个 `Promise` 对象
+        })
+        .then(data => {
+        Modal.alert(3);
+            console.log(data); // 真正地数据结果
+        })
+        .catch(error => {
+           Modal.alert(error);
+        });
+   }
+
+
     handleTOPInvoke(){
      
      if(subway_token ==""){
