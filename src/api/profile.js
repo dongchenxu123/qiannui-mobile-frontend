@@ -1,18 +1,7 @@
 'use strict';
 import QN from 'QAP-SDK';
 import APIError from './checkerror';
-
-var app = app || {} ;
-var date = new Date();
-const yesterday = [date.getFullYear(), date.getMonth() +1,date.getDate() -1].join('-');
- date = new Date();
-const today = [date.getFullYear(), date.getMonth() +1,date.getDate()].join('-');
-date = new Date();
-const threedaysAgo = [date.getFullYear(), date.getMonth() +1,date.getDate() -3].join('-');
-date = new Date();
-const lastWeek = [date.getFullYear(), date.getMonth() +1,date.getDate() -7].join('-');
-date = new Date();
-const lastMonth = [date.getFullYear(), date.getMonth(),date.getDate()].join('-');
+import * as DateAPi from './date'
 
 /*
 获取卖家基本信息
@@ -61,22 +50,23 @@ export function getProfileBalance(){
 }
 
 export function getProfileReport(subway_token, start_date= null, end_date= null){
-    start_date = start_date != null ? start_date :lastMonth;
-    end_date = end_date != null ? end_date : lastMonth;
+    start_date = start_date != null ? start_date : DateAPi.lastMonth;
+    end_date = end_date != null ? end_date : DateAPi.lastMonth;
+
     return QN.top.batch({
             query: [
                 {
                     method:'taobao.simba.rpt.custbase.get',
                     fields:'start_time,end_time,subway_token,source',
                     start_time:start_date, //todo 需要改成最近一周
-                    end_time:yesterday,
+                    end_time:DateAPi.yesterday,
                     subway_token:subway_token,
                     source:'SUMMARY'
                 }, {
                     method:'taobao.simba.rpt.custeffect.get',
                     fields:'start_time,end_time,subway_token,source',
                     start_time:end_date,//todo 需要改成最近一周
-                    end_time:yesterday,
+                    end_time:DateAPi.yesterday,
                     subway_token:subway_token,
                     source:'SUMMARY'
                 }
@@ -132,7 +122,7 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                     daysago.favcount += mm[j].favitemcount ? parseInt(mm[j].favitemcount) :0 ;
                 
                     //昨天
-                    if(v.date === yesterday){
+                    if(v.date === DateAPi.yesterday){
 
                         data.yesterday = {
                             pv : daysago.pv,
@@ -149,7 +139,7 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                     }
 
                     //过去三天
-                    if( v.date >=  threedaysAgo ){
+                    if( v.date >=  DateAPi.threedaysAgo ){
 
                         data.threedaysago = {
                             pv : daysago.pv,
