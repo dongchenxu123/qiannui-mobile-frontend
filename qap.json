@@ -7,7 +7,11 @@
 			"cabability":"itemChoose",
 			"url":"qap://index.js"
 		},
-		{ "url":"qap://views/test.js" }
+		{ "url":"qap://views/test.js" },
+		{ "url":"qap://views/user.js" },
+		{ "url":"qap://views/dataStream.js" },
+		{ "url":"qap://views/plan.js" },
+		{ "url":"qap://views/aboutUs.js" }
 	],
 	"iconfonts":[
 		{

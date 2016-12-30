@@ -1,18 +1,22 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text, Button, Modal,Link} from 'nuke';
-
+import { View, Text, Image, TouchableHighlight} from 'nuke-components';;
+import { Tabbar, Button, Icon, ListView, Iconfont } from 'nuke';
 import QN from 'QAP-SDK';
 import { getAuthSign, getSellerUser,UserInfo,ProfileReport,WuxianBalance } from '../api'
-
+import {browser, browserActive, appCont, appContActive, home, homeActive, my, myActive, shareLight, shareLightActive} from '../static/static';
+import HealthyView from './healthy';
+import UserView from './user'
 var subway_token = '';
 
 class Api extends Component {
     constructor(props) {
       super(props);
     
-      this.state = {};
+      this.state = {
+      	activeKey: "m3"
+      };
     }
 
    
@@ -32,6 +36,10 @@ class Api extends Component {
      }
      
     }
+    
+    onChange(status) {
+        console.log(status)
+    }
 
      handleGetCustBase(){
 
@@ -48,14 +56,12 @@ class Api extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-            <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary" style={styles.btnlist}>subway_token</Button>         
-            <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary" style={styles.btnlist}>报表</Button>    
-          
-            </View>
+             <View style={styles.container}>
+	            <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary" style={styles.btnlist}>subway_token</Button>         
+	            <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary" style={styles.btnlist}>报表</Button>    
 
-           
-        );
+     		</View>
+ 		);
     }
 }
 
