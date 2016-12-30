@@ -160,7 +160,7 @@ let App = class NukeDemoIndex extends Component {
                     renderAsOriginal
                         title="账户"
                         tabKey="m2"
-                       	icon={{src: home,selected:homeActive}}
+                           icon={{src: home,selected:homeActive}}
                       >
                       <UserView></UserView>
                     </Tabbar.Item>

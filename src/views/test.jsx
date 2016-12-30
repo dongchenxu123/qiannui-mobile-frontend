@@ -19,7 +19,28 @@ class Api extends Component {
       };
     }
 
-   
+   componentDidMount(){
+        var myHeaders = new Headers();
+        myHeaders.append('Accept', 'application/json, text/javascript');
+        QN.fetch('http://qianniu.why.xibao100.com/test', {
+            headers:myHeaders,
+            method: 'GET',
+            mode: 'cors',
+            dataType: 'json',
+        })
+        .then(response => {     
+            return response.json(); // => 返回一个 `Promise` 对象
+        })
+        .then(data => {
+            Modal.alert(data);
+            console.log(data); // 真正地数据结果
+        })
+        .catch(error => {
+           Modal.alert(error);
+        });
+   }
+
+
     handleTOPInvoke(){
      
      if(subway_token ==""){
