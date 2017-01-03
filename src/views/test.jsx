@@ -31,25 +31,11 @@ class Api extends Component {
                    
                 });
     }
-    /*
+    
     componentDidMount(){
-         getAuthSign().then((result) => {
-                  this.setState({subway_token : result});
-                  ProfileReport(this.state.subway_token).then((result) => {
-                        Modal.alert(JSON.stringify(result));
-                       
-                    }, (error) => {
-                        Modal.alert(JSON.stringify(error));
-                      
-                    });
-                  
-             
-                }, (error) => {
-                    Modal.toast(JSON.stringify(error));
-                   
-                });      
+        
     }
-   
+   /*
   componentDidMount(){
         var myHeaders = new Headers();
         myHeaders.append('Accept', 'application/json, text/javascript');
