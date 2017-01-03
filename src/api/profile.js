@@ -86,7 +86,7 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
      */
     function formatbaseData (baseData, effect)
     {
-        var data = {};
+        var data = {yesterday:[],threedaysago:[],alldays:[]};
         var basedata = {};
         var daysago = {pv:0,click:0,paycount:0,cost:0,click_ROi:0,cpc:0,pay:0,favcount:0,ROI:0,ctr:0};
         var mm = effect;
@@ -95,9 +95,9 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
         if(undefined !== db &&  undefined !== mm){
 
              if(db.length === 0){
-                data.yesterday = daysago;
-                data.threedaysago = daysago;
-                data.alldays = daysago;
+                data.yesterday.push(daysago) ;
+                data.threedaysago.push(daysago);
+                data.alldays.push(daysago);
             }else{
                   db.reverse();//翻转是为了下面时间段好计算 翻转后数据是按照日期倒叙排列的
                   mm.reverse();
@@ -124,24 +124,23 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                     //昨天
                     if(v.date === DateAPi.yesterday){
 
-                        data.yesterday = {
-                            pv : daysago.pv,
-                            click :   daysago.click,
-                            paycount :daysago.paycount,
-                            cost : parseFloat(daysago.cost / 100).toFixed(2),
-                            pay :daysago.pay,
-                            favcount:daysago.favcount,
-                            ctr : v.ctr ?v.ctr :0.00,
-                            click_ROi : daysago.click > 0 ? (parseFloat((daysago.paycount/ daysago.click) * 100).toFixed(2)) :0,//转化率
-                            cpc : v.cpc ? parseFloat(v.cpc/100).toFixed(2) :0,
-                            ROI : (daysago.pay === 0) ? 0: parseFloat(daysago.pay/ daysago.cost).toFixed(2)//投入产出比
-                        };
+                        data.yesterday.push({pv : daysago.pv,
+                                    click :   daysago.click,
+                                    paycount :daysago.paycount,
+                                    cost : parseFloat(daysago.cost / 100).toFixed(2),
+                                    pay :daysago.pay,
+                                    favcount:daysago.favcount,
+                                    ctr : v.ctr ?v.ctr :0.00,
+                                    click_ROi : daysago.click > 0 ? (parseFloat((daysago.paycount/ daysago.click) * 100).toFixed(2)) :0,//转化率
+                                    cpc : v.cpc ? parseFloat(v.cpc/100).toFixed(2) :0,
+                                    ROI : (daysago.pay === 0) ? 0: parseFloat(daysago.pay/ daysago.cost).toFixed(2)//投入产出比
+                                });
                     }
 
                     //过去三天
                     if( v.date >=  DateAPi.threedaysAgo ){
 
-                        data.threedaysago = {
+                        data.threedaysago.push({
                             pv : daysago.pv,
                             click :   daysago.click,
                             paycount :daysago.paycount,
@@ -152,7 +151,7 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                             click_ROi : daysago.click > 0 ? (parseFloat((daysago.paycount/ daysago.click) * 100).toFixed(2)) :0,
                             cpc : parseFloat((daysago.cost/daysago.click) /100).toFixed(2),
                             ROI : (daysago.cost === 0) ?0:parseFloat(daysago.pay/ daysago.cost).toFixed(2)
-                        };
+                        });
                     }
 
                     //过去时间段内的所有天
@@ -162,31 +161,16 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                         daysago.click_ROi = daysago.click > 0 ? (parseFloat((daysago.paycount/ daysago.click) * 100).toFixed(2)) :0;
                         daysago.cpc = daysago.click >0 ? (parseFloat((daysago.cost/daysago.click /100)).toFixed(2)) :0;
                         daysago.ROI = (daysago.cost === 0) ?0:parseFloat(daysago.pay/ daysago.cost).toFixed(2);
-                        daysago.cost = parseFloat(daysago.cost / 100).toFixed(2);
-                        
-                        if(data.alldays === undefined){
-                            data.alldays = daysago;
-                        }
+                        daysago.cost = parseFloat(daysago.cost / 100).toFixed(2);                 
+                        data.alldays.push(daysago);
                     }
                 }
             }
 
          }else{
-            data.yesterday = daysago;
-            data.threedaysago = daysago;
-            data.alldays = daysago;
-        }
-
-        if(data.yesterday === undefined){
-            data.yesterday = {pv:0,click:0,paycount:0,cost:0,click_ROi:0,cpc:0,pay:0,favcount:0,ROI:0,ctr:0};
-        }
-
-        if(data.threedaysago === undefined){
-            data.threedaysago = {pv:0,click:0,paycount:0,cost:0,click_ROi:0,cpc:0,pay:0,favcount:0,ROI:0,ctr:0};
-        }
-
-        if(data.alldays === undefined){
-            data.alldays = {pv:0,click:0,paycount:0,cost:0,click_ROi:0,cpc:0,pay:0,favcount:0,ROI:0,ctr:0};
-        }
+            data.yesterday.push(daysago) ;
+            data.threedaysago.push(daysago);
+            data.alldays.push(daysago);
+        }    
         return data;
     }

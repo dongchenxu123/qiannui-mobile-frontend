@@ -1,7 +1,7 @@
 'use strict';
 
 var date = new Date();
-export var  yesterday = [date.getFullYear(), date.getMonth() +1,date.getDate() -1].join('-');
+export var  yesterday = '2016-12-08';//[date.getFullYear(), date.getMonth() +1,date.getDate() -1].join('-');
  date = new Date();
 export var today = [date.getFullYear(), date.getMonth() +1,date.getDate()].join('-');
 date = new Date();
