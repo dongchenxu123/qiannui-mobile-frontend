@@ -31,10 +31,7 @@ class Api extends Component {
                    
                 });
     }
-    
-    componentDidMount(){
-        
-    }
+
    /*
   componentDidMount(){
         var myHeaders = new Headers();
