@@ -187,5 +187,8 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
         if(data.threedaysago.length == 0){
             data.threedaysago.push(daysago);
         }
+        if(data.alldays.length == 0){
+            data.alldays.push(daysago);
+        }
         return data;
     }
