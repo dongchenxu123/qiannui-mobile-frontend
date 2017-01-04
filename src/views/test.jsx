@@ -16,7 +16,7 @@ import { getAuthSign,
         setBuget,
         getPlatfrom,
         getAdgroups,
-        getOnsaleItems
+        getOnsaleItem
     } from '../api'
 
 var subway_token = '';
@@ -28,10 +28,12 @@ class Api extends Component {
                  subway_token = result;
                 }, (error) => {
                     Modal.toast(JSON.stringify(error));
-                   
                 });
     }
-
+    
+    componentDidMount(){
+          Modal.alert(document.url);
+    }
    /*
   componentDidMount(){
         var myHeaders = new Headers();
@@ -59,11 +61,9 @@ class Api extends Component {
      if(subway_token ==""){
          getAuthSign().then((result) => {
             subway_token = result;
-            Modal.toast(JSON.stringify(result));
-           
+            Modal.toast(JSON.stringify(result)); 
         }, (error) => {
-            Modal.toast(JSON.stringify(error));
-           
+            Modal.toast(JSON.stringify(error));  
         });
      }else{
         Modal.alert(subway_token);
@@ -145,13 +145,8 @@ class Api extends Component {
         });
      }
      OnsaleItemsFunc(){
-        getOnsaleItems(1).then((result) => {
-            Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
+
+       getOnsaleItem(1);
      }
     render() {
         return (

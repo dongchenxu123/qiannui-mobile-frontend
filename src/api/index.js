@@ -10,7 +10,9 @@ import { getCampaign,
         getPlatfrom,
         setPlatfrom
         } from './compaign';
-import { getAdgroupsByCid,getOnsaleItems } from './adgroup'
+import { getAdgroupsByCid,getOnsaleItem } from './adgroup'
+
+
 const api = {
     getAuthSign: getAuthSign,  // 登录的subway_token 必须先调用它 才能使用其他接口
     getSellerUser : getSellerUser,  //卖家信息
@@ -28,7 +30,7 @@ const api = {
     getPlatfrom:getPlatfrom,//获取计划投放平台
     setPlatfrom:setPlatfrom, //设置计划投放平台
     getAdgroups:getAdgroupsByCid,//计划下推广组列表
-    getOnsaleItems:getOnsaleItems,//在售宝贝
+    getOnsaleItem:getOnsaleItem,//在售宝贝
 
 }
 

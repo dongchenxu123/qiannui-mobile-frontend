@@ -172,5 +172,13 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
             data.threedaysago.push(daysago);
             data.alldays.push(daysago);
         }    
+
+        if(data.yesterday.length == 0){
+            data.yesterday.push(daysago);
+        }
+
+        if(data.threedaysago.length == 0){
+            data.threedaysago.push(daysago);
+        }
         return data;
     }
