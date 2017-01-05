@@ -1,71 +1,98 @@
 'use strict';
 import QN from 'QAP-SDK';
 import * as DateAPi from './date'
+import { Modal } from 'nuke';
 
 /*
 * 获取推广计划
 */
-export function getCampaign(){
-    return QN.top.invoke({
+export function getCampaign(subway_token){
+    return new Promise((resolve, reject) => {
+        QN.top.invoke({
             query: {
                 method: 'taobao.simba.campaigns.get', // TOP 接口名称
             }
         }).then((result)=>{
-            return result.simba_campaigns_get_response.campaigns.campaign;        
+            var data = [];
+            var compaingn = result.simba_campaigns_get_response.campaigns.campaign;
+            getCompaignReport(subway_token,compaingn).then((data) => {
+                resolve(data);
+            }).catch(err => {
+                reject(err);
+            });
         })
         .catch(error=>{
             Modal.toast(error);
-        });  
+        }); 
+    })    
 }
-
 /*
 * 获取推广计划报表数据
 */
-export function getCompaignReport(subway_token,campaign_id){
+export function getCompaignReport(subway_token,campaign){
+    var data= [];
+    return new Promise((resolve, reject) => {
 
-    return QN.top.batch({
-            query: [
-                {
-                    method:'taobao.simba.campaign.budget.get',
-                    fields:'campaign_id',
-                    campaign_id:campaign_id
-                }, {
-                    method:'taobao.simba.rpt.campaignbase.get',
-                    fields:'subway_token,start_time,end_time,campaign_id,source,search_type',
-                    campaign_id: campaign_id,
-                    subway_token: subway_token,
-                    start_time:DateAPi.yesterday,
-                    end_time:DateAPi.yesterday,
-                    source:'SUMMARY',
-                    search_type:'SEARCH' 
-                },{
-                    method:'taobao.simba.rpt.campaigneffect.get',
-                    fields:'subway_token,start_time,end_time,campaign_id,source,search_type',
-                    campaign_id: campaign_id,
-                    subway_token: subway_token,
-                    start_time:DateAPi.yesterday,
-                    end_time:DateAPi.yesterday,
-                    source:'SUMMARY',
-                    search_type:'SEARCH' 
-                }
-            ]
-        }).then(result => {
-            var rpt = {};
+        for (var i=0; i<campaign.length; i++){
+            (function (ci) {
+                var ca = campaign[ci];
+                return QN.top.batch({
+                    query: [
+                        {
+                            method:'taobao.simba.campaign.budget.get',
+                            fields:'campaign_id',
+                            campaign_id:ca.campaign_id
+                        }, {
+                            method:'taobao.simba.rpt.campaignbase.get',
+                            fields:'subway_token,start_time,end_time,campaign_id,source,search_type',
+                            campaign_id: ca.campaign_id,
+                            subway_token: subway_token,
+                            start_time:DateAPi.yesterday,
+                            end_time:DateAPi.yesterday,
+                            source:'SUMMARY',
+                            search_type:'SEARCH' 
+                        },{
+                            method:'taobao.simba.rpt.campaigneffect.get',
+                            fields:'subway_token,start_time,end_time,campaign_id,source,search_type',
+                            campaign_id: ca.campaign_id,
+                            subway_token: subway_token,
+                            start_time:DateAPi.yesterday,
+                            end_time:DateAPi.yesterday,
+                            source:'SUMMARY',
+                            search_type:'SEARCH' 
+                        }
+                    ]
+                }).then(result => {
+                    var rpt = {};
 
-            if(result.length === 3){
-                var budget = result[0].simba_campaign_budget_get_response.campaign_budget;
-                var baseData = result[1].simba_rpt_campaignbase_get_response.rpt_campaign_base_list;
-                var effectData = result[2].simba_rpt_campaigneffect_get_response.rpt_campaign_effect_list;
-                rpt =  formatRptData(baseData, effectData);
-                rpt.budget = budget.budget;
-                rpt.is_smooth = budget.is_smooth; 
-                return rpt; 
-               
-            }
-        }, error => {
-            Modal.toast(error);
-        });
+                    if(result.length === 3){
+                        var budget = result[0].simba_campaign_budget_get_response.campaign_budget;
+                        var baseData = result[1].simba_rpt_campaignbase_get_response.rpt_campaign_base_list;
+                        var effectData = result[2].simba_rpt_campaigneffect_get_response.rpt_campaign_effect_list;
+                        rpt =  formatRptData(baseData, effectData);
+                        rpt.budget = budget.budget;
+                        rpt.is_smooth = budget.is_smooth;
+                        rpt.campaign_id = ca.campaign_id;
+                        rpt.title = ca.title;
+                        rpt.online_status = ca.online_status;
+
+                        data.push(rpt);
+                       if (ci == campaign.length -1) {
+                            resolve(data);
+                        }
+                    }else{
+                        resolve(data);
+                    }
+                }, error => {
+                    reject(error)
+                });
+            })(i)
+        }
+    })
 }
+
+
+
 /*
 * 设置计划日限额
 * new_budget 新的日限额
