@@ -15,11 +15,16 @@ export function getCampaign(subway_token){
         }).then((result)=>{
             var data = [];
             var compaingn = result.simba_campaigns_get_response.campaigns.campaign;
-            getCompaignReport(subway_token,compaingn).then((data) => {
-                resolve(data);
-            }).catch(err => {
-                reject(err);
-            });
+            if(compaingn.length > 0){
+                getCompaignReport(subway_token,compaingn).then((data) => {
+                    resolve(data);
+                }).catch(err => {
+                    reject(err);
+                });
+            }else{
+                 resolve(data);
+            }
+                   
         })
         .catch(error=>{
             Modal.toast(error);
@@ -29,7 +34,7 @@ export function getCampaign(subway_token){
 /*
 * 获取推广计划报表数据
 */
-export function getCompaignReport(subway_token,campaign){
+ function getCompaignReport(subway_token,campaign){
     var data= [];
     return new Promise((resolve, reject) => {
 
@@ -75,7 +80,6 @@ export function getCompaignReport(subway_token,campaign){
                         rpt.campaign_id = ca.campaign_id;
                         rpt.title = ca.title;
                         rpt.online_status = ca.online_status;
-
                         data.push(rpt);
                        if (ci == campaign.length -1) {
                             resolve(data);
@@ -84,7 +88,7 @@ export function getCompaignReport(subway_token,campaign){
                         resolve(data);
                     }
                 }, error => {
-                    reject(error)
+                    reject(error);
                 });
             })(i)
         }
