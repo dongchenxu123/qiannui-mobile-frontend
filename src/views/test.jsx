@@ -11,12 +11,15 @@ import { getAuthSign,
         ProfileReport,
         WuxianBalance,
         getCampaign,
-        getCampaignRpt,
         setStatus,
         setBuget,
         getPlatfrom,
         getAdgroups,
-        getOnsaleItem
+        getOnsaleItem,
+        deleteAdgroup,
+        updateAdgroup,
+        getUnSaleItem,
+        addAdgroup
     } from '../api'
 
 var subway_token = '';
@@ -32,7 +35,7 @@ class Api extends Component {
     }
     
     componentDidMount(){
-          Modal.alert(document.url);
+          //Modal.alert(document.Url);
     }
    /*
   componentDidMount(){
@@ -94,17 +97,6 @@ class Api extends Component {
         }); 
      }
 
-     handleGetCampaignsRpt(){
-
-          getCampaignRpt(subway_token,'45895738').then((result) => {
-            Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
-
-     }
 
      handleSetCampaignsStatus(){
          setStatus('45895738','万姐火锅鸡','online').then((result) => {
@@ -136,17 +128,59 @@ class Api extends Component {
         });
      }
      getAdgroupsFunc(){
-        getAdgroups(subway_token,'45895738',1).then((result) => {
-            Modal.alert(JSON.stringify(result));
+        getAdgroups(subway_token,'12297040',1).then((result) => {
+          Modal.alert(JSON.stringify(result));
            
         }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
+           // Modal.alert(JSON.stringify(error));
+            //Modal.alert(1);
         });
      }
      OnsaleItemsFunc(){
 
-       getOnsaleItem(1);
+        getOnsaleItem().then((result) => {
+          Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+           // Modal.alert(JSON.stringify(error));
+            //Modal.alert(1);
+        });
+     }
+     deleteAdgroupsFunc(){
+          deleteAdgroup('654231684').then((result) => {
+            Modal.alert(JSON.stringify(result));
+             
+          }, (error) => {
+             // Modal.alert(JSON.stringify(error));
+              //Modal.alert(1);
+          });
+     }
+     updateAdgroupsFunc(){
+       updateAdgroup(733482419,'offline').then((result) => {
+          Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+           // Modal.alert(JSON.stringify(error));
+            //Modal.alert(1);
+        });
+     }
+     UnsaleItemsFunc(){
+       getUnSaleItem(12297040).then((result) => {
+          Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+           // Modal.alert(JSON.stringify(error));
+            //Modal.alert(1);
+        });
+     }
+     addAdgroupFunc(){
+      addAdgroup(12297040,36560210330,'春秋装新款情侣卫衣套装男女士','https://img.alicdn.com/bao/uploaded/i1/T1Xj1zFhhcXXXXXXXX_!!0-item_pic.jpg_150x150.jpg').then((result) => {
+          Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+           // Modal.alert(JSON.stringify(error));
+            //Modal.alert(1);
+        });
      }
     render() {
         return (
@@ -154,13 +188,15 @@ class Api extends Component {
             <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary" style={styles.btnlist}>subway_token</Button>         
             <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary" style={styles.btnlist}>店铺报表</Button>    
             <Button block="true" onPress={() => {this.handleGetCampaigns()}} type="primary" style={styles.btnlist}>计划列表</Button>    
-            <Button block="true" onPress={() => {this.handleGetCampaignsRpt()}} type="primary" style={styles.btnlist}>计划报表</Button>  
             <Button block="true" onPress={() => {this.handleSetCampaignsStatus()}} type="primary" style={styles.btnlist}>更改计划状态</Button>  
             <Button block="true" onPress={() => {this.setBugetFunc()}} type="primary" style={styles.btnlist}>设置计划日限额</Button>  
             <Button block="true" onPress={() => {this.getPlatfromFunc()}} type="primary" style={styles.btnlist}>获取平台设置</Button>  
             <Button block="true" onPress={() => {this.getAdgroupsFunc()}} type="primary" style={styles.btnlist}>获取计划下推广组</Button> 
+            <Button block="true" onPress={() => {this.deleteAdgroupsFunc()}} type="primary" style={styles.btnlist}>删除一个推广组</Button> 
+            <Button block="true" onPress={() => {this.updateAdgroupsFunc()}} type="primary" style={styles.btnlist}>更新推广组状态</Button> 
             <Button block="true" onPress={() => {this.OnsaleItemsFunc()}} type="primary" style={styles.btnlist}>在售宝贝</Button>                                     
-
+            <Button block="true" onPress={() => {this.UnsaleItemsFunc()}} type="primary" style={styles.btnlist}>未推广宝贝</Button> 
+            <Button block="true" onPress={() => {this.addAdgroupFunc()}} type="primary" style={styles.btnlist}>新增计划下推广组</Button> 
             </View>
  		  );
     }
