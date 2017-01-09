@@ -60,4 +60,43 @@ function storeSubwayToken(val){
 }
 
 
+export function localstoreUser(obj){
+    return QN.localstore.set({
+        query: {userInfo:obj},
+        success(result) {
+           
+        },
+        error(error) {
+           
+        }
+    }).then(result => {
+        return result;
+    }, error => {
+        
+    });
+}
+/*
+* 获取登陆用户基本信息
+*/
+export function getLocalstoreUser(){
+    return QN.localstore.get({
+        query: {
+            key: 'userInfo'
+        },
+        success(result) {
+           
+        },
+        error(error) {
+           
+        }
+    }).then(result => {
+        if(result.errorCode == 0 && result.data){
+            return result.data.userInfo;
+        }
+    }, error => {
+       Modal.toast(error);
+    });
+}
+
+
 

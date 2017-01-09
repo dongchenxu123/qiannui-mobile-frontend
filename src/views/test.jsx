@@ -19,7 +19,11 @@ import { getAuthSign,
         deleteAdgroup,
         updateAdgroup,
         getUnSaleItem,
-        addAdgroup
+        addAdgroup,
+        getallKeywords,
+        getRecommendKeywords,
+        getItemNumByKeyword,
+        createNewDspUser
     } from '../api'
 
 var subway_token = '';
@@ -32,14 +36,12 @@ class Api extends Component {
                 }, (error) => {
                     Modal.toast(JSON.stringify(error));
                 });
+        
     }
     
-    componentDidMount(){
-          //Modal.alert(document.Url);
-    }
-   /*
+ 
   componentDidMount(){
-        var myHeaders = new Headers();
+      /*  var myHeaders = new Headers();
         myHeaders.append('Accept', 'application/json, text/javascript');
         QN.fetch('http://qianniu.why.xibao100.com/test', {
             headers:myHeaders,
@@ -51,13 +53,13 @@ class Api extends Component {
             return response.json(); // => 返回一个 `Promise` 对象
         })
         .then(data => {
-            Modal.alert(data);
+            Modal.alert(JSON.stringify(data));
             console.log(data); // 真正地数据结果
         })
         .catch(error => {
            Modal.alert(error);
-        });
-   }*/
+        });*/
+   }
 
     handleTOPInvoke(){
      
@@ -182,6 +184,31 @@ class Api extends Component {
             //Modal.alert(1);
         });
      }
+
+     getallKeywordsFunc(){
+        getallKeywords(subway_token,654211671,12297040).then((result) => {
+          Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+          
+        });
+     }
+     getRecommendKeywordsFunc(){
+        getRecommendKeywords(654211671).then((result) => {
+           Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+          
+        });
+     }
+     getItemNumByKeywordFunc(){
+
+        getItemNumByKeyword("卫衣男性").then(data => {
+            
+           Modal.alert(data);
+        });
+       
+     }
     render() {
         return (
             <View style={styles.container}>
@@ -197,6 +224,10 @@ class Api extends Component {
             <Button block="true" onPress={() => {this.OnsaleItemsFunc()}} type="primary" style={styles.btnlist}>在售宝贝</Button>                                     
             <Button block="true" onPress={() => {this.UnsaleItemsFunc()}} type="primary" style={styles.btnlist}>未推广宝贝</Button> 
             <Button block="true" onPress={() => {this.addAdgroupFunc()}} type="primary" style={styles.btnlist}>新增计划下推广组</Button> 
+            <Button block="true" onPress={() => {this.getallKeywordsFunc()}} type="primary" style={styles.btnlist}>推广组关键词</Button> 
+            <Button block="true" onPress={() => {this.getRecommendKeywordsFunc()}} type="primary" style={styles.btnlist}>获取推荐关键词</Button> 
+            <Button block="true" onPress={() => {this.getItemNumByKeywordFunc()}} type="primary" style={styles.btnlist}>获取使用当前关键词的宝贝数量</Button> 
+
             </View>
  		  );
     }
