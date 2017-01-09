@@ -155,7 +155,7 @@ export function getAdgroupsByCid(subway_token,campaign_id,page_no){
 
 function AdgroupRptFormat(adgroups,baserpt,effectrpt){
 
-    var ad={}, ba={}, ef={};
+    var ba={}, ef={};
 
     if(baserpt.length >0)
     {

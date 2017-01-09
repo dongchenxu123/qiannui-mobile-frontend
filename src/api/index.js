@@ -1,5 +1,5 @@
-import { getAuthSign } from './authsign';
-import { getSellerUser, getUserInfo, getProfileReport, getProfileBalance } from './profile'
+import { getAuthSign,getLocalstoreUser,localstoreUser } from './authsign';
+import { getSellerUser, getUserInfo, getProfileReport, getProfileBalance,createNewDspUser } from './profile'
 import { getCampaign, 
         getCompaignReport,
         setBuget,setStatus,
@@ -8,10 +8,11 @@ import { getCampaign,
         getArea,
         setArea,
         getPlatfrom,
-        setPlatfrom
+        setPlatfrom,
         } from './compaign';
 import { getAdgroupsByCid,deleteAdgroup,updateAdgroup,getUnSaleItem,addAdgroup} from './adgroups';
-import {getOnsaleItem} from './onsale-item'
+import {getOnsaleItem} from './onsale-item';
+import {getallKeywords,getRecommendKeywords,deleteKeywords,addNewKeyword,getItemNumByKeyword} from './keywords';
 
 
 const api = {
@@ -35,6 +36,15 @@ const api = {
     updateAdgroup:updateAdgroup,//更新一个推广组状态
     getUnSaleItem:getUnSaleItem,//一个计划内未推广的宝贝
     addAdgroup:addAdgroup,//在计划中推广一个宝贝
+    getallKeywords:getallKeywords,//获取一个推广组的关键词
+    getRecommendKeywords:getRecommendKeywords,//获取推荐关键词
+    deleteKeywords:deleteKeywords,//删除关键词，支持批量删除
+    addNewKeyword:addNewKeyword,//添加关键词
+    getItemNumByKeyword:getItemNumByKeyword,//获取使用该关键词的宝贝数量
+    localstoreUser:localstoreUser,//设置登陆用户存储信息
+    getLocalstoreUser:getLocalstoreUser,//获取登陆用户存储信息
+    createNewDspUser:createNewDspUser,//创建dsp用户
+
 
 
 }

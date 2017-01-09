@@ -1,7 +1,9 @@
 'use strict';
 import QN from 'QAP-SDK';
 import APIError from './checkerror';
-import * as DateAPi from './date'
+import * as DateAPi from './date';
+import {Modal } from 'nuke';
+import {getLocalstoreUser} from './authsign';
 
 /*
 获取卖家基本信息
@@ -9,8 +11,8 @@ import * as DateAPi from './date'
 export function getSellerUser(){
     return QN.top.invoke({
             query: {
-                method: 'taobao.user.seller.get', // TOP 接口名称
-                fields: 'nick,sex'                // 除了`method`字段外，其他字段为请求的业务参数
+                method: 'taobao.user.seller.get', 
+                fields: 'seller_credit,type,avatar, user_id'               
             }
         }).then((result)=>{
              return  result.user_seller_get_response.user;
@@ -20,6 +22,51 @@ export function getSellerUser(){
         });  
 }
 
+/*
+* 创建新的dsp账户
+*/
+export function createNewDspUser(){
+
+        getLocalstoreUser().then((result) => {
+            var user = result;   
+           
+           getSellerUser().then((res)=>{
+                user.seller_credit = res.seller_credit;
+                user.type = res.type;
+                user.avatar = res.avatar;
+                user.ts = new Date().getTime();
+                user.account_id = res. user_id
+                var headers = {
+                        'Accept': 'application/json,text/javascript',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    };
+
+                 QN.fetch(DateAPi.httphost+'/new_user_new', {
+                        headers:headers,
+                        method: 'POST',
+                        mode: 'cors',
+                        dataType: 'json',
+                        body:QN.uri.toQueryString(user)
+                    })
+                    .then(response => {     
+                        return response.json(); // => 返回一个 `Promise` 对象
+                    })
+                    .then(data => {
+                       Modal.alert(JSON.stringify(data));
+                    })
+                    .catch(error => {
+                        Modal.toast(JSON.stringify(error));
+                    });            
+
+
+           },(error) => {
+            Modal.toast(JSON.stringify(error));
+            });
+        }, (error) => {
+            Modal.alert(JSON.stringify(error));
+  
+        });  
+}
 
 export function getUserInfo(){
     return QN.user.getInfo()
@@ -52,7 +99,7 @@ export function getProfileBalance(){
 export function getProfileReport(subway_token, start_date= null, end_date= null){
     start_date = start_date != null ? start_date : DateAPi.lastMonth;
     end_date = end_date != null ? end_date : DateAPi.yesterday;
-
+Modal.alert(JSON.stringify(DateAPi.lastMonth));
     return QN.top.batch({
             query: [
                 {
@@ -65,7 +112,7 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                 }, {
                     method:'taobao.simba.rpt.custeffect.get',
                     fields:'start_time,end_time,subway_token,source',
-                    start_time:end_date,//todo 需要改成最近一周
+                    start_time:start_date,//todo 需要改成最近一周
                     end_time:end_date,
                     subway_token:subway_token,
                     source:'SUMMARY'
