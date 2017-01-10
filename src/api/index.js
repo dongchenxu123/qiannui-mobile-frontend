@@ -1,5 +1,11 @@
 import { getAuthSign,getLocalstoreUser,localstoreUser } from './authsign';
-import { getSellerUser, getUserInfo, getProfileReport, getProfileBalance,createNewDspUser } from './profile'
+import { getSellerUser, 
+        getUserInfo, 
+        getProfileReport,
+        getProfileBalance,
+        createNewDspUser 
+    } from './profile';
+
 import { getCampaign, 
         getCompaignReport,
         setBuget,setStatus,
@@ -10,10 +16,32 @@ import { getCampaign,
         getPlatfrom,
         setPlatfrom,
         } from './compaign';
-import { getAdgroupsByCid,deleteAdgroup,updateAdgroup,getUnSaleItem,addAdgroup} from './adgroups';
+
+import { getAdgroupsByCid,
+        deleteAdgroup,
+        updateAdgroup,
+        getUnSaleItem,
+        addAdgroup
+    } from './adgroups';
+
 import {getOnsaleItem} from './onsale-item';
-import {getallKeywords,getRecommendKeywords,deleteKeywords,addNewKeyword,getItemNumByKeyword} from './keywords';
-import {checkIssetDspUser,getDspOnsaleItems,getDspUserInfo,getDspUserMarket} from './dsp';
+
+import {getallKeywords,
+        getRecommendKeywords,
+        deleteKeywords,
+        addNewKeyword,
+        getItemNumByKeyword
+    } from './keywords';
+
+import {checkIssetDspUser,
+        getDspOnsaleItems,
+        getDspUserInfo,
+        getDspUserMarket,
+        setCpc,
+        setBudget,
+        setItemsOffline,
+        setItemsOnline
+    } from './dsp';
 
 
 const api = {
@@ -48,7 +76,12 @@ const api = {
     checkIssetDspUser:checkIssetDspUser,//检测是否存在dsp用户id
     getDspUserMarket:getDspUserMarket,//获取dsp用户日限额 、余额、dsp在线推广的宝贝
     getDspOnsaleItems:getDspOnsaleItems,//整理完成的 淘外引流列表数据,
-    getDspUserInfo:getDspUserInfo,
+    getDspUserInfo:getDspUserInfo,//获取dsp用户信息
+    setCpc:setCpc,//设置淘外引流cpc
+    setBudget:setBudget,//设置淘外日限额
+    setItemsOffline:setItemsOffline,//设置淘外宝贝推广下线
+    setItemsOnline:setItemsOnline,//设置淘外宝贝推广
+
 
 }
 
