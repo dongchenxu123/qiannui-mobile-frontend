@@ -19,8 +19,8 @@ export function getallKeywords(subway_token,adgroup_id,campaign_id){
                     subway_token:subway_token,
                     campaign_id:campaign_id,
                     adgroup_id:adgroup_id,
-                    start_time:DateAPi.yesterday,
-                    end_time:DateAPi.yesterday,
+                    start_time:DateAPi.formatDate(DateAPi.yesterday),
+                    end_time:DateAPi.formatDate(DateAPi.yesterday),
                     search_type:'SEARCH,CAT,NOSEARCH',
                     source:'SUMMARY'
                 },
@@ -30,8 +30,8 @@ export function getallKeywords(subway_token,adgroup_id,campaign_id){
                     subway_token:subway_token,
                     campaign_id:campaign_id,
                     adgroup_id:adgroup_id,
-                    start_time:DateAPi.yesterday,
-                    end_time:DateAPi.yesterday,
+                    start_time:DateAPi.formatDate(DateAPi.yesterday),
+                    end_time:DateAPi.formatDate(DateAPi.yesterday),
                     search_type:'SEARCH,CAT,NOSEARCH',
                     source:'SUMMARY'
                 }

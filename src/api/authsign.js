@@ -90,7 +90,7 @@ export function getLocalstoreUser(){
            
         }
     }).then(result => {
-        if(result.errorCode == 0 && result.data){
+        if(result.code == "QAP_SUCCESS" && result.data){
             return result.data.userInfo;
         }
     }, error => {
