@@ -114,8 +114,8 @@ export function getAdgroupsByCid(subway_token,campaign_id,page_no){
                     fields:'subway_token,start_time,end_time,campaign_id,source,search_type,page_no,page_size',
                     subway_token:subway_token,
                     campaign_id:campaign_id,
-                    start_time: DateAPi.lastMonth,
-                    end_time:DateAPi.yesterday,
+                    start_time: DateAPi.formatDate(DateAPi.lastMonth),
+                    end_time:DateAPi.formatDate(DateAPi.yesterday),
                     source:'SUMMARY',
                     search_type:'SUMMARY',
                     page_size:page_size,
@@ -125,8 +125,8 @@ export function getAdgroupsByCid(subway_token,campaign_id,page_no){
                     fields:'subway_token,start_time,end_time,campaign_id,source,search_type,page_no,page_size',
                     subway_token:subway_token,
                     campaign_id:campaign_id,
-                    start_time: DateAPi.lastMonth,
-                    end_time:DateAPi.yesterday, //todo 需要改变日期
+                    start_time: DateAPi.formatDate(DateAPi.lastMonth),
+                    end_time:DateAPi.formatDate(DateAPi.yesterday), //todo 需要改变日期
                     source:'SUMMARY',
                     search_type:'SUMMARY',
                     page_size:page_size,

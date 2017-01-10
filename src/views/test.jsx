@@ -1,7 +1,7 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import { View, Text, Image, TouchableHighlight} from 'nuke-components';;
+import { View, Text, Image,ScrollView, TouchableHighlight} from 'nuke-components';;
 import { Tabbar, Button, Icon, ListView, Iconfont, Modal } from 'nuke';
 import QN from 'QAP-SDK';
 
@@ -23,7 +23,11 @@ import { getAuthSign,
         getallKeywords,
         getRecommendKeywords,
         getItemNumByKeyword,
-        createNewDspUser
+        createNewDspUser,
+        getArea,
+        checkIssetDspUser,
+        getDspUserMarket,
+        getDspOnsaleItems
     } from '../api'
 
 var subway_token = '';
@@ -80,7 +84,6 @@ class Api extends Component {
     }
 
      handleGetCustBase(){
-
          ProfileReport(subway_token).then((result) => {
             Modal.alert(JSON.stringify(result));     
         }, (error) => {
@@ -207,38 +210,76 @@ class Api extends Component {
             
            Modal.alert(data);
         });
-       
+       //9511638
+     }
+     getAreafromFunc(){
+         getArea('9511638').then((result) => {
+            Modal.alert(JSON.stringify(result));
+           
+        }, (error) => {
+            Modal.alert(JSON.stringify(error));
+            Modal.alert(1);
+        });
+     }
+
+     checkIssetDspUserFunc(){
+        checkIssetDspUser().then((value) => {
+             Modal.alert(JSON.stringify(value));
+           
+          });
+     }
+     getDspUserMarketFunc(type){
+         getDspUserMarket(type).then((value) => {
+             Modal.alert(JSON.stringify(value));
+           
+          });
+     }
+     getOnsaleItemsFunc(){
+         getDspOnsaleItems().then((value) => {
+             Modal.alert(JSON.stringify(value));
+           
+          });
      }
     render() {
         return (
-            <View style={styles.container}>
-            <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary" style={styles.btnlist}>subway_token</Button>         
-            <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary" style={styles.btnlist}>店铺报表</Button>    
-            <Button block="true" onPress={() => {this.handleGetCampaigns()}} type="primary" style={styles.btnlist}>计划列表</Button>    
-            <Button block="true" onPress={() => {this.handleSetCampaignsStatus()}} type="primary" style={styles.btnlist}>更改计划状态</Button>  
-            <Button block="true" onPress={() => {this.setBugetFunc()}} type="primary" style={styles.btnlist}>设置计划日限额</Button>  
-            <Button block="true" onPress={() => {this.getPlatfromFunc()}} type="primary" style={styles.btnlist}>获取平台设置</Button>  
-            <Button block="true" onPress={() => {this.getAdgroupsFunc()}} type="primary" style={styles.btnlist}>获取计划下推广组</Button> 
-            <Button block="true" onPress={() => {this.deleteAdgroupsFunc()}} type="primary" style={styles.btnlist}>删除一个推广组</Button> 
-            <Button block="true" onPress={() => {this.updateAdgroupsFunc()}} type="primary" style={styles.btnlist}>更新推广组状态</Button> 
-            <Button block="true" onPress={() => {this.OnsaleItemsFunc()}} type="primary" style={styles.btnlist}>在售宝贝</Button>                                     
-            <Button block="true" onPress={() => {this.UnsaleItemsFunc()}} type="primary" style={styles.btnlist}>未推广宝贝</Button> 
-            <Button block="true" onPress={() => {this.addAdgroupFunc()}} type="primary" style={styles.btnlist}>新增计划下推广组</Button> 
-            <Button block="true" onPress={() => {this.getallKeywordsFunc()}} type="primary" style={styles.btnlist}>推广组关键词</Button> 
-            <Button block="true" onPress={() => {this.getRecommendKeywordsFunc()}} type="primary" style={styles.btnlist}>获取推荐关键词</Button> 
-            <Button block="true" onPress={() => {this.getItemNumByKeywordFunc()}} type="primary" style={styles.btnlist}>获取使用当前关键词的宝贝数量</Button> 
-
-            </View>
+            <ScrollView style={styles.scroller}>
+                <View style={styles.container}>
+                <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary" style={styles.btnlist}>subway_token</Button>         
+                <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary" style={styles.btnlist}>店铺报表</Button>    
+                <Button block="true" onPress={() => {this.handleGetCampaigns()}} type="primary" style={styles.btnlist}>计划列表</Button>    
+                <Button block="true" onPress={() => {this.handleSetCampaignsStatus()}} type="primary" style={styles.btnlist}>更改计划状态</Button>  
+                <Button block="true" onPress={() => {this.setBugetFunc()}} type="primary" style={styles.btnlist}>设置计划日限额</Button>  
+                <Button block="true" onPress={() => {this.getPlatfromFunc()}} type="primary" style={styles.btnlist}>获取平台设置</Button>  
+                <Button block="true" onPress={() => {this.getAreafromFunc()}} type="primary" style={styles.btnlist}>获取区域设置</Button> 
+                <Button block="true" onPress={() => {this.getAdgroupsFunc()}} type="primary" style={styles.btnlist}>获取计划下推广组</Button> 
+                <Button block="true" onPress={() => {this.deleteAdgroupsFunc()}} type="primary" style={styles.btnlist}>删除一个推广组</Button> 
+                <Button block="true" onPress={() => {this.updateAdgroupsFunc()}} type="primary" style={styles.btnlist}>更新推广组状态</Button> 
+                <Button block="true" onPress={() => {this.OnsaleItemsFunc()}} type="primary" style={styles.btnlist}>在售宝贝</Button>                                     
+                <Button block="true" onPress={() => {this.UnsaleItemsFunc()}} type="primary" style={styles.btnlist}>未推广宝贝</Button> 
+                <Button block="true" onPress={() => {this.addAdgroupFunc()}} type="primary" style={styles.btnlist}>新增计划下推广组</Button> 
+                <Button block="true" onPress={() => {this.getallKeywordsFunc()}} type="primary" style={styles.btnlist}>推广组关键词</Button> 
+                <Button block="true" onPress={() => {this.getRecommendKeywordsFunc()}} type="primary" style={styles.btnlist}>获取推荐关键词</Button> 
+                <Button block="true" onPress={() => {this.getItemNumByKeywordFunc()}} type="primary" style={styles.btnlist}>获取使用当前关键词的宝贝数量</Button> 
+                <Button block="true" onPress={() => {this.checkIssetDspUserFunc()}} type="primary" style={styles.btnlist}>检测是否是dsp用户</Button>  
+                <Button block="true" onPress={() => {this.getDspUserMarketFunc(1)}} type="primary" style={styles.btnlist}>dsp用户基本信息</Button>    
+                <Button block="true" onPress={() => {this.getDspUserMarketFunc(3)}} type="primary" style={styles.btnlist}>在线销售的宝贝</Button> 
+                <Button block="true" onPress={() => {this.getOnsaleItemsFunc()}} type="primary" style={styles.btnlist}>淘外引流数据列表</Button> 
+                </View>
+            </ScrollView>
  		  );
     }
 }
 
 const styles = {
+    scroller:{
+      backgroundColor:'#ffffff'  
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
+        
     },
     welcome: {
         fontSize: 20,

@@ -4,7 +4,6 @@ import APIError from './checkerror';
 import * as DateAPi from './date';
 import {Modal } from 'nuke';
 import {getLocalstoreUser} from './authsign';
-
 /*
 获取卖家基本信息
 */
@@ -22,20 +21,94 @@ export function getSellerUser(){
         });  
 }
 
-/*
-* 创建新的dsp账户
-*/
 export function createNewDspUser(){
 
-        getLocalstoreUser().then((result) => {
-            var user = result;   
-           
-           getSellerUser().then((res)=>{
+     return new Promise((resolve, reject) => {
+       getLocalstoreUser().then((result) => {
+            var isSub = 'false';
+            if(result.sub_taobao_user_id){ //sub_taobao_user_id淘宝子账号对应id
+                    isSub = 'true';
+            } 
+            var user ={
+                        is_sub:isSub,
+                        nick:result.taobao_user_nick,
+                        ts:new Date().getTime(),
+                        top_session:result.access_token,
+                        refresh_token:result.refresh_token,
+                        r1_expires_in:result.r1_expires_in,
+                        r2_expires_in:result.r2_expires_in, 
+                        w1_expires_in:result.w1_expires_in, 
+                        w2_expires_in:result.w2_expires_in,
+                        expires_in:result.expires_in, 
+                        re_expires_in:result.re_expires_in
+                };  
+
+              getSellerUser().then((res)=>{
                 user.seller_credit = res.seller_credit;
                 user.type = res.type;
                 user.avatar = res.avatar;
-                user.ts = new Date().getTime();
-                user.account_id = res. user_id
+                user.account_id = res.user_id
+
+                 var headers = {
+                        'Accept': 'application/json,text/javascript',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    };
+
+                 QN.fetch(DateAPi.httphost+'/new_user_new', {
+                        headers:headers,
+                        method: 'POST',
+                        mode: 'cors',
+                        dataType: 'json',
+                        body:QN.uri.toQueryString(user)
+                    })
+                    .then(response => {     
+                        return response.json(); // => 返回一个 `Promise` 对象
+                    })
+                    .then(data => {
+                       resolve(data);
+                    })
+                    .catch(error => {
+                       
+                    });  
+              });
+       });
+    });
+}
+
+
+
+/*
+* 创建新的dsp账户
+*/
+export function createNewDspUser_old(){
+        getLocalstoreUser().then((result) => {
+
+            var isSub = 'false';
+            if(result.sub_taobao_user_id){ //sub_taobao_user_id淘宝子账号对应id
+                    isSub = 'true';
+            }
+            var user ={
+                        is_sub:isSub,
+                        nick:result.taobao_user_nick,
+                        ts:new Date().getTime(),
+                        top_session:result.access_token,
+                        refresh_token:result.refresh_token,
+                        r1_expires_in:result.r1_expires_in,
+                        r2_expires_in:result.r2_expires_in, 
+                        w1_expires_in:result.w1_expires_in, 
+                        w2_expires_in:result.w2_expires_in,
+                        expires_in:result.expires_in, 
+                        re_expires_in:result.re_expires_in
+                };   
+          
+           getSellerUser().then((res)=>{
+
+                user.seller_credit = res.seller_credit;
+                user.type = res.type;
+                user.avatar = res.avatar;
+                user.account_id = res.user_id
+
+
                 var headers = {
                         'Accept': 'application/json,text/javascript',
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -97,9 +170,9 @@ export function getProfileBalance(){
 }
 
 export function getProfileReport(subway_token, start_date= null, end_date= null){
-    start_date = start_date != null ? start_date : DateAPi.lastMonth;
-    end_date = end_date != null ? end_date : DateAPi.yesterday;
-Modal.alert(JSON.stringify(DateAPi.lastMonth));
+    start_date = start_date != null ? start_date :DateAPi.formatDate(DateAPi.lastMonth);
+    end_date = end_date != null ? end_date : DateAPi.formatDate(DateAPi.yesterday);
+
     return QN.top.batch({
             query: [
                 {
@@ -175,7 +248,7 @@ Modal.alert(JSON.stringify(DateAPi.lastMonth));
                     daysago.favcount += mm[j].favitemcount ? parseInt(mm[j].favitemcount) :0 ;
                 
                     //昨天
-                    if(v.date === DateAPi.yesterday){
+                    if(v.date === DateAPi.formatDate(DateAPi.yesterday)){
 
                         data.yesterday.push({pv : daysago.pv,
                                     click :   daysago.click,
@@ -191,7 +264,7 @@ Modal.alert(JSON.stringify(DateAPi.lastMonth));
                     }
 
                     //过去三天
-                    if( v.date >=  DateAPi.threedaysAgo ){
+                    if( v.date >=  DateAPi.formatDate(DateAPi.threedaysAgo) ){
 
                         data.threedaysago.push({
                             pv : daysago.pv,

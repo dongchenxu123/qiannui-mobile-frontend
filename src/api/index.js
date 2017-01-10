@@ -13,6 +13,7 @@ import { getCampaign,
 import { getAdgroupsByCid,deleteAdgroup,updateAdgroup,getUnSaleItem,addAdgroup} from './adgroups';
 import {getOnsaleItem} from './onsale-item';
 import {getallKeywords,getRecommendKeywords,deleteKeywords,addNewKeyword,getItemNumByKeyword} from './keywords';
+import {checkIssetDspUser,getDspOnsaleItems,getDspUserInfo,getDspUserMarket} from './dsp';
 
 
 const api = {
@@ -44,8 +45,10 @@ const api = {
     localstoreUser:localstoreUser,//设置登陆用户存储信息
     getLocalstoreUser:getLocalstoreUser,//获取登陆用户存储信息
     createNewDspUser:createNewDspUser,//创建dsp用户
-
-
+    checkIssetDspUser:checkIssetDspUser,//检测是否存在dsp用户id
+    getDspUserMarket:getDspUserMarket,//获取dsp用户日限额 、余额、dsp在线推广的宝贝
+    getDspOnsaleItems:getDspOnsaleItems,//整理完成的 淘外引流列表数据,
+    getDspUserInfo:getDspUserInfo,
 
 }
 

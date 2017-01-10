@@ -52,8 +52,8 @@ export function getCampaign(subway_token){
                             fields:'subway_token,start_time,end_time,campaign_id,source,search_type',
                             campaign_id: ca.campaign_id,
                             subway_token: subway_token,
-                            start_time:DateAPi.yesterday,
-                            end_time:DateAPi.yesterday,
+                            start_time:DateAPi.formatDate(DateAPi.yesterday),
+                            end_time:DateAPi.formatDate(DateAPi.yesterday),
                             source:'SUMMARY',
                             search_type:'SEARCH' 
                         },{
@@ -61,8 +61,8 @@ export function getCampaign(subway_token){
                             fields:'subway_token,start_time,end_time,campaign_id,source,search_type',
                             campaign_id: ca.campaign_id,
                             subway_token: subway_token,
-                            start_time:DateAPi.yesterday,
-                            end_time:DateAPi.yesterday,
+                            start_time:DateAPi.formatDate(DateAPi.yesterday),
+                            end_time:DateAPi.formatDate(DateAPi.yesterday),
                             source:'SUMMARY',
                             search_type:'SEARCH' 
                         }
@@ -72,7 +72,7 @@ export function getCampaign(subway_token){
 
                     if(result.length === 3){
                         var budget = result[0].simba_campaign_budget_get_response.campaign_budget;
-                        var baseData = result[1].simba_rpt_campaignbase_get_response.rpt_campaign_base_list;
+                        var baseData = result[1].simba_rpt_campaignbase_get_response != undefined ? result[1].simba_rpt_campaignbase_get_response.rpt_campaign_base_list :[];
                         var effectData = result[2].simba_rpt_campaigneffect_get_response.rpt_campaign_effect_list;
                         rpt =  formatRptData(baseData, effectData);
                         rpt.budget = budget.budget;
