@@ -4,7 +4,8 @@ import { View, Text, Image, TouchableHighlight} from 'nuke-components';
 import {mount} from 'nuke-mounter';
 import {browser, browserActive, appCont, appContActive, home, homeActive, my, myActive, shareLight, shareLightActive} from './static/static';
 import HealthyView from './views/healthy';
-import UserView from './views/user'
+import UserView from './views/user';
+import CampaignsListView from './views/campaigns/campaignsList'
 let listData = [];
 for (var i = 0; i < 300; i++) {
     listData.push({key: i,pic:'//img.alicdn.com/bao/uploaded/i1/TB1gdT4KVXXXXcpXFXXwu0bFXXX.png',text:'近三个月订单' + i});
@@ -23,7 +24,8 @@ const styles = {
     text: {color: 'white', margin: 50 },
     customRender: {fontSize: '10rem', color: 'blue'},
     view: {flex: 1 },
-    top: {height: '80rem', paddingLeft: 10, paddingRight: 10,marginBottom: 20, flexDirection: 'row'}
+    top: {height: '80rem', paddingLeft: 10, paddingRight: 10,marginBottom: 20, flexDirection: 'row'},
+    header: {height: 100, marginTop: 100}
 }
 
 const app = {
@@ -112,11 +114,34 @@ let App = class NukeDemoIndex extends Component {
         console.log(e);
     }
     renderItem (item, index){
-        return (<TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
-                <Icon src={item.pic} style={app.itemIcon} />
-                <Text style={app.itemTextList}>{item.text}</Text>
-                <Icon style={app.itemArrow} src="//img.alicdn.com/tfs/TB1EU2rMVXXXXcpXXXXXXXXXXXX-64-64.png" />
-            </TouchableHighlight>)
+        return (
+        	<View>
+	        	<TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>1234324234</Text>
+	            </TouchableHighlight>
+	             <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>2234324234</Text>
+	            </TouchableHighlight>
+	             <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>3234324234</Text>
+	            </TouchableHighlight>
+	             <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>4234324234</Text>
+	            </TouchableHighlight>
+	             <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>5234324234</Text>
+	            </TouchableHighlight>
+	             <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>6234324234</Text>
+	            </TouchableHighlight>
+	             <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>7234324234</Text>
+	            </TouchableHighlight>
+	            <TouchableHighlight style={app.cellItemList}>
+	            	<Text style={app.itemTextList}>8234324234</Text>
+	            </TouchableHighlight>
+        </View>
+        )
 
     }
     renderHeader(){
@@ -143,9 +168,7 @@ let App = class NukeDemoIndex extends Component {
           const renderTpl = <Button type="normal">m2</Button>
         return (
             <View style={styles.container}>
-                <View style={{flexDirection: 'row'}, styles.top}>
-                   <Link href="qap://views/test.js">北京你好</Link>
-                </View>
+               
                 <View style={styles.view}>
                 <Tabbar asContainer={false} iconBar={true} navTop={false} navStyle={{active: app.activeBorder, inactive: app.inactiveBorder}} activeKey={this.state.activeKey} onChange={this.onChange.bind(this)} customChange="changeTo" customFocus="getFocus">
                   <Tabbar.Item
@@ -176,14 +199,7 @@ let App = class NukeDemoIndex extends Component {
                       tabKey="m4"
                       icon={{src: appCont, selected: appContActive}}
                       >
-                      <ListView
-                        renderHeader={this.renderHeader.bind(self)}
-                        renderFooter={this.renderFooter.bind(self)}
-                        renderRow={self.renderItem.bind(self)}
-                        dataSource={self.state.data}
-                        style={app.listContainer}
-                        onEndReached={self.handleLoadMore.bind(self)}
-                      />
+                      <CampaignsListView />
                     </Tabbar.Item>
                      <Tabbar.Item
                       renderAsOriginal
