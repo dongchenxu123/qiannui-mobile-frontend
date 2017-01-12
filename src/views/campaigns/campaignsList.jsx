@@ -1,12 +1,12 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text, Link, Grid, Col, Image, Modal, ScrollView, Button } from 'nuke';
+import {View, Text, Link, Grid, Col, Image, Modal, ScrollView, Button, Navigator, TouchableHighlight } from 'nuke';
 import QN from 'QAP-SDK';
 import {getCampaign, getAuthSign, setBuget, getArea} from '../../api';
 import DialogView from '../dialog'
 import GetAreaView from './getAreaView'
-import ScheduleView from './schedule'
+
 class CampaignsListView extends Component {
 	constructor() {
 		super()
@@ -66,7 +66,13 @@ class CampaignsListView extends Component {
 		        onPress:()=>{console.log('点击了取消')},
 		        text:"取消"
 		    }
- ]);
+ 		]);
+    }
+	onPress (tid) {
+        Navigator.push('qap://views/campaignsGroup.js?id='+tid);
+    }
+	onPressSche (tid) {
+        Navigator.push('qap://views/test.js?'+tid);
     }
 	render () {
 		return (
@@ -80,7 +86,7 @@ class CampaignsListView extends Component {
 			   			<View key={index}>
 			   			    <View>
 				   			    <View style={[styles.amoutList, {backgroundColor:"#e8e8e8"}]}>
-				   			    	<Text style={styles.title}>{item.title}</Text>
+				   			    	<TouchableHighlight style={styles.title} onPress={this.onPress.bind(this, tid)}>{item.title}</TouchableHighlight>
 				   			    	<Text style={styles.amoutitemArrow}>{item.online_status == 'online' ?'推广中':'暂停中'}</Text>
 				   			    </View>
 				   			    <View style={styles.report}>
@@ -108,7 +114,11 @@ class CampaignsListView extends Component {
 			  		   	                <View style={styles.itemArrow}>
 			  		   	                	投放时段:
 			  		   	                </View>
-			  		   	               <ScheduleView style={styles.amoutitemArrow} scheId={item.campaign_id}/>
+			  		   	               <Button
+			  		   	                  	style={{color: '#3089dc', flex: 1}} 										 											onPress={this.onPressSche.bind(this, tid)}
+											>
+			  		   	                 设置
+			  		   	                </Button>
 					                </View>
 				                </View>
 			                </View>

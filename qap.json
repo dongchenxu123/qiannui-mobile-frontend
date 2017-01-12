@@ -10,9 +10,10 @@
 		{ "url":"qap://views/test.js" },
 		{ "url":"qap://views/user.js" },
 		{ "url":"qap://views/dataStream.js" },
-		{ "url":"qap://views/plan.js" },
 		{ "url":"qap://views/aboutUs.js" },
-		{ "url":"qap://views/platform.js" }
+		{ "url":"qap://views/schedule.js" },
+		{ "url":"qap://views/platform.js" },
+		{ "url":"qap://views/campaignsGroup.js" }
 	],
 	"iconfonts":[
 		{
