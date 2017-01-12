@@ -59,7 +59,7 @@ const api = {
     setArea:setArea,// 设置投放区域
     getPlatfrom:getPlatfrom,//获取计划投放平台
     setPlatfrom:setPlatfrom, //设置计划投放平台
-    getAdgroups:getAdgroupsByCid,//计划下推广组列表
+    getAdgroupsByCid:getAdgroupsByCid,//计划下推广组列表
     getOnsaleItem:getOnsaleItem,//在售宝贝
     deleteAdgroup:deleteAdgroup,//删除一个推广组
     updateAdgroup:updateAdgroup,//更新一个推广组状态

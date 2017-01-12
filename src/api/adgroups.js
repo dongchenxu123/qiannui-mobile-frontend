@@ -72,9 +72,10 @@ function getAdgroups(campaign_id){
                     fields:'campaign_id,page_size,page_no',
                     campaign_id:campaign_id,
                     page_size:1,
-                    page_no:0
+                    page_no:1
             }
         }).then((result)=>{
+        	Modal.alert(JSON.stringify(result))
                 var data = [];
                 var dataNum = parseInt(result.items_onsale_get_response.total_results);
                 if(dataNum > 0){
