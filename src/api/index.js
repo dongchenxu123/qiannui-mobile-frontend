@@ -8,7 +8,8 @@ import { getSellerUser,
 
 import { getCampaign, 
         getCompaignReport,
-        setBuget,setStatus,
+        setBuget,
+        setStatus,
         getSchedule,
         setSchedule,
         getArea,
@@ -21,7 +22,8 @@ import { getAdgroupsByCid,
         deleteAdgroup,
         updateAdgroup,
         getUnSaleItem,
-        addAdgroup
+        addAdgroup,
+        getAdgroupsAll
     } from './adgroups';
 
 import {getOnsaleItem} from './onsale-item';
@@ -81,6 +83,7 @@ const api = {
     setBudget:setBudget,//设置淘外日限额
     setItemsOffline:setItemsOffline,//设置淘外宝贝推广下线
     setItemsOnline:setItemsOnline,//设置淘外宝贝推广
+    getAdgroupsAll:getAdgroupsAll,//获取计划下所有的推广组
 
 
 }

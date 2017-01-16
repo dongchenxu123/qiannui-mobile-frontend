@@ -15,6 +15,7 @@ class CampaignsGroupView extends Component {
 			subway_token: '',
 			campaginsData: []
 		}
+        this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 	}
 	componentDidMount () {
 		var URL= document.URL;
@@ -37,6 +38,7 @@ class CampaignsGroupView extends Component {
            		this.setState({
            			campaginsData: res
            		})
+               
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
 	
@@ -47,21 +49,21 @@ class CampaignsGroupView extends Component {
         });
 		
 	}
-	setNewSatusFunc(index,status){
+	setNewSatusFunc(adgroup_id,status){
 		
-		//this.state.campaginsData[index].online_status =status;
-		//this.setState();
-		
-		//let newData = this.state.campaginsData;
-		//newData[index].online_status =status;
-		
-		
+        var index = _.findIndex( this.state.campaginsData,function(v){
+                    return v.adgroup_id == adgroup_id;
+                });
+            this.state.campaginsData[index].online_status =  status;
+            this.setState();  
+            this.forceUpdate();  
 	}
 	render () {
+   
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 			   <View><Button type='primary' style={{margin: '20rem'}}> 新增宝贝推广</Button></View>
-			   <ListViewGroupView data={this.state.campaginsData} setNewSatus={this.setNewSatusFunc}/>
+			   <ListViewGroupView data={this.state.campaginsData} callbackSetNewSatus={this.setNewSatusFunc}/>
 			</ScrollView>
 		)
 	}
