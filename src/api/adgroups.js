@@ -5,6 +5,10 @@ import * as DateAPi from './date';
 import {checkAPIError} from './checkerror';
 import { Modal } from 'nuke';
 import {getOnsaleItem} from './onsale-item';
+import Async from 'async';
+import _ from 'lodash';
+import getallKeywords from './keywords';
+
 
 export function getUnSaleItem(campaign_id){
     var data = [];
@@ -24,47 +28,41 @@ export function getUnSaleItem(campaign_id){
      });
 }
 
-
 function ifAdgroupExist(campaign_id,result){
     var data= [];
 
     return new Promise((resolve, reject) => {
            result.forEach(function (item, index, array) {
-                (function (ci,item) {
-                   
-                    return  QN.top.invoke({
-                                query: {
-                                    method:'taobao.simba.adgroups.item.exist',
-                                    fields:'campaign_id,item_id',
-                                    campaign_id:campaign_id,
-                                    item_id:item.num_iid
-                                }
-                            }).then((result)=>{
-                               
-                                if(result.simba_adgroups_item_exist_response != undefined && result.simba_adgroups_item_exist_response.exist == false){
-                                    data.push(item);
-                                }
+                (function (ci,item) {    
+                return  QN.top.invoke({
+                            query: {
+                                method:'taobao.simba.adgroups.item.exist',
+                                fields:'campaign_id,item_id',
+                                campaign_id:campaign_id,
+                                item_id:item.num_iid
+                            }
+                        }).then((result)=>{
+                           
+                            if(result.simba_adgroups_item_exist_response != undefined && result.simba_adgroups_item_exist_response.exist == false){
+                                data.push(item);
+                            }
 
-                                if(parseInt(ci+1) == array.length){
-                                    resolve(data); 
-                                }
-                            })
-                            .catch(error=>{
-                                    resolve(data);   
-                            });
-
-
+                            if(parseInt(ci+1) == array.length){
+                                resolve(data); 
+                            }
+                        })
+                        .catch(error=>{
+                                resolve(data);   
+                        });
                 })(index,item)
            });
 
     })
 }
-
-
 /*
         获取一个计划下的所有的推广组
 */
-function getAdgroups(campaign_id){
+export function getAdgroupsAll(campaign_id){
     return new Promise((resolve, reject) => {
         QN.top.invoke({
             query: {
@@ -75,28 +73,117 @@ function getAdgroups(campaign_id){
                     page_no:1
             }
         }).then((result)=>{
-        	Modal.alert(JSON.stringify(result))
+        	  
                 var data = [];
-                var dataNum = parseInt(result.items_onsale_get_response.total_results);
-                if(dataNum > 0){
 
-                    getOnsaleItem_sign(dataNum).then((data) => {
-                            resolve(data);
-                             Modal.alert(JSON.stringify(data));
-                        }).catch(err => {
-                            reject(err);
-                        });
+                if( result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group){
+                    var dataNum =  parseInt(result.simba_adgroupsbycampaignid_get_response.adgroups.total_item);
 
+                    if(dataNum > 0){
+                        getAdgroups_sign(campaign_id,dataNum).then((data) => {
+                                resolve(data);
+                            }).catch(err => {
+                                reject(err);
+                            });
+                     }else{                       
+                        resolve(data);
+                     }
                 }else{
                     resolve(data);
                 }
-               
         }) 
         .catch(error=>{
 
         });
    })           
 }
+
+function getAdgroups_sign(campaign_id,dataNum){
+     var data= [];
+     var page_size = 2;
+     var len = Math.ceil(dataNum / page_size);
+    return new Promise((resolve, reject) => {
+
+        for (var i=1; i<=len; i++){
+            (function (ci) {
+                
+                return QN.top.invoke({
+                    query: {
+                        method:'taobao.simba.adgroupsbycampaignid.get',
+                        fields:'campaign_id,page_size,page_no',
+                        campaign_id:campaign_id,
+                        page_size:page_size,
+                        page_no:ci
+                    }
+                }).then((result)=>{  
+                  
+                   if( result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group){
+
+                        var res = result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group;
+
+                        if(res.length > 0 ){
+                             res.forEach(v => {
+                                       data.push(v);
+                                        });
+                            if(ci == len){
+                                resolve(data);
+                            }
+                        }else{
+                            resolve(data);
+                        }
+                    }else{
+                        if(ci == len){
+                            resolve(data);
+                        }
+                    }
+                })
+                .catch(error=>{
+                }); 
+            })(i)        
+        }
+    });
+}
+
+
+/*
+* 获取一个计划下的所有关键词
+*/
+/*export function getAllKeyWordsByCampaignAdgroup(campaign_id){
+    return new Promise((resolve,reject)=>{
+         getAdgroupsAll(campaign_id).then((result) => {
+            var adgroups = result;
+            var adgroupsArr = [],data = [];
+
+            if(adgroups.length > 0){
+
+                 for (var j in  adgroups){
+                    adgroupsArr.push(makeKeywordFunc(subway_token,adgroups[j]));
+                }
+                Async.parallelLimit(adgroupsArr,5, function (err, res) {
+                   let data = res;
+                    resolve(data);
+                });
+
+
+            }      
+        }, (error) => {
+            Modal.toast("获取数据失败");
+        });
+    });
+}
+
+
+function makeKeywordFunc(subway_token,adgroup){
+    return function(callback){
+        getallKeywords(subway_token,adgroup.adgroup_id,adgroup.campaign_id,false).then((result) => {
+            callback(null,result);
+        }, (error) => {  
+               callback(error,null);
+        }); 
+    }
+}*/
+
+
 
 export function getAdgroupsByCid(subway_token,campaign_id,page_no){
      var page = page_no > 0 ? page_no : 1,

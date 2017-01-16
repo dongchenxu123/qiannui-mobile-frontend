@@ -15,8 +15,9 @@ class CampaignsGroupView extends Component {
 			campaginsData: [],
 			linkId: ''
 		}
-		this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
+this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 		this.delItemsFunc = this.delItemsFunc.bind(this);
+
 	}
 	componentDidMount () {
 		var URL= document.URL;
@@ -42,6 +43,7 @@ class CampaignsGroupView extends Component {
            		this.setState({
            			campaginsData: res
            		})
+               
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
 	
@@ -62,6 +64,7 @@ class CampaignsGroupView extends Component {
            this.setState({
    			campaginsData: aa
    		}) 
+
 	}
     delItemsFunc (adgroup_id, itemId) {
 		var idx= 0;

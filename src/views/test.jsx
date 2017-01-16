@@ -27,42 +27,47 @@ import { getAuthSign,
         getArea,
         checkIssetDspUser,
         getDspUserMarket,
-        getDspOnsaleItems
+        getDspOnsaleItems,
+        getSchedule,
+        onlineChat,
+        getAdgroupsAll
     } from '../api'
 
 var subway_token = '';
 class Api extends Component {
     constructor(props) {
       super(props);
+      this.state.subway_token =
       this.state = {subway_token:''};
        getAuthSign().then((result) => {
                  subway_token = result;
                 }, (error) => {
                     Modal.toast(JSON.stringify(error));
-                });
-        
+                });        
     }
     
  
   componentDidMount(){
-      /*  var myHeaders = new Headers();
-        myHeaders.append('Accept', 'application/json, text/javascript');
-        QN.fetch('http://qianniu.why.xibao100.com/test', {
-            headers:myHeaders,
-            method: 'GET',
-            mode: 'cors',
-            dataType: 'json',
-        })
-        .then(response => {     
-            return response.json(); // => 返回一个 `Promise` 对象
-        })
-        .then(data => {
-            Modal.alert(JSON.stringify(data));
-            console.log(data); // 真正地数据结果
-        })
-        .catch(error => {
-           Modal.alert(error);
-        });*/
+      /*  
+       重要需要进入软件就要条用，调用成功后才可以进行下面的功能
+      let urlData = QN.uri.parseQueryString(document.URL),
+          userInfo = JSON.parse(urlData.authString);
+          getAuthSign().then((result) => {
+
+                 localstoreUser(userInfo).then((result) => {
+                 
+                  
+                    createNewDspUser().then((value) => {
+                       Modal.alert(JSON.stringify(value));       
+                    });
+                  }, (error) => {
+                      Modal.alert(JSON.stringify(error));
+                    
+                  });
+                }, (error) => {
+                  });
+
+        */
    }
 
     handleTOPInvoke(){
@@ -240,6 +245,18 @@ class Api extends Component {
            
           });
      }
+     getScheduleFunc(){
+         getSchedule().then((value) => {
+             Modal.alert(JSON.stringify(value));
+           
+          });
+     }
+     onlineChatFunc(){
+          onlineChat().then((value) => {
+             Modal.alert(JSON.stringify(value));
+           
+          });
+     }
     render() {
         return (
             <ScrollView style={styles.scroller}>
@@ -251,6 +268,7 @@ class Api extends Component {
                 <Button block="true" onPress={() => {this.setBugetFunc()}} type="primary" style={styles.btnlist}>设置计划日限额</Button>  
                 <Button block="true" onPress={() => {this.getPlatfromFunc()}} type="primary" style={styles.btnlist}>获取平台设置</Button>  
                 <Button block="true" onPress={() => {this.getAreafromFunc()}} type="primary" style={styles.btnlist}>获取区域设置</Button> 
+                <Button block="true" onPress={() => {this.getScheduleFunc()}} type="primary" style={styles.btnlist}>获取区域设置</Button> 
                 <Button block="true" onPress={() => {this.getAdgroupsFunc()}} type="primary" style={styles.btnlist}>获取计划下推广组</Button> 
                 <Button block="true" onPress={() => {this.deleteAdgroupsFunc()}} type="primary" style={styles.btnlist}>删除一个推广组</Button> 
                 <Button block="true" onPress={() => {this.updateAdgroupsFunc()}} type="primary" style={styles.btnlist}>更新推广组状态</Button> 
@@ -264,6 +282,7 @@ class Api extends Component {
                 <Button block="true" onPress={() => {this.getDspUserMarketFunc(1)}} type="primary" style={styles.btnlist}>dsp用户基本信息</Button>    
                 <Button block="true" onPress={() => {this.getDspUserMarketFunc(3)}} type="primary" style={styles.btnlist}>在线销售的宝贝</Button> 
                 <Button block="true" onPress={() => {this.getOnsaleItemsFunc()}} type="primary" style={styles.btnlist}>淘外引流数据列表</Button> 
+                <Button block="true" onPress={() => {this.onlineChatFunc()}} type="primary" style={styles.btnlist}>打开旺旺聊天窗口</Button> 
                 </View>
             </ScrollView>
  		  );
