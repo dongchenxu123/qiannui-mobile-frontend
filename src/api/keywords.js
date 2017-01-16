@@ -4,8 +4,7 @@ import * as DateAPi from './date';
 import { Modal } from 'nuke';
 import {checkAPIError} from './checkerror';
 
-export function getallKeywords(subway_token,adgroup_id,campaign_id){
-
+export function getallKeywords(subway_token,adgroup_id,campaign_id,needformat = true){
      return QN.top.batch({
             query: [
                 {
@@ -39,7 +38,7 @@ export function getallKeywords(subway_token,adgroup_id,campaign_id){
         }).then(result => {
             var keywords = [],baseData = [],effect = [];
             var error = null;
-         
+      
             if(checkAPIError(result[0]) == null && checkAPIError(result[1]) == null && checkAPIError(result[2]) == null){
                 
                   if(result[0].simba_keywordsbyadgroupid_get_response.keywords){
@@ -53,7 +52,13 @@ export function getallKeywords(subway_token,adgroup_id,campaign_id){
                   if(result[2].simba_rpt_adgroupkeywordeffect_get_response.rpt_adgroupkeyword_effect_list){
                         effect = result[2].simba_rpt_adgroupkeywordeffect_get_response.rpt_adgroupkeyword_effect_list
                   }
-                  return formatAdgroupKeys(keywords,baseData,effect);         
+                  if(needformat){
+                     return formatAdgroupKeys(keywords,baseData,effect); 
+                 }else{
+
+                    return {keylist:keywords,rptbase:baseData};
+                 }
+                         
             }else{
                 return '获取关键词数据失败';
             }
@@ -144,7 +149,7 @@ export function deleteKeywords(campaign_id,keyword_ids){
                 method:'taobao.simba.keywords.delete',
                 fields:'campaign_id,keyword_ids',
                 campaign_id:campaign_id,
-                keyword_ids:keyword_ids
+                keyword_ids:keyword_ids.join(',')
             }
         }).then((result)=>{
             var data = [];

@@ -60,15 +60,10 @@ class ListViewGroupView extends Component {
     }
     press (adgroup_id, online_status) {
     	updateAdgroup(adgroup_id, online_status).then((res) => {
-//         		Modal.alert(JSON.stringify(res))
+       
            		var newStatus = res.data.online_status;
-           		var datas = this.props.data;
-           		var index = _.findIndex(datas,function(v){
-           			return v.adgroup_id == adgroup_id;
-           		})
-           		
-           		
-           		this.props.setNewSatus(index,newStatus);
+
+           		this.props.callbackSetNewSatus(adgroup_id,newStatus);
          
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
