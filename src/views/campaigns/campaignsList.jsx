@@ -4,7 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Grid, Col, Image, Modal, ScrollView, Button, Navigator, TouchableHighlight } from 'nuke';
 import QN from 'QAP-SDK';
 import {getCampaign, getAuthSign, setBuget, getArea} from '../../api';
-import DialogView from '../dialog'
+
 import GetAreaView from './getAreaView'
 
 class CampaignsListView extends Component {
@@ -23,8 +23,7 @@ class CampaignsListView extends Component {
                         subway_token: result
                     })
                getCampaign(this.state.subway_token).then((result) => {
-               	
-             	   this.setState({
+               	this.setState({
 	                        campaignData: result
 	                    })
              	}, (error) => {
@@ -72,7 +71,10 @@ class CampaignsListView extends Component {
         Navigator.push('qap://views/campaignsGroup.js?id='+tid);
     }
 	onPressSche (tid) {
-        Navigator.push('qap://views/test.js?'+tid);
+        Navigator.push('qap://views/test.js?id='+tid);
+    }
+	onPressPlat (tid) {
+        Navigator.push('qap://views/platform.js?id='+tid);
     }
 	render () {
 		return (
@@ -96,15 +98,21 @@ class CampaignsListView extends Component {
 			   							</View>
 			  		   	              
 			  		   	                  <Button
-			  		   	                  	style={{color: '#3089dc', flex: 1}} 										 											onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
-											id={this.state.budgetId}>
+			  		   	                  	style={{flex: 1}} 										 											onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
+											id={this.state.budgetId}
+											type="primary">
 			  		   	                  ￥{this.state.budget !== '' && this.state.budgetId === tid ? this.state.budget : item.budget}
 			  		   	                  </Button >
 			  		   	               
 			  		   	                <View style={styles.itemArrow}>
 			  		   	                  投放平台:
 			  		   	                </View>
-			  		   	                <DialogView style={styles.amoutitemArrow}/>
+			  		   	                 <Button
+			  		   	                  	style={{flex: 1}} 										 											onPress={this.onPressPlat.bind(this, tid)}
+			  		   	                  	type="primary"
+											>
+			  		   	                 设置
+			  		   	                </Button>
 			  		   	            </View>
 					                <View style={styles.amoutList}>
 							   		    <View style={styles.itemArrow}>
@@ -115,7 +123,8 @@ class CampaignsListView extends Component {
 			  		   	                	投放时段:
 			  		   	                </View>
 			  		   	               <Button
-			  		   	                  	style={{color: '#3089dc', flex: 1}} 										 											onPress={this.onPressSche.bind(this, tid)}
+			  		   	                  	style={{flex: 1}} 										 											onPress={this.onPressSche.bind(this, tid)}
+			  		   	                  	type="primary"
 											>
 			  		   	                 设置
 			  		   	                </Button>

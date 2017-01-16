@@ -13,7 +13,9 @@
 		{ "url":"qap://views/aboutUs.js" },
 		{ "url":"qap://views/schedule.js" },
 		{ "url":"qap://views/platform.js" },
-		{ "url":"qap://views/campaignsGroup.js" }
+		{ "url":"qap://views/campaignsGroup.js" },
+		{ "url":"qap://views/addCampaign.js" },
+		{ "url":"qap://views/platform.js" }
 	],
 	"iconfonts":[
 		{

@@ -4,7 +4,7 @@ import { View, Text,Image,TouchableHighlight,ScrollView, Grid, Col} from 'nuke-c
 import QN from 'QAP-SDK';
 import { getAuthSign, getSellerUser,UserInfo,ProfileReport,WuxianBalance } from '../api';
 import ListViewCommon from './listViewCommon';
-import DialogView from './dialog'
+
 const { Pane } = TabSlider;
 
 class User extends Component{
@@ -83,10 +83,7 @@ class User extends Component{
   componentDidMount(){
     getAuthSign().then((result) => {
           this.setState({subway_token : result});
-         
-          ProfileReport(this.state.subway_token).then((result) 		=> {
-          	 Modal.alert(JSON.stringify(result
-          ))
+         	ProfileReport(this.state.subway_token).then((result) 		=> {
           	this.setState({
                     profileData: result,
                     yesterday: result.yesterday,
@@ -99,7 +96,6 @@ class User extends Component{
 
             });
              WuxianBalance().then((result) => {
-             	Modal.alert(JSON.stringify(result));
              	this.setState({
                         WuxianData: result
                     })

@@ -6,6 +6,7 @@ import {browser, browserActive, appCont, appContActive, home, homeActive, my, my
 import HealthyView from './views/healthy';
 import UserView from './views/user';
 import CampaignsListView from './views/campaigns/campaignsList'
+
 let listData = [];
 for (var i = 0; i < 300; i++) {
     listData.push({key: i,pic:'//img.alicdn.com/bao/uploaded/i1/TB1gdT4KVXXXXcpXFXXwu0bFXXX.png',text:'近三个月订单' + i});
@@ -49,24 +50,7 @@ const app = {
     itemArrow:{flex: 1, width:'18px', height:'18px', }
 }
 
-class Gray extends Component {
-    press() {
-        this.changeTo('m3')
-    }
 
-    onFocus(status) {
-      console.log('gray:', status)
-    }
-
-    render() {
-        return (
-            <View style={[styles.tabContent, {backgroundColor: '#888888'}]}>
-                <Text style={styles.text}>Blue Tab 大家好我是nv色的区域</Text>
-                <Button onPress={this.press.bind(this)} type="normal">切换为m3</Button>
-            </View>
-        )
-    }
-}
 
 
 let App = class NukeDemoIndex extends Component {
@@ -186,12 +170,6 @@ let App = class NukeDemoIndex extends Component {
                            icon={{src: home,selected:homeActive}}
                       >
                       <UserView></UserView>
-                    </Tabbar.Item>
-                    <Tabbar.Item
-                      title="淘外引流"
-                      tabKey="m3"
-                      icon={{src: shareLight, selected: shareLightActive}}>
-                      {this._renderContent('#783E33', 'Red Tab 大家好我是红色的区域' + this.state.notifCount, this.state.notifCount)}
                     </Tabbar.Item>
                     <Tabbar.Item
                       renderAsOriginal
