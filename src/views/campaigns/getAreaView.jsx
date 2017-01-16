@@ -236,7 +236,7 @@ class GetAreaView extends Component {
         getArea(this.props.localId).then((result) => {
         	//Modal.alert(result.area)
         	if(result.area === 'all') {
-   				result.area='19,461,125,393,333,294,234,165,417,255,508,39,1,368,145,184,212,279,68,120,92,532,438,488,109,463,406,52,357,351,471,578,599,576,574'
+        		result.area='19,461,125,393,333,294,234,165,417,255,508,39,1,368,145,184,212,279,68,120,92,532,438,488,109,463,406,52,357,351,471,578,599,576,574'
         	}        	
         	var res = result.area.split(',')
         	var obj = {};
@@ -310,7 +310,7 @@ class GetAreaView extends Component {
     	return (
             <View>
                 <TouchableHighlight onPress={this.showModal.bind(self)}>
-                  <Button style={{color: '#3089dc'}}>设置</Button>
+                  <Button type="primary">设置</Button>
                 </TouchableHighlight>
                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>
                     <ScrollView style={styles.body} onEndReachedThreshold={300}>

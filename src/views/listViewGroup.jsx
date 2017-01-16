@@ -1,7 +1,7 @@
 import { Icon, ListView, Dimensions, Button, Modal } from 'nuke';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight , RefreshControl, Image} from 'nuke-components';
-import { updateAdgroup } from '../api';
+import { updateAdgroup, deleteAdgroup } from '../api';
 import _ from 'lodash';
 
 let {height} = Dimensions.get('window');
@@ -19,8 +19,6 @@ class ListViewGroupView extends Component {
             status: ''
             
          };
-        this.index = 0;
-
     }
     handleRefresh = (e) => {
         this.setState({
@@ -46,8 +44,7 @@ class ListViewGroupView extends Component {
             return;
         }else{
             setTimeout(function() {
-
-                self.state.data.push({key: 'l1',text:'loadmore1'}, {key: 'l2',text:'loadmore2'}, {key: 'l3',text:'loadmore3'},{key: 'l4',text:'loadmore4'}, {key: 'l5',text:'loadmore5'});
+				self.state.data.push({key: 'l1',text:'loadmore1'}, {key: 'l2',text:'loadmore2'}, {key: 'l3',text:'loadmore3'},{key: 'l4',text:'loadmore4'}, {key: 'l5',text:'loadmore5'});
                 self.setState(self.state);
                 self.index++;
             }, 2000);
@@ -69,14 +66,26 @@ class ListViewGroupView extends Component {
 	            Modal.alert(JSON.stringify(error));
 	
 	        });
+
 	       
     }
+    delpress (adgroup_id) {
+    	deleteAdgroup(adgroup_id).then((res) => {
+    		Modal.alert(res)
+    		var itemId= res.data.adgroup_id;
+       		this.props.delItems(adgroup_id, itemId);
+            
+           	}, (error) => {
+	            Modal.alert(JSON.stringify(error));
+	
+	        });
+	}
     renderItem (item, index){
     	var online_status= item.online_status;
     	var adgroup_id= item.adgroup_id;
     	var self= this;
     	var itemStatus= item.online_status == 'online' ? '推广中' : '暂停中';
-    	var newStatus= this.state.status == 'online' ? '推广中' : '暂停中';
+    	var newStatus= item.online_status == 'online' ? '暂停宝贝' : '推广宝贝';
     	
         return (
         	<View>
@@ -86,16 +95,15 @@ class ListViewGroupView extends Component {
                 			<Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
                 			<View style={{ flexDirection:"row",display: 'flex'}}>
                 				<Text style={{color: '#3089dc'}}>
-                					状态:
-                				     {itemStatus}
+                					状态: {itemStatus}
                 				</Text>
                 				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', color: 'red'}}>昨日点击: {item.report.click}</Text>
                 			</View>
                 			<View style={{flexDirection:'row'}}>
-                				<Button size='small' style={{color: '#3089dc'}} onPress={self.press.bind(self, adgroup_id, online_status)} checked={this.state.checked}>
-                				{itemStatus}
+                				<Button size='small' style={{color: '#3089dc'}} onPress={self.press.bind(self, adgroup_id, online_status)}>
+                				{newStatus}
                 				</Button>
-                    			<Button size='small' style={{color: '#3089dc'}}>删除推广</Button>
+                    			<Button size='small' style={{color: '#3089dc'}} onPress={self.delpress.bind(self, adgroup_id)}>删除推广</Button>
                     			<Button size='small' style={{color: '#3089dc'}}>关键词</Button>
                 			</View>
                 		</View>
