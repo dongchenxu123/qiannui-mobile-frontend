@@ -27,16 +27,15 @@ class KeywordsView extends Component {
 			    <View>
 				<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 				    <View style={[styles.cellItemList, {borderTopWidth:"2rem",borderTopStyle:"solid",borderTopColor:"#e8e8e8"}]}>
-				     	<Text style={{padding: '20rem',alignItems:"center", justifyContent: 'center'}}>推荐关键词数量为</Text>
+				     	<Text style={{padding: '10rem',alignItems:"center", justifyContent: 'center'}}>推荐关键词数量为</Text>
 				     	<Text style={{padding: '20rem', color: '#3089dc'}}>{lengths}</Text>
 				     	<Text style={{paddingLeft: '20rem'}}>个</Text>
 				    </View>
 				    <View style={styles.cellItemList}>
-				     	<Checkbox style={styles.arrow} checked={this.state.checked}/>
-				     	<Text style={styles.arrow}>关键词</Text>
-				     	<Text style={styles.arrow}>展现指数</Text>
-				     	<Text style={styles.arrow}>市场平均出价</Text>
-				     	<Text style={styles.arrow}>相关度</Text>
+				     	<Text style={styles.arrows}>关键词</Text>
+				     	<Text style={styles.arrows}>展现指数</Text>
+				     	<Text style={styles.arrows}>平均出价</Text>
+				     	<Text style={styles.arrows}>相关度</Text>
 				    </View>
 				    {
 				    	keywords.length === 0 
@@ -45,11 +44,11 @@ class KeywordsView extends Component {
 				    		keywords.map((item, index) =>{
 				    			return (
 				    				<View style={styles.cellItemList}>
-				    					<Checkbox style={styles.arrow} onChange={this.changeControl.bind(this, item)}/>
-								     	<Text style={styles.arrow}>{keywordObj[item].word}</Text>
+				    					<Text style={styles.arrow}>{keywordObj[item].word}</Text>
 								     	<Text style={styles.arrow}>{keywordObj[item].pv}</Text>
 								     	<Text style={styles.arrow}>{keywordObj[item].average_price}</Text>
 								     	<Text style={styles.arrow}>{keywordObj[item].pertinence}</Text>
+								     	<Checkbox style={styles.arrow} onChange={this.changeControl.bind(this, item)}/>
 				    				</View>
 				    			)
 				    		})
@@ -80,13 +79,18 @@ const styles={
         borderBottomColor:"#e8e8e8",
        	alignItems:"center",
         flexDirection:"row",
-        display: 'flex'
+        display: 'flex',
+        padding: '20rem'
   },
-  
   arrow: {
-  	flex: 3
-  	
-    
+  	width: 150,
+  	justifyContent:'center',
+  	paddingLeft: '40rem',
+   	alignItems:'center'
+  },
+  arrows: {
+  	width: 150,
+  	paddingLeft: '40rem',
   },
   gridcell:{
         height:'200rem',

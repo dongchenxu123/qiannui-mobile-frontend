@@ -3,8 +3,8 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Grid, Col, Image, Modal, ScrollView, Button, Navigator, TouchableHighlight } from 'nuke';
 import QN from 'QAP-SDK';
-import {getCampaign, getAuthSign, setBuget, getArea} from '../../api';
-
+import {getCampaign, getAuthSign, setBuget, getArea, setStatus} from '../../api';
+import _ from 'lodash';
 import GetAreaView from './getAreaView'
 
 class CampaignsListView extends Component {
@@ -76,6 +76,23 @@ class CampaignsListView extends Component {
 	onPressPlat (tid) {
         Navigator.push('qap://views/platform.js?campaign_id='+tid);
     }
+	statusItem (tid, title, online_status) {
+		var new_status= online_status== 'online'?  'offline' : 'online'
+		setStatus(tid, title, new_status).then((res) => {
+		 	var newStatus= res.online_status
+   		    var index = _.findIndex( this.state.campaignData,function(v){
+            return v.campaign_id == tid;
+            });
+            this.state.campaignData[index].online_status =  newStatus;
+            var statusData = this.state.campaignData
+           	this.setState({
+   				campaignData: statusData
+   			}) 
+   		}, (error) => {
+            Modal.alert(JSON.stringify(error));
+
+        });
+	}
 	render () {
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
@@ -84,15 +101,23 @@ class CampaignsListView extends Component {
 			   		var tid= item.campaign_id;
 			   		var is_smooth= item.is_smooth;
 			   		var itemcost= item.cost;
+			   		var online_status= item.online_status;
+					var itemStatus= online_status == 'online' ? '推广中' : '暂停中';
+					var title= item.title;
 			   		return (
 			   			<View key={index}>
 			   			    <View>
-				   			    
-				   			    <TouchableHighlight style={styles.cellItemList} onPress={this.onPress.bind(this, tid)}>
-				   			    	<Text style={styles.itemTextList}>{item.title}</Text>
-                        			<Text style={styles.itemArrow}>{item.online_status == 'online' ?'推广中':'暂停中'}</Text>
-				   			    </TouchableHighlight>
-				   			  
+				   			    <View style={styles.cellItemList}>
+				   			    	<TouchableHighlight onPress={this.onPress.bind(this, tid)} style={styles.itemTextList}>
+					   			    	<Text>{title}</Text>
+	                        			
+				   			    	</TouchableHighlight>
+				   			    	<View style={styles.Arrow}>
+				   			    		<Button style={{width: 150, margintLeft: '40rem'}} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
+					   			    	{itemStatus}
+					   			    	</Button>
+				   			    	</View>
+				   			    </View>
 				   			    <View style={styles.report}>
 							   		<View style={styles.amoutList}>
 							   			<View style={styles.dayArrow}>
@@ -246,7 +271,7 @@ const styles={
 	    itemTextList:{
         		fontSize:"30rem",
         		color:"#0894EC",
-        		flex:15
+        		flex:18
     		},
 	   ArrowFirst:{
 	    	flex: 8,
@@ -254,7 +279,7 @@ const styles={
 	        color:"#5F646E"
 	    },
 	   Arrow:{
-	    	flex: 8,
+	    	flex: 6,
 	    	fontSize:"24rem",
 	        color:"#5F646E" 
 	   },

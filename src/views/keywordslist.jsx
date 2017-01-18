@@ -42,12 +42,11 @@ class KeywordslistView extends Component {
         	adgroup_id: obj.adgroup_id
         })
         getRecommendKeywords(this.state.adgroup_id).then((result) => {
-	         	Modal.alert(JSON.stringify(result))
-				var keywords={};
+	         	var keywords={};
 				var keywrodsId=[]
 				for (var i=0; i< result.length; i++) {
 					keywords[i] = result[i];
-					keywords[i]['checked'] = 0;
+					keywords[i]['checked'] = false;
 					keywrodsId.push(i);
 				}
 	            this.setState({
@@ -73,41 +72,18 @@ class KeywordslistView extends Component {
       );
   }
 	changecheckbox  (item, value) {
-//		var keywords= this.state.keywordsList.length=== 0 ? '' : this.state.keywordsList;
-//		var idx=0;
-//		var n=0
-//		var newKeywordList= this.state.newKeywordList;
-//		var words= this.state.words;
-//		if(value== 1) {
-//				for(var i=0; i<keywords.length; i++) {
-//				if(index==i) {
-//					idx = i
-//				newKeywordList.push(keywords[idx])
-//				}
-//			}
-//		}else{
-//			for (var j=0; j<newKeywordList.length; j++) {
-//				if(index==j) {
-//					n= j
-//					var delword= newKeywordList.slice(n, newKeywordList.length)
-//					
-//					newKeywordList= new Set([...newKeywordList, ...delword])
-//				}
-//			}
-//		}
-		let newKeywords = Object.assign({}, this.state.keywords, {[item]: {checked: value}})
-		
+		let changeItem = Object.assign({}, this.state.keywords[item], {checked: value})
+		let newKeywords = Object.assign({},this.state.keywords, {[item]: changeItem});
 		this.setState({
-			keywordObj: newKeywords
+			keywords: newKeywords
 		})
-//		Modal.alert(JSON.stringify(delword))
 		
 	}
-	 changeMinnum(value){
+	changeMinnum(value){
 	 	this.setState({
 	 		minprice: value
 	 	})
-    }
+	}
 	 changeMaxnum (value) {
 	 	 this.setState({
 	 		maxprice: value
@@ -143,18 +119,27 @@ class KeywordslistView extends Component {
 	 	var min= parseInt(this.state.minprice);
 	 	var max= parseInt(this.state.maxprice);
 	 	var keywrodsId= this.state.keywrodsId;
-	 	console.log(keywords)
-	 	Modal.alert(JSON.stringify(keywords))
-	 	for (var i=0; i< keywords.length; i++) {
-	 		if(keywords[i].checked ==1) {
+	 	if(min< 0.05) {
+	 		Modal.alert('出价不能低于0.05元')
+	 	}else if(max> 200) {
+	 		Modal.alert('出价不能高于200元')
+	 	}
+	 	for (var i in keywords) {
+	 		if(keywords[i].checked == true) {
 	 			res.push(keywords[i])
 	 		}
 	 	}
-	 	Modal.alert(JSON.stringify(res))
 	 	var newData= this.formatNewword(res,2,min,max);
-	 	Modal.alert(JSON.stringify(newData))
+	 	if(res.length >200) {
+	 		Modal.alert('请你添加关键词数量小于200')
+	 	}
 	 	addNewKeyword(this.state.adgroup_id, newData).then((result) => {
-         	Modal.alert(JSON.stringify(result))
+         	  Modal.alert(JSON.stringify(result))
+         	  if(result.length ===0) {
+         	  	Modal.alert('请你选择关键词')
+         	  }else if(min==0 && max==0) {
+         	  	Modal.alert('请你填写出价范围')
+         	  }
            
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
@@ -205,7 +190,7 @@ const styles={
    },
    barStyle:{
     backgroundColor:'#ffffff',
-    height: '100rem'
+    height: '120rem'
   }
     
 }

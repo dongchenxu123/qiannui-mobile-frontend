@@ -82,6 +82,7 @@ class CampaignsGroupView extends Component {
     addToView(linkId) {
 			Navigator.push('qap://views/addCampaign.js?id='+linkId);
 		}
+   
 	render () {
 		var linkId= this.state.linkId
 		return (
@@ -90,7 +91,7 @@ class CampaignsGroupView extends Component {
 			   <ListViewGroupView data={this.state.campaginsData} 					callbackSetNewSatus={this.setNewSatusFunc}
 			        delItems={this.delItemsFunc}
 			        campaign_id={linkId}
-			   />
+			    />
 			</ScrollView>
 		)
 	}
