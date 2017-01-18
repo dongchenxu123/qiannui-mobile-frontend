@@ -479,10 +479,9 @@ export function getRechargeTempalte(){
 */
 export function getFeedback(content){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
-                var param = {
-                    id:  app.account_id,
+         getLocalstoreUser().then((res)=>{
+            var param = {
+                    id: res.taobao_user_id,
                     content:content
                 };
                 
@@ -498,16 +497,13 @@ export function getFeedback(content){
                 })
                 .then(data => {
                       Modal.toast('感谢您的留言，我们将尽快给您反馈。');
-                    resolve(JSON.parse(data));
                 })
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }     
+                });  
+         });
+                
         });
-    });
 }
 
 /*
@@ -521,8 +517,8 @@ export function onlineChat(){
                  text : '你好'  
             }
         }).then(result => {
-            console.log(result);
+           
         }, error => {
-            console.log(error);
+            
         });
 }
