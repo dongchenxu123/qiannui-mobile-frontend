@@ -34,7 +34,7 @@ class LinkUs extends Component{
         
         return (
                 <ScrollView style={style.scroller}  onEndReachedThreshold={300}>
-                    <View style={{margin:'30rem'}}>
+                    <View style={{marginTop:'200rem'}}>
                         <TouchableHighlight style={[style.item, {flexDirection:"row",display:'flex' }]} onPress={this.openChart.bind(this)}>
                             <View style={{marginLeft:'80rem'}}>
                                 <Image source={{uri: url}}  style={{width:'160rem',height:'40rem',marginLeft:'20rem'}}/>

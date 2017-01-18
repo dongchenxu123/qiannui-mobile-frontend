@@ -279,7 +279,7 @@ const styles={
 	        color:"#5F646E"
 	    },
 	   Arrow:{
-	    	flex: 6,
+	    	flex: 7,
 	    	fontSize:"24rem",
 	        color:"#5F646E" 
 	   },

@@ -174,17 +174,15 @@ class ScheduleView extends Component {
             <Dialog contentStyle={app.modalStyle} ref="modal" contentStyle={app.modalStyle} visible={true}>
               <ScrollView  onEndReachedThreshold={300}>
                <View style={{flexDirection:'row', display:'flex',marginBottom:'20rem'}}>
-                <Radio.Group value={this.state.value} onChange = {this.groupChange.bind(this)} style={{flexDirection:'row', display:'flex',marginBottom:'20rem'}}>
-                    <Radio style={{marginLeft:0,marginRight:0,paddingLeft:0}} value={1} ></Radio><Text style={{margin:'30rem 0'}} >当前设置</Text>
-                    <Radio style={{marginLeft:0,marginRight:0,paddingLeft:0}} value={2} ></Radio><Text style={{margin:'30rem 0'}} >全天投放</Text>
-                    <Radio style={{marginLeft:0,marginRight:0,paddingLeft:0}} value={3} ></Radio><Text style={{margin:'30rem 0'}} >模板选择</Text> 
+                <Radio.Group value={this.state.value} onChange = {this.groupChange.bind(this)} style={app.cellItemList} dataSource={dataSource}>
+                    
                 </Radio.Group>
                 </View>
                 {this.renderItems()}
                </ScrollView>
                <View style={app.footer}>
-                    <View style={{backgroundColor:'#4f74b3',height:'120rem',justifyContent:'center'}}>
-                        <Button style={app.btn} type="dark" shape="保存设置" onPress={this.submitData.bind(this)}>保存设置</Button>
+                    <View style={{height:'120rem',justifyContent:'center'}}>
+                        <Button style={app.btn} type="secondary" onPress={this.submitData.bind(this)}>保存设置</Button>
                     </View>
                 </View>
              </Dialog>

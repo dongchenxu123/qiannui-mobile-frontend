@@ -87,7 +87,7 @@ class CampaignsGroupView extends Component {
 		var linkId= this.state.linkId
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
-			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, linkId)} block="true"> 新增宝贝推广</Button></View>
+			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, linkId)} block="true" type="secondary"> 新增宝贝推广</Button></View>
 			   <ListViewGroupView data={this.state.campaginsData} 					callbackSetNewSatus={this.setNewSatusFunc}
 			        delItems={this.delItemsFunc}
 			        campaign_id={linkId}
