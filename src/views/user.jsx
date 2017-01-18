@@ -387,18 +387,11 @@ const styles = {
         fontSize: "24rem",
         color: "#5F646E"
     },
-<<<<<<< HEAD
-    amoutitemArrows: {
-        flex: 5,
-        fontSize: "24rem",
-        color: "#5F646E"
-=======
-    amoutitemArrows:{
+	amoutitemArrows:{
     	flex: 5,
     	fontSize:"24rem",
       color:"#5F646E" 
->>>>>>> eb6d43890236077536962de656f69f155f531b5b
-    },
+	},
     title: {
         textAlign: 'center',
         paddingBottom: '40rem'
