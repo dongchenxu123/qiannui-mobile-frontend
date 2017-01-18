@@ -71,10 +71,10 @@ class CampaignsListView extends Component {
         Navigator.push('qap://views/campaignsGroup.js?id='+tid);
     }
 	onPressSche (tid) {
-        Navigator.push('qap://views/test.js?id='+tid);
+        Navigator.push('qap://views/schedule.js?campaign_id='+tid);
     }
 	onPressPlat (tid) {
-        Navigator.push('qap://views/platform.js?id='+tid);
+        Navigator.push('qap://views/platform.js?campaign_id='+tid);
     }
 	render () {
 		return (
@@ -87,88 +87,101 @@ class CampaignsListView extends Component {
 			   		return (
 			   			<View key={index}>
 			   			    <View>
-				   			    <View style={[styles.amoutList, {backgroundColor:"#e8e8e8"}]}>
-				   			    	<TouchableHighlight style={styles.title} onPress={this.onPress.bind(this, tid)}>{item.title}</TouchableHighlight>
-				   			    	<Text style={styles.amoutitemArrow}>{item.online_status == 'online' ?'推广中':'暂停中'}</Text>
-				   			    </View>
+				   			    
+				   			    <TouchableHighlight style={styles.cellItemList} onPress={this.onPress.bind(this, tid)}>
+				   			    	<Text style={styles.itemTextList}>{item.title}</Text>
+                        			<Text style={styles.itemArrow}>{item.online_status == 'online' ?'推广中':'暂停中'}</Text>
+				   			    </TouchableHighlight>
+				   			  
 				   			    <View style={styles.report}>
 							   		<View style={styles.amoutList}>
 							   			<View style={styles.dayArrow}>
-			  		   	                  日限额:  
+			  		   	                  每日限额:  
 			   							</View>
-			  		   	              
+			  		   	              	 <View style={{left:'-20rem'}} >	
 			  		   	                  <Button
-			  		   	                  	style={{flex: 1}} 										 											onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
+			  		   	                  	onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
 											id={this.state.budgetId}
 											type="primary">
 			  		   	                  ￥{this.state.budget !== '' && this.state.budgetId === tid ? this.state.budget : item.budget}
 			  		   	                  </Button >
-			  		   	               
+			  		   	                </View>
 			  		   	                <View style={styles.itemArrow}>
 			  		   	                  投放平台:
 			  		   	                </View>
-			  		   	                 <Button
-			  		   	                  	style={{flex: 1}} 										 											onPress={this.onPressPlat.bind(this, tid)}
-			  		   	                  	type="primary"
-											>
-			  		   	                 设置
-			  		   	                </Button>
+			  		   	                <View style={{left:'-20rem'}} >
+				  		   	                 <Button
+				  		   	                  	onPress={this.onPressPlat.bind(this, tid)}
+				  		   	                  	type="primary"
+												>
+				  		   	                 设置
+				  		   	                </Button>
+			  		   	                </View>
 			  		   	            </View>
 					                <View style={styles.amoutList}>
-							   		    <View style={styles.itemArrow}>
+							   		    <View style={styles.dayArrow}>
 			  		   	                	投放地域:
 			  		   	                </View>
 			  		   	                <GetAreaView style={styles.amoutitemArrow} localId={item.campaign_id}/>
 			  		   	                <View style={styles.itemArrow}>
 			  		   	                	投放时段:
 			  		   	                </View>
-			  		   	               <Button
-			  		   	                  	style={{flex: 1}} 										 											onPress={this.onPressSche.bind(this, tid)}
+			  		   	                <View style={{left:'-20rem'}} >
+			  		   	                	<Button
+			  		   	                  	onPress={this.onPressSche.bind(this, tid)}
 			  		   	                  	type="primary"
 											>
-			  		   	                 设置
-			  		   	                </Button>
+			  		   	                 		设置
+			  		   	                	</Button>
+			  		   	                </View>
 					                </View>
 				                </View>
 			                </View>
-			                <View style={styles.amoutList}>
-			                	<View style={styles.ArrowFirst}>
-			                		<Text style={styles.textCenter}>花费</Text>
-				                	<Text style={styles.textCenter}>
-				                         {item.cost}
-				               		</Text>
+
+			                <View style={styles.report}>
+			                	<View style={styles.amoutList}>
+		                			<View style={styles.dayArrow}>
+		  		   	                	花费:
+		  		   	                </View>
+		  		   	                <View style={{left:'-120rem'}} >
+		  		   	                   {item.cost}
+		  		   	                </View>
+
+		  		   	                <View style={styles.itemArrow}>
+			  		   	                  展现量:
+			  		   	                </View>
+			  		   	            <View style={{left:'-80rem'}} >
+			  		   	                {item.pv}
+			  		   	             </View>
+			  		   	             <View style={styles.itemArrow}>
+			  		   	                  点击量:
+			  		   	                </View>
+			  		   	            <View style={{left:'-80rem'}} >
+			  		   	                {item.click}
+			  		   	             </View>
+			  		   	                	
 			                	</View>
-			                	<View style={styles.Arrow}>
-			                		<Text style={styles.textCenter}>展现量</Text>
-				                	<Text style={styles.textCenter}>
-				                         {item.pv}
-				               		</Text>
-			                	</View>
-			                	<View style={styles.Arrow}>
-			                		<Text style={styles.textCenter}>点击量</Text>
-				                	<Text style={styles.textCenter}>
-				                         {item.click}
-				               		</Text>
-			                	</View>
-				          	</View>
-				          	<View style={styles.amoutList}>
-			                	<View style={styles.ArrowFirst}>
-			                		<Text style={styles.textCenter}>成交金额</Text>
-				                	<Text style={styles.textCenter}>
-				                         {item.pay}
-				               		</Text>
-			                	</View>
-			                	<View style={styles.Arrow}>
-			                		<Text style={styles.textCenter}>点击率</Text>
-				                	<Text style={styles.textCenter}> 
-				                         {item.ctr}%
-				               		</Text>
-			                	</View>
-			                	<View style={styles.Arrow}>
-			                		<Text style={styles.textCenter}>转化率</Text>
-				                	<Text style={styles.textCenter}g>
-				                         {item.click_ROi}%
-				               		</Text>
+			                	<View style={styles.amoutList}>
+		                			<View style={styles.dayArrow}>
+		  		   	                	成交金额:
+		  		   	                </View>
+		  		   	                <View style={{left:'-40rem'}} >
+		  		   	                   {item.pay}
+		  		   	                </View>
+
+		  		   	                <View style={styles.itemArrow}>
+			  		   	                  点击率:
+			  		   	                </View>
+			  		   	            <View style={{left:'-80rem'}} >
+			  		   	                {item.ctr +'%'}
+			  		   	             </View>
+			  		   	             <View style={styles.itemArrow}>
+			  		   	                  转化率:
+			  		   	                </View>
+			  		   	            <View style={{left:'-80rem'}} >
+			  		   	                {item.click_ROi}
+			  		   	             </View>
+			  		   	                	
 			                	</View>
 				          	</View>
 						</View>
@@ -196,10 +209,22 @@ const styles={
 	   },
 	   title: {
 	   	padding:'20rem',
-	   	color: '#3089dc',
-	   	fontSize: '35rem',
+	   	color: '#0894EC',
+	   	fontSize: '30rem',
 	   	flex: 11
 	   },
+	    cellItemList:{
+        backgroundColor:"#e4e0e0",
+        height:"90rem",
+        borderBottomWidth:"2rem",
+        borderBottomStyle:"solid",
+        borderBottomColor:"#e8e8e8",
+        paddingRight:"30rem",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        flexDirection:"row",
+        display:'flex' 
+    },
 	   report: {
 	   	borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
@@ -208,16 +233,21 @@ const styles={
 	   },
 	   amoutList:{
 	        backgroundColor:"#ffffff",
-	        padding:"15rem",
+	        padding:"15rem 10rem",
 	       	alignItems:"center",
 	        flexDirection:"row",
 	        display:'flex'
 	    },
 	  	amoutitemArrow:{
 	    	flex: 2,
-	    	fontSize:"24rem",
-	    	right: '50rem'
+	    	fontSize:"30rem",
+	    	right: '20rem'
 	    },
+	    itemTextList:{
+        		fontSize:"30rem",
+        		color:"#0894EC",
+        		flex:15
+    		},
 	   ArrowFirst:{
 	    	flex: 8,
 	    	fontSize:"24rem",
@@ -230,15 +260,16 @@ const styles={
 	   },
 	   itemArrow: {
 	   	    flex: 3,
-	    	fontSize:"24rem",
+	    	fontSize:"30rem",
 	        color:"#5F646E",
-	        left: '20rem'
+	        textAlign: 'right',
+        	marginRight:'2rem'
 	   },
 	   dayArrow: {
 	   		flex: 3,
 	    	fontSize:"24rem",
 	        color:"#5F646E",
-	        left: '50rem'
+	        marginLeft: '20rem'
 	   }
 	 }
 
