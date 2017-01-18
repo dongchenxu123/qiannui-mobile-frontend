@@ -2,7 +2,7 @@
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import {View, Text, Grid, Col, Link, Image} from 'nuke';
-import { browser, appCont, home, my, shareLight } from '../static/static';
+import { filter, appCont, home, my, shareLight } from '../static/static';
 class FooterView extends Component {
 	render () {
 		return (
@@ -11,7 +11,7 @@ class FooterView extends Component {
                           <Col style={styles.col1}>
                           	<Link href="qap://index.js">
 		                         <View>
-		                              <Image source={{uri: browser}}  style={styles.imgStyle}/>
+		                              <Image source={{uri: filter}}  style={styles.imgStyle}/>
 		                         	  <Text style={styles.textColor}>健康诊断</Text>
 		                         </View>
                     		</Link>

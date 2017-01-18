@@ -134,16 +134,16 @@ const app = {
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
         borderBottomColor:"#e8e8e8",
+        paddingRight:"30rem",
         paddingLeft:"30rem",
         alignItems:"center",
         flexDirection:"row",
-        display:'flex'
+        display:'flex'  
      },
    itemTextList:{
         fontSize:"30rem",
         color:"#5F646E",
-        flex:10,
-        left: '30rem'
+        flex:15
     },
     refresh:{
         height:"80rem",
@@ -170,7 +170,9 @@ const app = {
     itemArrow:{
     	flex: 4,
     	fontSize:"30rem",
-        color:"#5F646E" 
+        color:"#5F646E" ,
+        textAlign: 'right',
+        marginRight:'3rem'
     }
 }
 
