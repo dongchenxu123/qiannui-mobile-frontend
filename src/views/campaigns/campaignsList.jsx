@@ -214,12 +214,12 @@ const styles={
 	   	flex: 11
 	   },
 	    cellItemList:{
-        backgroundColor:"#e4e0e0",
+        backgroundColor:"#e8e8e8",
         height:"90rem",
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
         borderBottomColor:"#e8e8e8",
-        paddingRight:"30rem",
+        padding:"10rem 30rem",
         paddingLeft:"30rem",
         alignItems:"center",
         flexDirection:"row",

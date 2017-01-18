@@ -5,7 +5,9 @@ import {mount} from 'nuke-mounter';
 import {browser, browserActive, appCont, appContActive, home, homeActive, my, myActive, shareLight, shareLightActive} from './static/static';
 import HealthyView from './views/healthy';
 import UserView from './views/user';
-import CampaignsListView from './views/campaigns/campaignsList'
+import CampaignsListView from './views/campaigns/campaignsList';
+import LinkUs from './views/linkus';
+
 
 let listData = [];
 for (var i = 0; i < 300; i++) {
@@ -50,7 +52,24 @@ const app = {
     itemArrow:{flex: 1, width:'18px', height:'18px', }
 }
 
+class Gray extends Component {
+    press() {
+        this.changeTo('m3')
+    }
 
+    onFocus(status) {
+      console.log('gray:', status)
+    }
+
+    render() {
+        return (
+            <View style={[styles.tabContent, {backgroundColor: '#888888'}]}>
+                <Text style={styles.text}>Blue Tab 大家好我是nv色的区域</Text>
+                <Button onPress={this.press.bind(this)} type="normal">切换为m3</Button>
+            </View>
+        )
+    }
+}
 
 
 let App = class NukeDemoIndex extends Component {
@@ -135,7 +154,9 @@ let App = class NukeDemoIndex extends Component {
         return <View style={app.loading}><Text style={app.loadingText}>加载中...</Text></View>
     }
     onChange(status) {
-        console.log(status)
+       this.setState({
+        activeKey: status
+       })
     }
 
     render1(status, key) {
@@ -171,6 +192,12 @@ let App = class NukeDemoIndex extends Component {
                       >
                       <UserView></UserView>
                     </Tabbar.Item>
+                   {/* <Tabbar.Item
+                      title="淘外引流"
+                      tabKey="m3"
+                      icon={{src: shareLight, selected: shareLightActive}}>
+                      {this._renderContent('#783E33', 'Red Tab 大家好我是红色的区域' + this.state.notifCount, this.state.notifCount)}
+                    </Tabbar.Item>*/}
                     <Tabbar.Item
                       renderAsOriginal
                       title="计划"
@@ -185,14 +212,7 @@ let App = class NukeDemoIndex extends Component {
                       tabKey="m5"
                       icon={{src: my, selected: myActive}}
                       >
-                      <ListView
-                        renderHeader={this.renderHeader.bind(self)}
-                        renderFooter={this.renderFooter.bind(self)}
-                        renderRow={self.renderItem.bind(self)}
-                        dataSource={self.state.data1}
-                        style={app.listContainer}
-                        onEndReached={self.handleLoadMore.bind(self)}
-                      />
+                      <LinkUs />
                     </Tabbar.Item>
                 </Tabbar>
              </View>

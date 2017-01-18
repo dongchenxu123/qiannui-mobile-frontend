@@ -4,6 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Grid, Col, Image, Modal, Input, Checkbox, TabSlider } from 'nuke';
 import {getRecommendKeywords, addNewKeyword} from '../api'
 import KeywordsView from './recommendKeywords';
+import _ from 'lodash'
 
 const { Pane } = TabSlider;
 class KeywordslistView extends Component {
@@ -42,17 +43,15 @@ class KeywordslistView extends Component {
         	adgroup_id: obj.adgroup_id
         })
         getRecommendKeywords(this.state.adgroup_id).then((result) => {
-	         	Modal.alert(JSON.stringify(result))
-				var keywords={};
-				var keywrodsId=[]
-				for (var i=0; i< result.length; i++) {
-					keywords[i] = result[i];
-					keywords[i]['checked'] = 0;
-					keywrodsId.push(i);
-				}
+	         	result.map((v,i)=>{
+
+                    if(v.checked == undefined){
+                       v.checked = 0;
+                    }
+                })
+				
 	            this.setState({
-	            	keywords: keywords,
-	            	keywrodsId: keywrodsId
+	            	keywords: result
 	            })
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
@@ -72,35 +71,16 @@ class KeywordslistView extends Component {
         </View>
       );
   }
-	changecheckbox  (item, value) {
-//		var keywords= this.state.keywordsList.length=== 0 ? '' : this.state.keywordsList;
-//		var idx=0;
-//		var n=0
-//		var newKeywordList= this.state.newKeywordList;
-//		var words= this.state.words;
-//		if(value== 1) {
-//				for(var i=0; i<keywords.length; i++) {
-//				if(index==i) {
-//					idx = i
-//				newKeywordList.push(keywords[idx])
-//				}
-//			}
-//		}else{
-//			for (var j=0; j<newKeywordList.length; j++) {
-//				if(index==j) {
-//					n= j
-//					var delword= newKeywordList.slice(n, newKeywordList.length)
-//					
-//					newKeywordList= new Set([...newKeywordList, ...delword])
-//				}
-//			}
-//		}
-		let newKeywords = Object.assign({}, this.state.keywords, {[item]: {checked: value}})
-		
-		this.setState({
-			keywordObj: newKeywords
-		})
-//		Modal.alert(JSON.stringify(delword))
+	changecheckbox(w, value) {
+        var checked = value == true? 1:0;
+        var index = _.findIndex(this.state.keywords, function(o) { return o.word == w; });
+        var newdata = this.state.keywords[index].checked = checked;
+        this.setState({keywords:newdata});
+            
+        var data = _.findIndex(this.state.keywords, function(o) { return o.checked == 1; });
+
+            console.log(JSON.stringify(data));
+
 		
 	}
 	 changeMinnum(value){

@@ -348,7 +348,7 @@ const styles = {
     amoutitemArrows:{
     	flex: 5,
     	fontSize:"24rem",
-        color:"#5F646E" 
+      color:"#5F646E" 
     },
     title:{
     	textAlign: 'center',
