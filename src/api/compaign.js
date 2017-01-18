@@ -4,6 +4,7 @@ import * as DateAPi from './date'
 import { Modal } from 'nuke';
 import Async from 'async';
 import _ from 'lodash';
+import {checkAPIError} from './checkerror';
 
 
 function makeFunc(subway_token,compaign){
@@ -263,7 +264,11 @@ export function setSchedule(campaign_id,val){
                 schedule:val 
             }
         }).then((result)=>{
-            return result.simba_campaign_schedule_update_response.campaign_schedule;        
+            var data = '';
+             if(checkAPIError(result) == null){
+                data = result.simba_campaign_schedule_update_response.campaign_schedule;  
+             }
+             return  data;      
         })
         .catch(error=>{
             Modal.toast(error);

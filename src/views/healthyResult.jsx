@@ -1,7 +1,7 @@
-import {Button,ListView, Modal} from 'nuke';
+import {Button,ListView,Dimensions, Modal} from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import { View, Text, TouchableHighlight,ScrollView } from 'nuke-components';
+import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { getAuthSign,getAdgroupsAll,getallKeywords ,deleteKeywords} from '../api';
 import QN from 'QAP-SDK';
 import Async from 'async';
@@ -10,8 +10,10 @@ import _ from 'lodash';
 let URL= document.URL;
 let arr= QN.uri.parseQueryString(URL.split('?')[1]);
 const campaign_id = arr.campaign_id;
-const title = arr.title;
+
 var obj = {};
+let {height} = Dimensions.get('window');
+
 class HealthyResult extends Component{
     constructor() {
         super();   
@@ -26,7 +28,9 @@ class HealthyResult extends Component{
             noImpressionsCount:0,
             loading:false,
             disabled:false,
-            buttonText:'删除'
+            buttonText:'删除',
+            isShowItems:false,
+            littleKeyGroup:[],
         }   
         this.makeKeywordFunc = this.makeKeywordFunc.bind(this);
         this.renderItem = this.renderItem.bind(this);
@@ -41,9 +45,7 @@ class HealthyResult extends Component{
 
             getAdgroupsAll(campaign_id).then((result) => {
                 self.setState({adgroups:result});
-
-                self.renderItem();
-           
+                self.renderItem();       
         }, (error) => {
           
         });
@@ -112,9 +114,10 @@ class HealthyResult extends Component{
                 }
                 obj.littleKeyGroup[adgroup.adgroup_id].base = adgroup;
                 obj.littleKeyGroup[adgroup.adgroup_id].keyword = [];
-               
-                //同时将少于10个词的宝贝数据展示出来 
-               // self.showProduct(keywordsObj);//todo 
+
+                var tasks = self.state.littleKeyGroup.concat(adgroup);
+     
+                this.setState({littleKeyGroup:tasks});
             }
 
             if(len >0){
@@ -183,8 +186,7 @@ class HealthyResult extends Component{
                     adgroupsArr.push(self.makeKeywordFunc(adgroups[j],self.state.subway_token));   
                 }
                 Async.parallelLimit(adgroupsArr,2, (err, res) => {
-                   let data = res;
-                   console.log(JSON.stringify(data));
+                   console.log(JSON.stringify(self.state.littleKeyGroup));
                 });
         }
 
@@ -294,13 +296,46 @@ class HealthyResult extends Component{
                     }
                 ]);
                 break;
+            case 'showItems':
+                    if(self.state.littleKeyGroup.length == 0){
+                        Modal.toast('出错了，没有可查看的宝贝');
+                    }else{
+                        var v = self.state.isShowItems == true ? false :true;
+                        self.setState({isShowItems:v});
+                    }
+                   
+                    break
         }
+    }
+
+    renderProductItem(item, index){
+        return (
+            <View>
+                <View style={style.cellItemList} >
+                        <Image source={{uri: item.img_url}} style={{width:'180rem',height:'180rem'}}/>
+                        <View style={style.itemTextList}>
+                            <Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
+                            <View style={{flexDirection:'row'}}>
+                                <Button size='small'  type="secondary">加词</Button>
+                                <Button size='small'  type="secondary">查看</Button>
+                            </View>
+                        </View>
+                </View>    
+            </View>      
+            );
     }
     render(){
         var self = this;
+        var nodata = false;
+        if(self.state.qscoreLowerCount == 0 && self.state.garbageCount == 0 && self.state.noImpressionsCount == 0 &&  self.state.littleKeycount == 0){
+            nodata = true;
+        }
         return (
              <ScrollView style={style.scroller} >
-                <View>
+
+                   { nodata == true ? <View>Loding...</View>:'' } 
+  
+                    <View>
                     {
                         self.state.qscoreLowerCount == 0 ? '':
                             <View style={style.item}>
@@ -310,7 +345,7 @@ class HealthyResult extends Component{
                     }  
 
                     {
-                       self.state.garbageCount == 0 ? '':
+                        self.state.garbageCount == 0 ? '':
                             <View style={style.item}>
                             <Text style={style.text} >垃圾词：{self.state.garbageCount}个</Text>
                             <Button style={style.button} onPress={this.press.bind(this,'garbage')} type="primary">删除</Button>
@@ -333,6 +368,15 @@ class HealthyResult extends Component{
                             </View>
                     }
                     </View>
+            
+                    {
+                        self.state.isShowItems == false ? '' :
+                            <ListView    
+                                renderRow={self.renderProductItem.bind(this)} 
+                                dataSource={self.state.littleKeyGroup}
+                                style={style.listContainer}            
+                              />
+                    }
             </ScrollView>
             )
     }
@@ -359,6 +403,48 @@ const style={
         flex: 4,
         padding:'20rem 40rem'
       
+    },
+     listContainer:{
+        flex:1,
+        height: height
+    },
+    cellItemList:{
+        backgroundColor:"#ffffff",
+        padding: '20rem',
+        borderBottomWidth:"2rem",
+        borderBottomStyle:"solid",
+        borderBottomColor:"#e8e8e8",
+        alignItems:"center",
+        flexDirection:"row",
+        display: 'flex'
+    },
+    itemTextList:{
+        fontSize:"30rem",
+        color:"#5F646E",
+        flex: 4,
+        paddingLeft: '30rem'
+    },
+    refresh:{
+        height:"80rem",
+        width:"750rem",
+        backgroundColor:"#cccccc",
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    loading:{
+        height:"80rem",
+        display:"flex",
+        width:"750rem",
+        flexDirection:"row",
+        backgroundColor:"#cccccc",
+        alignItems:"center",
+        justifyContent:"center"
+    },
+    loadingText:{
+        color:"#666666"
+    },
+    Arrow: {
+        flex: 4
     }
 }
 
