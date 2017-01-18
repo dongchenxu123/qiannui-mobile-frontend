@@ -15,7 +15,7 @@ class CampaignsGroupView extends Component {
 			campaginsData: [],
 			linkId: ''
 		}
-this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
+		this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 		this.delItemsFunc = this.delItemsFunc.bind(this);
 
 	}
@@ -89,7 +89,7 @@ this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, linkId)} block="true"> 新增宝贝推广</Button></View>
 			   <ListViewGroupView data={this.state.campaginsData} 					callbackSetNewSatus={this.setNewSatusFunc}
 			        delItems={this.delItemsFunc}
-			        
+			        campaign_id={linkId}
 			   />
 			</ScrollView>
 		)

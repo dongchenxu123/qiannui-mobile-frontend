@@ -1,4 +1,4 @@
-import { Icon, ListView, Dimensions, Button, Modal } from 'nuke';
+import { Icon, ListView, Dimensions, Button, Modal, Navigator } from 'nuke';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight , RefreshControl, Image} from 'nuke-components';
 import { updateAdgroup, deleteAdgroup } from '../api';
@@ -80,14 +80,16 @@ class ListViewGroupView extends Component {
 	
 	        });
 	}
+    getkeyWords (adgroup_id, campaign_id) 	{Navigator.push('qap://views/getKeywords.js?adgroup_id='+adgroup_id+'&campaign_id='+campaign_id);
+    }
     renderItem (item, index){
     	var online_status= item.online_status;
     	var adgroup_id= item.adgroup_id;
     	var self= this;
     	var itemStatus= item.online_status == 'online' ? '推广中' : '暂停中';
     	var newStatus= item.online_status == 'online' ? '暂停宝贝' : '推广宝贝';
-    	
-        return (
+    	var campaign_id= this.props.campaign_id;
+    	return (
         	<View>
         		<View style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
                 		<Image source={{uri: item.img_url}} style={{width:'180rem',height:'180rem'}}/>
@@ -104,7 +106,7 @@ class ListViewGroupView extends Component {
                 				{newStatus}
                 				</Button>
                     			<Button size='small' style={{color: '#3089dc'}} onPress={self.delpress.bind(self, adgroup_id)}>删除推广</Button>
-                    			<Button size='small' style={{color: '#3089dc'}}>关键词</Button>
+                    			<Button size='small' style={{color: '#3089dc'}} onPress={self.getkeyWords.bind(self, adgroup_id, campaign_id)}>关键词</Button>
                 			</View>
                 		</View>
                 </View>

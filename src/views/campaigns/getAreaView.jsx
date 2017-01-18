@@ -302,7 +302,6 @@ class GetAreaView extends Component {
     	this.setState({
     		areaobj: newareaobj
     	})
-    	
     }
     render() {
     	var self= this;
