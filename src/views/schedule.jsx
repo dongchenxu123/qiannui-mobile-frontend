@@ -1,304 +1,320 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import { View, Text, Image,ScrollView, TouchableHighlight} from 'nuke-components';;
-import { Tabbar, Button, Icon, ListView, Iconfont, Modal } from 'nuke';
+import { View, Text, TouchableHighlight, ScrollView} from 'nuke-components';
+import { Button, ListView, Modal, Radio , Grid , Col, Dialog, Dimensions,Picker} from 'nuke';
 import QN from 'QAP-SDK';
-import Util from 'nuke-core';
-const Location = Util.Location;
-import { getAuthSign, 
-        getSellerUser,
-        UserInfo,
-        ProfileReport,
-        WuxianBalance,
-        getCampaign,
-        setStatus,
-        setBuget,
-        getPlatfrom,
-        getAdgroups,
-        getOnsaleItem,
-        deleteAdgroup,
-        updateAdgroup,
-        getUnSaleItem,
-        addAdgroup,
-        getallKeywords,
-        getRecommendKeywords,
-        getItemNumByKeyword,
-        createNewDspUser,
-        getArea,
-        checkIssetDspUser,
-        getDspUserMarket,
-        getDspOnsaleItems
-    } from '../api'
+import { getSchedule, setSchedule} from '../api';
+import { scheduleAllDayTemplate, scheduleTemplate } from './scheduleTemplate';
 
-var subway_token = '';
-class Api extends Component {
+let {height} = Dimensions.get('window');
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL.split('?')[1]);
+const campaign_id = arr.campaign_id;
+
+ var template = [];
+ scheduleTemplate.map((v,i)=>{
+    template.push({key:i,value:v.name,children:v.schedule});
+});
+
+class ScheduleView extends Component {
     constructor(props) {
       super(props);
-      this.state = {subway_token:''};
-       getAuthSign().then((result) => {
-                 subway_token = result;
-                }, (error) => {
-                    Modal.toast(JSON.stringify(error));
-                });
-        
+      this.state={
+            value:1,
+            selected:[],
+            defaultselected:[],
+            scheduleTemplate:[],
+            selectedTemplate:''
+      }
+      this.groupChange = this.groupChange.bind(this);
     }
-    
- 
-  componentDidMount(){
-      /*  var myHeaders = new Headers();
-        myHeaders.append('Accept', 'application/json, text/javascript');
-        QN.fetch('http://qianniu.why.xibao100.com/test', {
-            headers:myHeaders,
-            method: 'GET',
-            mode: 'cors',
-            dataType: 'json',
-        })
-        .then(response => {     
-            return response.json(); // => 返回一个 `Promise` 对象
-        })
-        .then(data => {
-            Modal.alert(JSON.stringify(data));
-            console.log(data); // 真正地数据结果
-        })
-        .catch(error => {
-           Modal.alert(error);
-        });*/
+    componentDidMount(){
+       
+        getSchedule(campaign_id).then((res)=>{
+           
+            if(res.schedule){
+                var schedule = res.schedule;
+
+                if(res.schedule == 'all'){
+                    schedule = scheduleAllDayTemplate[0].schedule;
+                }
+                schedule = this.formatData(schedule);
+                this.setState({selected:schedule,defaultselected:schedule});                 
+            }
+        },(error)=>{
+
+        });
+    }
+
+    formatData(schedule){
+        var weeks =  schedule.split(';');//周
+        var formate = [];
+        for(var i in weeks){
+            var obj = {};
+
+            var index = this.numberTranslate(parseInt(i)+1);
+             obj.title = '星期'+(index == '七'?'日':index);
+             obj.schedule = weeks[i].split(',');
+            formate.push(obj);
+        }
+        return formate;
+
+    }
+    numberTranslate(num){
+        var N = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+        var str = num.toString();
+        var len = num.toString().length;
+        var C_Num = [];
+
+        for(var i = 0; i < len; i++){
+            C_Num.push(N[str.charAt(i)]);
+        }
+        return C_Num.join('');
+    }
+    groupChange(value){
+         this.setState({
+            value:value
+            });
+         var selected = [];
       
-   }
+         switch(value){
+            case 1:
+                 this.setState({
+                        selected:this.state.defaultselected
+                    });
+                break;
+            case 2:
+              
+                this.setState({
+                        selected:this.formatData(scheduleAllDayTemplate[0].schedule)
+                    });
+                break;
+            case 3:
+                var self = this;
+                Picker.show({title:'请选择',dataSource:template,maskClosable:true},function(item){
+                        self.setState({
+                            selected:self.formatData(item.children),
+                            selectedTemplate:item.children
+                        });
 
-    handleTOPInvoke(){
-     
-     if(subway_token ==""){
-         getAuthSign().then((result) => {
-            subway_token = result;
-            Modal.toast(JSON.stringify(result)); 
-        }, (error) => {
-            Modal.toast(JSON.stringify(error));  
-        });
-     }else{
-        Modal.alert(subway_token);
-     }  
+                    },function(e){    
+                    });
+                break;
+         }
     }
-    
-    onChange(status) {
-        console.log(status)
-    }
-
-     handleGetCustBase(){
-         ProfileReport(subway_token).then((result) => {
-            Modal.alert(JSON.stringify(result));     
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });    
-     }
-
-     handleGetCampaigns(){
-
-         getCampaign(subway_token).then((result) => {
-            Modal.alert(JSON.stringify(result));       
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        }); 
-     }
-	handleSetCampaignsStatus(){
-         setStatus('45895738','万姐火锅鸡','online').then((result) => {
-            Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
-     }
-
-     setBugetFunc(){
-        setBuget('45895738',60).then((result) => {
-            Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
-     }
-
-     getPlatfromFunc(){
-        getPlatfrom('45895738').then((result) => {
-            Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
-     }
-     getAdgroupsFunc(){
-        getAdgroups(subway_token,'12297040',1).then((result) => {
-          Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-           // Modal.alert(JSON.stringify(error));
-            //Modal.alert(1);
-        });
-     }
-     OnsaleItemsFunc(){
-		getOnsaleItem().then((result) => {
-          Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-           // Modal.alert(JSON.stringify(error));
-            //Modal.alert(1);
-        });
-     }
-     deleteAdgroupsFunc(){
-          deleteAdgroup('654231684').then((result) => {
-            Modal.alert(JSON.stringify(result));
-             
-          }, (error) => {
-             // Modal.alert(JSON.stringify(error));
-              //Modal.alert(1);
-          });
-     }
-     updateAdgroupsFunc(){
-       updateAdgroup(733482419,'offline').then((result) => {
-          Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-           // Modal.alert(JSON.stringify(error));
-            //Modal.alert(1);
-        });
-     }
-     UnsaleItemsFunc(){
-       getUnSaleItem(12297040).then((result) => {
-          Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-           // Modal.alert(JSON.stringify(error));
-            //Modal.alert(1);
-        });
-     }
-     addAdgroupFunc(){
-      addAdgroup(12297040,36560210330,'春秋装新款情侣卫衣套装男女士','https://img.alicdn.com/bao/uploaded/i1/T1Xj1zFhhcXXXXXXXX_!!0-item_pic.jpg_150x150.jpg').then((result) => {
-          Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-           // Modal.alert(JSON.stringify(error));
-            //Modal.alert(1);
-        });
-     }
-
-     getallKeywordsFunc(){
-        getallKeywords(subway_token,654211671,12297040).then((result) => {
-          Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-          
-        });
-     }
-     getRecommendKeywordsFunc(){
-        getRecommendKeywords(654211671).then((result) => {
-           Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-          
-        });
-     }
-     getItemNumByKeywordFunc(){
-
-        getItemNumByKeyword("卫衣男性").then(data => {
-            
-           Modal.alert(data);
-        });
-       //9511638
-     }
-     getAreafromFunc(){
-         getArea('9511638').then((result) => {
-            Modal.alert(JSON.stringify(result));
-           
-        }, (error) => {
-            Modal.alert(JSON.stringify(error));
-            Modal.alert(1);
-        });
-     }
-
-     checkIssetDspUserFunc(){
-        checkIssetDspUser().then((value) => {
-             Modal.alert(JSON.stringify(value));
-           
-          });
-     }
-     getDspUserMarketFunc(type){
-         getDspUserMarket(type).then((value) => {
-             Modal.alert(JSON.stringify(value));
-           
-          });
-     }
-     getOnsaleItemsFunc(){
-         getDspOnsaleItems().then((value) => {
-             Modal.alert(JSON.stringify(value));
-           
-          });
-     }
-    render() {
+    renderItems(){
         return (
-            <ScrollView style={styles.scroller}>
-                <View style={styles.container}>
-                <Button block="true" onPress={() => {this.handleTOPInvoke()}} type="primary" style={styles.btnlist}>subway_token</Button>         
-                <Button block="true" onPress={() => {this.handleGetCustBase()}} type="primary" style={styles.btnlist}>店铺报表</Button>    
-                <Button block="true" onPress={() => {this.handleGetCampaigns()}} type="primary" style={styles.btnlist}>计划列表</Button>    
-                <Button block="true" onPress={() => {this.handleSetCampaignsStatus()}} type="primary" style={styles.btnlist}>更改计划状态</Button>  
-                <Button block="true" onPress={() => {this.setBugetFunc()}} type="primary" style={styles.btnlist}>设置计划日限额</Button>  
-                <Button block="true" onPress={() => {this.getPlatfromFunc()}} type="primary" style={styles.btnlist}>获取平台设置</Button>  
-                <Button block="true" onPress={() => {this.getAreafromFunc()}} type="primary" style={styles.btnlist}>获取区域设置</Button> 
-                <Button block="true" onPress={() => {this.getAdgroupsFunc()}} type="primary" style={styles.btnlist}>获取计划下推广组</Button> 
-                <Button block="true" onPress={() => {this.deleteAdgroupsFunc()}} type="primary" style={styles.btnlist}>删除一个推广组</Button> 
-                <Button block="true" onPress={() => {this.updateAdgroupsFunc()}} type="primary" style={styles.btnlist}>更新推广组状态</Button> 
-                <Button block="true" onPress={() => {this.OnsaleItemsFunc()}} type="primary" style={styles.btnlist}>在售宝贝</Button>                                     
-                <Button block="true" onPress={() => {this.UnsaleItemsFunc()}} type="primary" style={styles.btnlist}>未推广宝贝</Button> 
-                <Button block="true" onPress={() => {this.addAdgroupFunc()}} type="primary" style={styles.btnlist}>新增计划下推广组</Button> 
-                <Button block="true" onPress={() => {this.getallKeywordsFunc()}} type="primary" style={styles.btnlist}>推广组关键词</Button> 
-                <Button block="true" onPress={() => {this.getRecommendKeywordsFunc()}} type="primary" style={styles.btnlist}>获取推荐关键词</Button> 
-                <Button block="true" onPress={() => {this.getItemNumByKeywordFunc()}} type="primary" style={styles.btnlist}>获取使用当前关键词的宝贝数量</Button> 
-                <Button block="true" onPress={() => {this.checkIssetDspUserFunc()}} type="primary" style={styles.btnlist}>检测是否是dsp用户</Button>  
-                <Button block="true" onPress={() => {this.getDspUserMarketFunc(1)}} type="primary" style={styles.btnlist}>dsp用户基本信息</Button>    
-                <Button block="true" onPress={() => {this.getDspUserMarketFunc(3)}} type="primary" style={styles.btnlist}>在线销售的宝贝</Button> 
-                <Button block="true" onPress={() => {this.getOnsaleItemsFunc()}} type="primary" style={styles.btnlist}>淘外引流数据列表</Button> 
-                 <Text>
-                    {JSON.stringify(Location)}
-                </Text>
+                <View>
+                { 
+                    this.state.selected.length === 0 ? <Text>Loading...</Text> : 
+                    this.state.selected.map((item, index) =>{
+                        return (
+                            <View>
+                            <TouchableHighlight style={app.cellItemList} >
+                                <Text style={app.itemArrow}>{item.title}</Text>
+                                <Text style={app.itemArrow}>时间段</Text>
+                                <Text style={app.itemArrow}>出价百分比</Text>
+                            </TouchableHighlight>
+                            {this.setCell(item.schedule)}
+                            </View>        
+                        )
+                    })    
+                }
+            </View>
+        )
+    }
+    setCell(item){
+        return (
+            
+                <View style={app.subCell}>
+                 {  item.map((vv, i) =>{
+                        return (
+                            <Grid style={app.subGid}>
+                                <Col style={app.col1}><Text></Text></Col>
+                                <Col style={app.col2}><Text>{vv.substring(0,vv.lastIndexOf(':')) ? vv.substring(0,vv.lastIndexOf(':')) :'00:00 - 24:00'}</Text></Col>
+                                <Col style={app.col3}><Text>{vv.substring(vv.lastIndexOf(':')+1)}%</Text></Col>
+                            </Grid>
+                            )
+                        })
+                }
                 </View>
-            </ScrollView>
- 		  );
+
+            )
+    }
+    submitData(){
+        var schedule = '';
+        if(this.state.value == 2){
+            schedule = 'all';
+        }
+
+        if(this.state.value == 3){
+            schedule = this.state.selectedTemplate;  
+        }
+
+        if(this.state.value != 1){
+            setSchedule(campaign_id,schedule).then((result)=>{
+                if(result != ''){
+                    Modal.toast('设置分时折扣成功');
+                }
+               
+            },(error)=>{
+                Modal.toast('设置分时折扣失败');
+            })
+        }
+    }
+    render(){
+         
+         const dataSource = [
+            {value:1, label: '当前设置'},
+            {value:2, label: '全天投放'},
+            {value:3, label: '模板选择'}
+        ];
+        return (
+            <Dialog contentStyle={app.modalStyle} ref="modal" contentStyle={app.modalStyle} visible={true}>
+              <ScrollView  onEndReachedThreshold={300}>
+               <View style={{flexDirection:'row', display:'flex',marginBottom:'20rem'}}>
+                <Radio.Group value={this.state.value} onChange = {this.groupChange.bind(this)} style={{flexDirection:'row', display:'flex',marginBottom:'20rem'}}>
+                    <Radio style={{marginLeft:0,marginRight:0,paddingLeft:0}} value={1} ></Radio><Text style={{margin:'30rem 0'}} >当前设置</Text>
+                    <Radio style={{marginLeft:0,marginRight:0,paddingLeft:0}} value={2} ></Radio><Text style={{margin:'30rem 0'}} >全天投放</Text>
+                    <Radio style={{marginLeft:0,marginRight:0,paddingLeft:0}} value={3} ></Radio><Text style={{margin:'30rem 0'}} >模板选择</Text> 
+                </Radio.Group>
+                </View>
+                {this.renderItems()}
+               </ScrollView>
+               <View style={app.footer}>
+                    <View style={{backgroundColor:'#4f74b3',height:'120rem',justifyContent:'center'}}>
+                        <Button style={app.btn} type="dark" shape="保存设置" onPress={this.submitData.bind(this)}>保存设置</Button>
+                    </View>
+                </View>
+             </Dialog>
+            )
     }
 }
 
-const styles = {
-    scroller:{
-      backgroundColor:'#ffffff'  
+const app = {
+    modalStyle: {
+        width: 750,
+        height: height
     },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
+    footer: {
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        
+        justifyContent: 'center',
+        height: '120rem',
+        flexDirection:"row",
+        display:'flex'
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+    btn:{
+        marginRight:'20rem'
     },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
+      wrapper:{
+        padding:'20rem'
     },
-    btnlist: {
-    	marginBottom: 15
+     btn:{
+        marginRight:'20rem'
+    },
+    listContainer:{
+        flex:1
+    },
+    cellItemList:{
+        backgroundColor:"#e4e0e0",
+        height:"90rem",
+        borderBottomWidth:"2rem",
+        borderBottomStyle:"solid",
+        borderBottomColor:"#e8e8e8",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        flexDirection:"row",
+        display:'flex' 
+    },
+    itemTextList:{
+        fontSize:"30rem",
+        color:"#80",
+        flex:10
+    },
+    refresh:{
+        height:"80rem",
+        width:"750rem",
+
+        backgroundColor:"#cccccc",
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    loading:{
+        height:"80rem",
+        display:"flex",
+        width:"750rem",
+        flexDirection:"row",
+        backgroundColor:"#cccccc",
+        alignItems:"center",
+        justifyContent:"center"
+    },
+    loadingText:{
+        color:"#666666"
+    },
+    amoutList:{
+            backgroundColor:"#ffffff",
+            padding:"15rem",
+            alignItems:"center",
+            flexDirection:"row",
+            display:'flex'
+        },
+    amoutitemArrow:{
+        flex: 4,
+        fontSize:"24rem",
+        right: '1rem'
+    },
+    scroller:{
+          backgroundColor:'#ffffff'  
+      },
+
+    subCell:{
+        padding:'8rem',
+        borderBottomStyle:'solid',
+        borderBottomWidth:'1rem',
+        borderBottomColor:'#e8e8e8',  
+        fontColor:'#e8e8e8' 
+    },
+    subGid:{
+         flexDirection:"row",
+         display:'flex',
+         padding:'10rem',
+    },
+    col1:{
+        padding:'8rem',
+        marginLeft:'2rem',
+        borderBottomStyle:'solid',
+        borderBottomWidth:'1rem',
+        borderBottomColor:'#e8e8e8',
+        flex:14
+    },
+    col2:{
+        padding:'8rem 8rem',
+        borderBottomStyle:'solid',
+        borderBottomWidth:'1rem',
+        borderBottomColor:'#e8e8e8',
+        flex:2,    
+    },
+    col3:{
+        padding:'8rem 8rem',
+        borderBottomStyle:'solid',
+        borderBottomWidth:'1rem',
+        borderBottomColor:'#e8e8e8',
+        flex:2,  
+    },
+    itemArrow:{
+        flex: 4,
+        fontSize:"30rem",
+        color:"#5F646E" 
+    },
+    title:{
+  
+        borderBottomStyle:'solid',
+        borderBottomWidth:'1rem',
+        borderBottomColor:'#e8e8e8'
     }
-};
+}
 
-mount(<Api />, 'body');
+mount(<ScheduleView />, 'body');
 
-
-export default Api
+export default ScheduleView

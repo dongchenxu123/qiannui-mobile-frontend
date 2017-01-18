@@ -1,34 +1,29 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import { View, Text, Image, TouchableHighlight} from 'nuke-components';
-import { Tabbar, Button, Icon, ListView, Iconfont, Modal, ScrollView, Switch, Dimensions, Input, Dialog } from 'nuke';
+import { View, Text, TouchableHighlight} from 'nuke-components';
+import { Button, ListView, Modal, ScrollView, Switch, Dimensions, Input, Dialog } from 'nuke';
 import QN from 'QAP-SDK';
-import { getPlatfrom, getSellerUser } from '../api'
+import { getPlatfrom, getSellerUser,setPlatfrom } from '../api'
 import _ from 'lodash';
+
 let {height} = Dimensions.get('window');
+
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL.split('?')[1]);
+const campaign_id = arr.campaign_id;
+
 class PlatformView extends Component {
     constructor(props) {
       super(props);
       this.state={
       	datas: {},
-      	sellerSatus: false,
-      	outTaoSwitch: false
+      	sellerSatus: false
       }
     }
     componentDidMount(){
-    	var URL= document.URL;
-    	var arr= URL.split('?')[1];
-		var newarr= arr.split('&');
-		var obj={}
-		var param;
-        for(var i=0;i<newarr.length;i++){
-            param=newarr[i].split('=');
-            obj[param[0]]=param[1];
-        }
-        var itemId=obj.id;
-		getPlatfrom(itemId).then((res) => {
-			Modal.alert(JSON.stringify(res))
+
+		getPlatfrom(campaign_id).then((res) => {
 			this.setState({
 				datas: res
 			})
@@ -59,6 +54,107 @@ class PlatformView extends Component {
 
         });
 	}
+    submitData(){
+        var search_channels = [1];
+        var nonsearch_channels = [];
+
+        if(this.state.sellerSatus){
+            //pc站内搜索
+            if(!this.state.datas.insitePC){
+                search_channels.shift();
+            }
+            //pc站内定向
+            if(this.state.datas.insiteNosearchPC) {
+                 nonsearch_channels.push(1);
+            }
+             //pc站外定向
+            if(this.state.datas.outsiteNosearchPC){
+                nonsearch_channels.push(2);
+            }
+        }
+
+        if(this.state.datas.outsitePC){
+            search_channels.push(2);
+            search_channels.push(4);
+        }
+
+
+        if(this.state.datas.insiteMO){
+            search_channels.push(8);
+
+            if(this.state.sellerSatus){
+                nonsearch_channels.push(8);
+            }
+        }
+
+         if(this.state.datas.outsiteMO){
+            search_channels.push(16);
+            if(this.state.sellerSatus){
+                nonsearch_channels.push(16);
+            }
+        }
+
+        var outside_discount = this.state.datas.outside_discount;
+        var mobile_discount = this.state.datas.mobile_discount;
+
+        //更新平台设置
+        if(outside_discount > 0  && outside_discount <=200 && mobile_discount >0 && mobile_discount <= 200){
+            var param = {
+                'campaign_id':campaign_id,
+                'search_channels':search_channels,
+                'nonsearch_channels':nonsearch_channels,
+                'outside_discount':outside_discount,
+                'mobile_discount':mobile_discount
+            };
+
+            setPlatfrom(param).then((res) => {
+                if(res){
+                    Modal.toast('设置投放平台成功');
+                }
+            },error=>{
+                Modal.toast(error);
+            });
+         }
+        console.log(JSON.stringify(this.state.datas));
+
+    }
+    changeValue(value,type){
+        
+        
+        switch(type){
+            case "mobile_discount":
+                var v = value.target.attr.value;
+                this.state.datas.mobile_discount = v;
+                break;
+            case "outside_discount":
+                var v = value.target.attr.value;
+                this.state.datas.outside_discount = v;
+                break;
+            case "insitePC":
+                this.state.datas.insitePC = value;  
+                break;
+            case "insiteNosearchPC":
+                this.state.datas.insiteNosearchPC = value; 
+                break;
+            case "outsitePC":
+                this.state.datas.outsitePC = value; 
+                break;
+            case "outsiteNosearchPC":
+                this.state.datas.outsiteNosearchPC = value; 
+                break;
+            case "insiteMO":
+                this.state.datas.insiteMO = value; 
+                break;
+            case "outsiteMO":
+                this.state.datas.outsiteMO = value; 
+                break;
+        }
+         var aa = this.state.datas;
+                this.setState({
+                    datas: aa
+                });
+        console.log(JSON.stringify(this.state.datas));
+    }
     render() {
   		var mobile_discount= this.state.datas == null ? '' : this.state.datas.mobile_discount;
   		var outside_discount= this.state.datas == null ? '' : this.state.datas.outside_discount;
@@ -68,8 +164,7 @@ class PlatformView extends Component {
   		var insitePC = this.state.datas == null ? '' : this.state.datas.insitePC;
   		var insiteMO = this.state.datas == null ? '' : this.state.datas.insiteMO;
   		var outsiteMO = this.state.datas == null ? '' : this.state.datas.outsiteMO;
-  		
-  		
+  		var disabled = outsiteNosearchPC && insiteNosearchPC ? true:false;
   		return (
   		  <Dialog contentStyle={styles.modalStyle} ref="modal" contentStyle={styles.modalStyle} visible={true}>
 	           <ScrollView style={styles.scroller} onEndReachedThreshold={300}>
@@ -80,12 +175,11 @@ class PlatformView extends Component {
 	              			<View style={styles.cellItemList}>
 			              		<Text>搜索推广: </Text>
 			              		<Text style={styles.commonStyle}>不投放 </Text>
-			              		<Switch checked={insitePC}/>
+			              		<Switch checked={insitePC} onValueChange={(value)=>this.changeValue(value,"insitePC")}/>
 				                <Text>投放 </Text>
 	             			</View> : 
 		             		<View style={styles.cellItemList}>
-		             			<Text>投放</Text>
-		             			
+		             			<Text>投放</Text>		
 		             		</View>
 	              }
 	              
@@ -93,7 +187,7 @@ class PlatformView extends Component {
 	              	this.state.sellerSatus === true ?  <View style={styles.cellItemList}>
 	              		<Text>定向推广: </Text>
 	              		<Text style={styles.commonStyle}>不投放 </Text>
-	              		<Switch checked={insiteNosearchPC}/>
+	              		<Switch checked={insiteNosearchPC} onValueChange={(value)=>this.changeValue(value,"insiteNosearchPC")} />
 	              		<Text>投放 </Text>
 	              </View> : ''
 	              }
@@ -101,17 +195,17 @@ class PlatformView extends Component {
 	              <View style={styles.cellItemList}>
 	              		<Text>搜索推广: </Text>
 	              		<Text style={styles.commonStyle}>不投放 </Text>
-	              		<Switch checked={outsitePC}/>
+	              		<Switch checked={outsitePC} onValueChange={(value)=>this.changeValue(value,"outsitePC")} />
 	              		<Text>投放 </Text>
 	              </View>
 	              {
 	              	this.state.sellerSatus === true ? <View style={styles.cellItemList}>
 	              		<Text>定向推广: </Text>
-	              		<Text style={styles.commonStyle}>不投放 </Text>
+	              		<Text style={styles.commonStyle}>不投放{disabled} </Text>
 	              		{
-	              			outsiteNosearchPC && insiteNosearchPC ? <Switch 
-										checked={true}/> : <Switch 
-										checked={false}/>
+                            disabled == false ? <Switch checked={outsiteNosearchPC} onValueChange={(value)=>this.changeValue(value,"outsiteNosearchPC")}/>:
+
+                            <Switch disabled='false' onValueChange={(value)=>this.changeValue(value,"outsiteNosearchPC")}/>
 	              		}
 	              		
 	              		<Text>投放 </Text>
@@ -123,26 +217,27 @@ class PlatformView extends Component {
 	              </View>
 	              <View style={styles.cellItemList}>
 	              	<Text>站外折扣:</Text>
-	              	<Input value={outside_discount} style={styles.commonStyle}/>
+	              	<Input value={outside_discount} keyboardType= "numbers-and-punctuation" style={styles.commonStyle} onBlur={(value)=>{this.changeValue(value,"outside_discount")}} />
 	              	<Text>%</Text>
 	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣1-200之间的整数</Text>
 	              </View>
-	               <Text style={styles.title}>移动设备</Text>                              
-	              <Text style={styles.contitle}>淘宝站内</Text>
-	              <View style={styles.cellItemList}>
-	              		<Text>推广: </Text>
-	              		<Text style={styles.commonStyle}>不投放 </Text>
-	              		<Switch checked={insiteMO}/>
-	              		<Text>投放 </Text>
-	              </View>
-	               <View style={styles.cellItemList}>
-	              	投放价格 = 计算机淘宝站内投放价格 * 移动折扣
-	              </View>
+
+	            <Text style={styles.title}>移动设备</Text>  
+
+	            <Text style={styles.contitle}>淘宝站内</Text>
+	            <View style={styles.cellItemList}>
+	              	<Text>推广: </Text>
+	              	<Text style={styles.commonStyle}>不投放 </Text>
+	              	<Switch checked={insiteMO} onValueChange={(value)=>this.changeValue(value,"insiteMO")}/>
+	              	<Text>投放 </Text>
+	            </View>
+
+	            <View style={styles.cellItemList}>投放价格 = 计算机淘宝站内投放价格 * 移动折扣</View>
 	              <Text style={styles.contitle}>淘宝站外</Text>
 	               <View style={styles.cellItemList}>
 	              		<Text>推广: </Text>
 	              		<Text style={styles.commonStyle}>不投放 </Text>
-	              		<Switch checked={outsiteMO}/>
+	              		<Switch checked={outsiteMO} onValueChange={(value)=>this.changeValue(value,"outsiteMO")}/>
 	              		<Text>投放 </Text>
 	              </View>
 	              <View style={styles.cellItemList}>
@@ -150,18 +245,15 @@ class PlatformView extends Component {
 	              </View>
 	              <View style={styles.cellItemList}>
 	              	<Text>移动折扣:</Text>
-	              	<Input value={mobile_discount} style={[styles.commonStyle,{width: '100rem'}]}/>
+	              	<Input value={mobile_discount} keyboardType= "numbers-and-punctuation" style={[styles.commonStyle,{width: '100rem'}]} onBlur={(value)=>{this.changeValue(value,"mobile_discount")}}/>
 	              	<Text>%</Text>
 	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣1-200之间的整数</Text>
 	              </View>
 	            </ScrollView>
 	            <View style={styles.footer}>
-                    <TouchableHighlight style={[styles.button,{backgroundColor: '#db1c1c'}]}>
-                        <Text style={{color: '#fff'}}>取消</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={[styles.button,{marginLeft: '20rem', backgroundColor: '#348d33'}]}>
-                        <Text style={{color: '#fff'}}>确定</Text>
-                    </TouchableHighlight>
+                    <View style={{backgroundColor:'#4f74b3',height:'120rem',justifyContent:'center'}}>
+                        <Button style={styles.btn} type="dark" shape="保存设置" onPress={this.submitData.bind(this)}>保存设置</Button>
+                    </View>
                 </View>
             </Dialog>
  		  );
@@ -220,7 +312,10 @@ const styles = {
   	    alignItems: 'center',
 	    justifyContent: 'center',
 	    borderRadius: '8rem'
-  }
+  },
+   btn:{
+        marginRight:'20rem'
+    }
 };
 
 mount(<PlatformView />, 'body');

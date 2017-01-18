@@ -309,9 +309,9 @@ class GetAreaView extends Component {
     	//var localItemId= self.props.localId;
     	return (
             <View>
-                <TouchableHighlight onPress={this.showModal.bind(self)}>
-                  <Button type="primary">设置</Button>
-                </TouchableHighlight>
+                <View style={{left:'-22rem'}} >        
+                  <Button type="primary" onPress={this.showModal.bind(self)}>设置</Button>
+                </View>
                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>
                     <ScrollView style={styles.body} onEndReachedThreshold={300}>
                     	<View>

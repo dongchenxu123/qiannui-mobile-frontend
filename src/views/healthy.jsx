@@ -50,23 +50,21 @@ class HealthyView extends Component{
                          <Col style={app.col2}><Text>{this.setItemSource('click',item.ctr,'')}</Text></Col>
                         </Grid>
               
-                       <Grid>
+                       <Grid style={app.subGid}>
                          <Col style={app.col1}><Text>花费</Text></Col>
                          <Col style={app.col2}><Text>{this.setItemSource('click',item.cost,item.budget)}</Text></Col>
                         </Grid>
                    
-                       <Grid>
+                       <Grid style={app.subGid}>
                          <Col style={app.col1}><Text>点击转化率</Text></Col>
                          <Col style={app.col2}><Text>{this.setItemSource('click',item.click_ROi,'')}</Text></Col>
-                        </Grid>
-                  
-                  
+                        </Grid> 
                        <Grid>
                          <Col style={app.col1}><Text>投入产出</Text></Col>
                          <Col style={app.col2}><Text>{this.setItemSource('click',item.ROI,'')}</Text></Col>
                         </Grid>
                    
-                       <Grid>
+                       <Grid style={app.subGid}>
                          <Col style={app.col1}><Text>收藏</Text></Col>
                          <Col style={app.col2}><Text>{this.setItemSource('click',item.favcount,'')}</Text></Col>
                         </Grid>
@@ -162,6 +160,7 @@ const app = {
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
         borderBottomColor:"#e8e8e8",
+        paddingRight:"30rem",
         paddingLeft:"30rem",
         alignItems:"center",
         flexDirection:"row",
@@ -169,13 +168,12 @@ const app = {
     },
     itemTextList:{
         fontSize:"30rem",
-        color:"#80",
+        color:"#0894EC",
         flex:15
     },
     refresh:{
         height:"80rem",
         width:"750rem",
-
         backgroundColor:"#cccccc",
         justifyContent:"center",
         alignItems:"center"
@@ -199,53 +197,49 @@ const app = {
             flexDirection:"row",
             display:'flex'
         },
-    amoutitemArrow:{
-        flex: 4,
-        fontSize:"24rem",
-        right: '1rem'
-    },
     scroller:{
-          backgroundColor:'#ffffff'  
+        backgroundColor:'#ffffff'  
       },
-      item:{
+    item:{
         height:'100rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8'
     },
     subCell:{
-        height:'450rem',
+        height:'449rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',  
-        fontColor:'#e8e8e8' 
+        fontColor:'#e8e8e8'
     },
     subGid:{
-         flexDirection:"row",
-         display:'flex'
+        flexDirection:"row",
+        display:'flex',
     },
     col1:{
         padding:'20rem',
-        marginLeft:'2rem',
+        marginLeft:'10rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',
-        flex:11
+        flex:15
     },
     col2:{
-        padding:'20rem 60rem',
+        padding:'20rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',
-        flex:1,
-       
-        textAlign: 'right'
-        
+        flex:4,
+        textAlign: 'right',
+        marginRight:'20rem' 
     },
     itemArrow:{
         flex: 4,
         fontSize:"30rem",
-        color:"#5F646E" 
+        color:"#5F646E" ,
+        textAlign: 'right',
+        marginRight:'2rem'
     }
 }
 export default HealthyView
