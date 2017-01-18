@@ -155,7 +155,7 @@ const app = {
         flex:1
     },
     cellItemList:{
-        backgroundColor:"#e4e0e0",
+        backgroundColor:"#e8e8e8",
         height:"90rem",
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
