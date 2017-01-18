@@ -201,7 +201,7 @@ class PlatformView extends Component {
 	              {
 	              	this.state.sellerSatus === true ? <View style={styles.cellItemList}>
 	              		<Text>定向推广: </Text>
-	              		<Text style={styles.commonStyle}>不投放{disabled} </Text>
+	              		<Text style={styles.commonStyle}>不投放</Text>
 	              		{
                             disabled == false ? <Switch checked={outsiteNosearchPC} onValueChange={(value)=>this.changeValue(value,"outsiteNosearchPC")}/>:
 
@@ -250,11 +250,11 @@ class PlatformView extends Component {
 	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣1-200之间的整数</Text>
 	              </View>
 	            </ScrollView>
-	            <View style={styles.footer}>
-                    <View style={{backgroundColor:'#4f74b3',height:'120rem',justifyContent:'center'}}>
-                        <Button style={styles.btn} type="dark" shape="保存设置" onPress={this.submitData.bind(this)}>保存设置</Button>
-                    </View>
+	           
+                <View style={{backgroundColor:'#dddddd',height:'100rem',justifyContent:'center'}}>
+                    <Button style={styles.btn} type="dark" shape="保存设置" onPress={this.submitData.bind(this)}>保存设置</Button>
                 </View>
+                
             </Dialog>
  		  );
     }
@@ -300,7 +300,7 @@ const styles = {
 	    alignItems: 'center',
 	    justifyContent: 'center',
 	    height: '120rem',
-	    flexDirection:"row",
+	    flexDirection:'row',
 		display:'flex'
   },
   button: {
@@ -314,7 +314,7 @@ const styles = {
 	    borderRadius: '8rem'
   },
    btn:{
-        marginRight:'20rem'
+       marginBottom:'20rem'
     }
 };
 

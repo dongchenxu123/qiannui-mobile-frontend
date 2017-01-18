@@ -1,22 +1,33 @@
-import {Link, ListView, Modal,Col, Grid,Navigator,Button,Image } from 'nuke'
+import {Navigator,Button,Image } from 'nuke'
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView,TextInput  } from 'nuke-components';
-import { getAuthSign,getCampaign } from '../api';
+import {onlineChat,getFeedback } from '../api/dsp';
 import QN from 'QAP-SDK';
 
 class LinkUs extends Component{
    constructor() {
         super();   
         this.state = {
-           
+           showfeedback:false,
+           textAreaValue:''
         }   
     }
 
-     componentWillMount(){
-
-     }
+     openChart(){
+        onlineChat();
+       }
+    feedBack(){
+        getFeedback(this.state.textAreaValue);
+      }
      tel(){
           Navigator.push('tel:400-627-0003'); 
+     }
+     changeValue(e){
+        if(e != undefined && e.target != undefined && e.target.attr != undefined && e.target.attr.value.length > 0){
+          this.setState({
+            textAreaValue:e.target.attr.value
+          });
+        }
      }
      render(){
         const url = encodeURI('http://amos.alicdn.com/online.aw?v=2&uid=tp_喜宝&site=cntaobao&s=1&charset=utf-8');
@@ -24,7 +35,7 @@ class LinkUs extends Component{
         return (
                 <ScrollView style={style.scroller}  onEndReachedThreshold={300}>
                     <View style={{margin:'30rem'}}>
-                        <TouchableHighlight style={[style.item, {flexDirection:"row",display:'flex' }]}>
+                        <TouchableHighlight style={[style.item, {flexDirection:"row",display:'flex' }]} onPress={this.openChart.bind(this)}>
                             <View style={{marginLeft:'80rem'}}>
                                 <Image source={{uri: url}}  style={{width:'160rem',height:'40rem',marginLeft:'20rem'}}/>
                             </View>
@@ -33,19 +44,20 @@ class LinkUs extends Component{
                         <TouchableHighlight onPress={this.tel}>
                             <View style={style.item}><Text style={{color: '#0894EC'}}>免费400电话：400-627-0003</Text></View>
                         </TouchableHighlight>
-                        <TouchableHighlight >
+                        <TouchableHighlight onPress={()=>{this.setState({showfeedback:true})}}>
                             <View style={style.item}><Text style={{color: '#0894EC'}}>给我留言</Text></View>
                         </TouchableHighlight>
                     </View>
-
-                     <View style={{margin:'20rem'}}>
+                    {
+                      this.state.showfeedback == false ?'':
+                      <View style={{margin:'20rem'}}>
                         <TextInput
                           placeholder="请在此填写留言反馈"
                           multiline="true"
                           maxNumberOfLines="20"
                           numberOfLines="20"
                           onFocus={() => console.log('onFocus')}
-                          onBlur={() => console.log('onBlur')}
+                          onBlur={this.changeValue.bind(this)}
                           onInput={() => console.log('onInput')}
                           style={{
                               width: '710rem',
@@ -57,9 +69,11 @@ class LinkUs extends Component{
                           }}
                         />
                         <View style={{marginTop:'30rem'}}>
-                            <Button type="primary">提交</Button>
+                            <Button type="primary" onPress={this.feedBack.bind(this)}>提交</Button>
                         </View>
                      </View>
+                    }
+                     
                 </ScrollView>
             )
      }
