@@ -13,13 +13,13 @@ class KeywordsView extends Component {
             
         }
     }
-	changeControl (w, value) {
-		this.props.changecheckbox(w, value)
+	changeControl (index, value) {
+		this.props.changecheckbox(index, value)
 	}
 
 	render () {
 		
-		var keywords= this.props.keywords;
+		var keywords= this.props.keywords.data;
 		var keywordObj = this.props.keywords.obj;
 		var lengths= keywords.length === 0 ? 0: keywords.length;
 		
@@ -45,11 +45,11 @@ class KeywordsView extends Component {
 				    		keywords.map((item, index) =>{
 				    			return (
 				    				<View style={styles.cellItemList}>
-				    					<Checkbox style={styles.arrow} onChange={this.changeControl.bind(this, item.word)}/>
-								     	<Text style={styles.arrow}>{item.word}</Text>
-								     	<Text style={styles.arrow}>{item.pv}</Text>
-								     	<Text style={styles.arrow}>{item.average_price}</Text>
-								     	<Text style={styles.arrow}>{item.pertinence}</Text>
+				    					<Checkbox style={styles.arrow} onChange={this.changeControl.bind(this, item)}/>
+								     	<Text style={styles.arrow}>{keywordObj[item].word}</Text>
+								     	<Text style={styles.arrow}>{keywordObj[item].pv}</Text>
+								     	<Text style={styles.arrow}>{keywordObj[item].average_price}</Text>
+								     	<Text style={styles.arrow}>{keywordObj[item].pertinence}</Text>
 				    				</View>
 				    			)
 				    		})
