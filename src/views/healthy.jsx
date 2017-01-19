@@ -125,8 +125,6 @@ class HealthyView extends Component{
     }
 
     onPress (campaign_id,title) {
-
-       // Navigator.push('qap://views/healthyResult.js?campaign_id='+campaign_id);
        QN.navigator.push({
             url:'qap://views/healthyResult.js',
             query:{campaign_id:campaign_id,title:title},

@@ -32,7 +32,8 @@ import {getallKeywords,
         getRecommendKeywords,
         deleteKeywords,
         addNewKeyword,
-        getItemNumByKeyword
+        getItemNumByKeyword,
+        getStoreKeyword
     } from './keywords';
 
 import {checkIssetDspUser,
@@ -69,6 +70,7 @@ const api = {
     addAdgroup:addAdgroup,//在计划中推广一个宝贝
     getallKeywords:getallKeywords,//获取一个推广组的关键词
     getRecommendKeywords:getRecommendKeywords,//获取推荐关键词
+    getStoreKeyword:getStoreKeyword,//获取公司自己关键词库
     deleteKeywords:deleteKeywords,//删除关键词，支持批量删除
     addNewKeyword:addNewKeyword,//添加关键词
     getItemNumByKeyword:getItemNumByKeyword,//获取使用该关键词的宝贝数量
