@@ -3,6 +3,7 @@ import QN from 'QAP-SDK';
 import * as DateAPi from './date';
 import { Modal } from 'nuke';
 import {checkAPIError} from './checkerror';
+import {getLocalstoreUser} from './authsign';
 
 export function getallKeywords(subway_token,adgroup_id,campaign_id,needformat = true){
      return QN.top.batch({
@@ -201,6 +202,45 @@ export function addNewKeyword(adgroup_id,word){
         .catch(error=>{
             Modal.toast(error);
         });
+}
+
+export function getStoreKeyword(adgroup_id,num_iid,cid){
+
+    /* var  params = {account_id:USER_ID,
+            token: $('#sessionkey').val(),
+            cid:cid,
+            nick:self.adgroup.nick,
+            item_id:self.adgroup.num_iid,
+            adgroup_id: self.adgroup.adgroup_id,
+            used: []};*/
+     return new Promise((resolve, reject) => {
+         getLocalstoreUser().then((res)=>{
+            console.log(JSON.stringify(res));
+            /*var param = {
+                    account_id: res.taobao_user_id,
+                    content:content
+                };
+                
+                QN.fetch(DateAPi.httphost+'/save_feedback/', {
+                  
+                    method: 'POST',
+                    mode: 'cors',
+                    dataType: 'json',
+                    body:QN.uri.toQueryString(param)
+                })
+                .then(response => {     
+                    return response.json(); // => 返回一个 `Promise` 对象
+                })
+                .then(data => {
+                      Modal.toast('感谢您的留言，我们将尽快给您反馈。');
+                })
+                .catch(error => {
+                    Modal.toast(JSON.stringify(error));
+                });  
+         });*/
+                
+        });
+     })
 }
 
 /*

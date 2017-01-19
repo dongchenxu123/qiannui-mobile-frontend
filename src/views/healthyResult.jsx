@@ -186,7 +186,6 @@ class HealthyResult extends Component{
                     adgroupsArr.push(self.makeKeywordFunc(adgroups[j],self.state.subway_token));   
                 }
                 Async.parallelLimit(adgroupsArr,2, (err, res) => {
-                   console.log(JSON.stringify(self.state.littleKeyGroup));
                 });
         }
 
@@ -307,8 +306,17 @@ class HealthyResult extends Component{
                     break
         }
     }
-
+    addKeyWords(adgroup_id){
+        QN.navigator.push({
+            url:'qap://views/keywordslist.js',
+            query:{adgroup_id:adgroup_id},
+            settings: {
+                    animate: true
+             }
+        })
+    }
     renderProductItem(item, index){
+        console.log(JSON.stringify(item));
         return (
             <View>
                 <View style={style.cellItemList} >
@@ -316,7 +324,7 @@ class HealthyResult extends Component{
                         <View style={style.itemTextList}>
                             <Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
                             <View style={{flexDirection:'row'}}>
-                                <Button size='small'  type="secondary">加词</Button>
+                                <Button size='small'  type="secondary" onPress={this.addKeyWords.bind(this, item.adgroup_id)} >加词</Button>
                                 <Button size='small'  type="secondary">查看</Button>
                             </View>
                         </View>

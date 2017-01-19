@@ -343,14 +343,11 @@ class GetAreaView extends Component {
 	                    	}
                     	</View>
                     </ScrollView>
-                    <View style={styles.footer}>
-                        <TouchableHighlight style={styles.button} onPress={this.hideModal}>
-                            <Text>取消</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={[styles.button,{marginLeft: '20rem'}]} onPress={this.sureModal}>
-                            <Text>确定</Text>
-                        </TouchableHighlight>
+
+                    <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
+                            <Button style={{height:"80rem",marginBottom:'30rem'}}  onPress={this.sureModal} block="true" type="secondary">保存设置</Button>
                     </View>
+
                     <TouchableHighlight style={styles.close} onPress={this.hideModal}>
                         <Text style={styles.closeText}>x</Text>
                     </TouchableHighlight>

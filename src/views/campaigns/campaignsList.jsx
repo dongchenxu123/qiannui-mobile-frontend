@@ -109,7 +109,7 @@ class CampaignsListView extends Component {
 			   			    <View>
 				   			    <View style={styles.cellItemList}>
 				   			    	<TouchableHighlight onPress={this.onPress.bind(this, tid)} style={styles.itemTextList}>
-					   			    	<Text>{title}</Text>
+					   			    	<Text style={{color:"#0894EC"}}>{title}</Text>
 	                        			
 				   			    	</TouchableHighlight>
 				   			    	<View style={styles.Arrow}>
