@@ -119,7 +119,7 @@ class KeywordslistView extends Component {
 	 	var min= parseInt(this.state.minprice);
 	 	var max= parseInt(this.state.maxprice);
 	 	var keywrodsId= this.state.keywrodsId;
-	 	if(min< 0.05) {
+	 	if(min< 0.05 && min !== 0) {
 	 		Modal.alert('出价不能低于0.05元')
 	 	}else if(max> 200) {
 	 		Modal.alert('出价不能高于200元')
@@ -134,7 +134,6 @@ class KeywordslistView extends Component {
 	 		Modal.alert('请你添加关键词数量小于200')
 	 	}
 	 	addNewKeyword(this.state.adgroup_id, newData).then((result) => {
-         	  Modal.alert(JSON.stringify(result))
          	  if(result.length ===0) {
          	  	Modal.alert('请你选择关键词')
          	  }else if(min==0 && max==0) {
@@ -162,10 +161,7 @@ class KeywordslistView extends Component {
 	    		    <Text style={{paddingLeft: '10rem'}}>元</Text>
     		    </View>
     		     <TabSlider width={750} style={styles.barStyle} active={this.state.active}  index={this.state.index} onChange={this.sliderChange.bind(this)}  customBar={false} navTop={true}>
-		            <Pane title={'关键词库'} style={{width:750,backgroundColor:'#414A8C'}}>
-		            	<View style={styles.tab}>123</View>
-		            </Pane>
-		            <Pane title={'推荐关键词库'}  style={{width:750}}>
+		          <Pane title={'推荐关键词库'}  style={{width:750}}>
               			<View style={styles.tab}>
               				<KeywordsView keywords={keywords} 										 										  changecheckbox={this.changecheckbox.bind(this)}
               				              submitKeywords={this.submitKeywords.bind(this)}
@@ -190,7 +186,7 @@ const styles={
    },
    barStyle:{
     backgroundColor:'#ffffff',
-    height: '120rem'
+    height: '100rem'
   }
     
 }

@@ -45,10 +45,10 @@ class KeywordsView extends Component {
 				    			return (
 				    				<View style={styles.cellItemList}>
 				    					<Text style={styles.arrow}>{keywordObj[item].word}</Text>
-								     	<Text style={styles.arrow}>{keywordObj[item].pv}</Text>
-								     	<Text style={styles.arrow}>{keywordObj[item].average_price}</Text>
-								     	<Text style={styles.arrow}>{keywordObj[item].pertinence}</Text>
-								     	<Checkbox style={styles.arrow} onChange={this.changeControl.bind(this, item)}/>
+								     	<Text style={styles.arrow}>{keywordObj[item].pv ? keywordObj[item].pv : 0}</Text>
+								     	<Text style={styles.arrow}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text>
+								     	<Text style={styles.arrow}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text>
+								     	<Checkbox onChange={this.changeControl.bind(this, item)}/>
 				    				</View>
 				    			)
 				    		})
@@ -58,8 +58,8 @@ class KeywordsView extends Component {
 				    }
 				    
 			     </ScrollView>
-			     <View>
-                    <Button type="secondary" style={{marginTop: '20rem'}} onPress={this.props.submitKeywords}>保存设置</Button>
+			     <View style={{margin: '20rem 0'}}>
+                    <Button type="secondary" block="true" onPress={this.props.submitKeywords}>保存设置</Button>
                 </View>
 			</View>
 		)
@@ -101,7 +101,7 @@ const styles={
         'borderColor':'#e8e8e8',
         'marginTop':'-1rem',
         'marginLeft':'-1rem'
-    },
+    }
 }
 
 export default KeywordsView
