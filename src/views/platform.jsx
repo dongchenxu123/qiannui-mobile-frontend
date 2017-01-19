@@ -4,7 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight} from 'nuke-components';
 import { Button, ListView, Modal, ScrollView, Switch, Dimensions, Input, Dialog } from 'nuke';
 import QN from 'QAP-SDK';
-import { getPlatfrom, getSellerUser,setPlatfrom } from '../api'
+import { getPlatfrom, getSellerUser,setPlatfrom,getStoreKeyword } from '../api'
 import _ from 'lodash';
 
 let {height} = Dimensions.get('window');
@@ -250,11 +250,9 @@ class PlatformView extends Component {
 	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣1-200之间的整数</Text>
 	              </View>
 	            </ScrollView>
-	           
-                <View style={{backgroundColor:'#dddddd',height:'100rem',justifyContent:'center'}}>
-                    <Button style={styles.btn} type="dark" shape="保存设置" onPress={this.submitData.bind(this)}>保存设置</Button>
-                </View>
-                
+	            <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
+                    <Button style={styles.btn}  onPress={this.submitData.bind(this)} block="true" type="secondary">保存设置</Button>
+                </View>      
             </Dialog>
  		  );
     }
@@ -296,13 +294,6 @@ const styles = {
         flexDirection:"row",
         display: 'flex'
     },
-    footer: {
-	    alignItems: 'center',
-	    justifyContent: 'center',
-	    height: '120rem',
-	    flexDirection:'row',
-		display:'flex'
-  },
   button: {
   	    width: '300rem',
 	    height: '80rem',
@@ -314,7 +305,8 @@ const styles = {
 	    borderRadius: '8rem'
   },
    btn:{
-       marginBottom:'20rem'
+       height:"80rem",
+       marginBottom:'30rem'
     }
 };
 

@@ -180,11 +180,9 @@ class ScheduleView extends Component {
                 </View>
                 {this.renderItems()}
                </ScrollView>
-               <View style={app.footer}>
-                    <View style={{height:'120rem',justifyContent:'center'}}>
-                        <Button style={app.btn} type="secondary" onPress={this.submitData.bind(this)}>保存设置</Button>
-                    </View>
-                </View>
+                <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
+                    <Button style={app.btn}  onPress={this.submitData.bind(this)} block="true" type="secondary">保存设置</Button>
+                </View> 
              </Dialog>
             )
     }
@@ -203,14 +201,13 @@ const app = {
         display:'flex'
     },
     btn:{
-        marginRight:'20rem'
+        height:"80rem",
+        marginBottom:'30rem'
     },
       wrapper:{
         padding:'20rem'
     },
-     btn:{
-        marginRight:'20rem'
-    },
+
     listContainer:{
         flex:1
     },
