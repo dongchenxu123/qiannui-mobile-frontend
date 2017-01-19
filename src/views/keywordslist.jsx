@@ -116,13 +116,13 @@ class KeywordslistView extends Component {
 	submitKeywords () {
 	 	var res= [];
 		let keywords = this.state.keywords;
-	 	var min= parseInt(this.state.minprice);
-	 	var max= parseInt(this.state.maxprice);
+	 	var min= parseInt(this.state.minprice)*100;
+	 	var max= parseInt(this.state.maxprice)*100;
 	 	var keywrodsId= this.state.keywrodsId;
-	 	if(min< 0.05 && min !== 0) {
+	 	if(min< 5 && min !== 0) {
 	 		Modal.alert('出价不能低于0.05元')
-	 	}else if(max> 200) {
-	 		Modal.alert('出价不能高于200元')
+	 	}else if(max > 9999) {
+	 		Modal.alert('出价不能高于9999元')
 	 	}
 	 	for (var i in keywords) {
 	 		if(keywords[i].checked == true) {
@@ -134,18 +134,19 @@ class KeywordslistView extends Component {
 	 		Modal.alert('请你添加关键词数量小于200')
 	 	}
 	 	addNewKeyword(this.state.adgroup_id, newData).then((result) => {
+	 		Modal.alert(JSON.stringify(result))
          	  if(result.length ===0) {
          	  	Modal.alert('请你选择关键词')
          	  }else if(min==0 && max==0) {
          	  	Modal.alert('请你填写出价范围')
+         	  }else{
+         	  	Modal.toast('设置成功！')
          	  }
            
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
 
             });  
-	 	
-	 	
 	 }
 	render () {
 		let keywords = {

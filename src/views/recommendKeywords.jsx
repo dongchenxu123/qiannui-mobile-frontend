@@ -10,7 +10,6 @@ class KeywordsView extends Component {
         super();
         this.state = {
             checked:false
-            
         }
     }
 	changeControl (index, value) {
@@ -18,11 +17,9 @@ class KeywordsView extends Component {
 	}
 
 	render () {
-		
 		var keywords= this.props.keywords.data;
 		var keywordObj = this.props.keywords.obj;
 		var lengths= keywords.length === 0 ? 0: keywords.length;
-		
 		return (
 			    <View>
 				<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
@@ -44,12 +41,12 @@ class KeywordsView extends Component {
 				    		keywords.map((item, index) =>{
 				    			return (
 				    				<View style={styles.cellItemList}>
+				    				   	<Checkbox onChange={this.changeControl.bind(this, item)}/>
 				    					<Text style={styles.arrow}>{keywordObj[item].word}</Text>
 								     	<Text style={styles.arrow}>{keywordObj[item].pv ? keywordObj[item].pv : 0}</Text>
 								     	<Text style={styles.arrow}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text>
 								     	<Text style={styles.arrow}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text>
-								     	<Checkbox onChange={this.changeControl.bind(this, item)}/>
-				    				</View>
+								     	</View>
 				    			)
 				    		})
 				    	}

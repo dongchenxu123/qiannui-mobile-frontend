@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 let {height} = Dimensions.get('window');
 
-
+import QN from 'QAP-SDK';
 class ListViewGroupView extends Component {
     constructor() {
         super();
@@ -19,6 +19,7 @@ class ListViewGroupView extends Component {
             status: ''
             
          };
+         
     }
     handleRefresh = (e) => {
         this.setState({
@@ -66,12 +67,9 @@ class ListViewGroupView extends Component {
 	            Modal.alert(JSON.stringify(error));
 	
 	        });
-
-	       
-    }
+}
     delpress (adgroup_id) {
     	deleteAdgroup(adgroup_id).then((res) => {
-    		Modal.alert(res)
     		var itemId= res.data.adgroup_id;
        		this.props.delItems(adgroup_id, itemId);
             
@@ -80,8 +78,18 @@ class ListViewGroupView extends Component {
 	
 	        });
 	}
-    getkeyWords (adgroup_id, campaign_id) 	{Navigator.push('qap://views/getKeywords.js?adgroup_id='+adgroup_id+'&campaign_id='+campaign_id);
-    }
+    getkeyWords (adgroup_id, campaign_id, title, imgage, online_status) {
+          QN.navigator.push({
+            url:'qap://views/getKeywords.js',
+            query:{adgroup_id:adgroup_id,
+                   campaign_id: campaign_id,
+                   name: title,
+                   imgage: imgage,
+                   online_status: online_status
+            }
+            
+        })
+	}
     renderItem (item, index){
     	var online_status= item.online_status;
     	var adgroup_id= item.adgroup_id;
@@ -89,6 +97,9 @@ class ListViewGroupView extends Component {
     	var itemStatus= item.online_status == 'online' ? '推广中' : '暂停中';
     	var newStatus= item.online_status == 'online' ? '暂停宝贝' : '推广宝贝';
     	var campaign_id= this.props.campaign_id;
+    	var title= item.title;
+    	var imgage= item.img_url;
+    	
     	return (
         	<View>
         		<View style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
@@ -102,11 +113,11 @@ class ListViewGroupView extends Component {
                 				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', color: 'red'}}>昨日点击: {item.report.click}</Text>
                 			</View>
                 			<View style={{flexDirection:'row'}}>
-                				<Button size='small' style={{color: '#3089dc'}} onPress={self.press.bind(self, adgroup_id, online_status)}>
+                				<Button size='small' type="secondary" onPress={self.press.bind(self, adgroup_id, online_status)}>
                 				{newStatus}
                 				</Button>
-                    			<Button size='small' style={{color: '#3089dc'}} onPress={self.delpress.bind(self, adgroup_id)}>删除推广</Button>
-                    			<Button size='small' style={{color: '#3089dc'}} onPress={self.getkeyWords.bind(self, adgroup_id, campaign_id)}>关键词</Button>
+                    			<Button size='small' type="secondary" onPress={self.delpress.bind(self, adgroup_id)}>删除推广</Button>
+                    			<Button size='small' type="secondary" onPress={self.getkeyWords.bind(self, adgroup_id, campaign_id, title, imgage, online_status )}>关键词</Button>
                 			</View>
                 		</View>
                 </View>

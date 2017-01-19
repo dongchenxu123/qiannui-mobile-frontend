@@ -152,7 +152,8 @@ export function deleteKeywords(campaign_id,keyword_ids){
                 keyword_ids:keyword_ids.join(',')
             }
         }).then((result)=>{
-            var data = [];
+        	
+        	var data = [];
             var error = checkAPIError(result);
 
             if(error == null)
@@ -162,7 +163,9 @@ export function deleteKeywords(campaign_id,keyword_ids){
                 {
                     data = deleteResult.keyword;
                 }
+                console.log(data)
                 return data;
+               
             }else{
                 return error;
             }
