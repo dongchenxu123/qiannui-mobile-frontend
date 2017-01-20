@@ -87,6 +87,7 @@ class CampaignsListView extends Component {
             var statusData = this.state.campaignData
            	this.setState({
    				campaignData: statusData
+   				
    			}) 
    		}, (error) => {
             Modal.alert(JSON.stringify(error));

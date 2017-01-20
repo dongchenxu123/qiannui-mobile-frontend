@@ -164,7 +164,7 @@ export function deleteKeywords(campaign_id,keyword_ids){
                 {
                     data = deleteResult.keyword;
                 }
-                console.log(data)
+               
                 return data;
                
             }else{
@@ -254,8 +254,8 @@ export function setKeywordPricevon(keywordid_prices){
      return QN.top.invoke({
             query: {
                  method:'taobao.simba.keywords.pricevon.set',
-                fields:'keywordid_prices',
-                keywordid_prices:JSON.stringify(keywordid_prices)
+                 fields:'keywordid_prices',
+                 keywordid_prices:JSON.stringify(keywordid_prices)
             }
         }).then((result)=>{
             var data = [];

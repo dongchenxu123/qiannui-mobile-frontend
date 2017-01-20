@@ -4,6 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Grid, Col, Image, Modal, TouchableHighlight, Navigator, Button, ScrollView, ListView, Dimensions, Checkbox} from 'nuke';
 import { getAuthSign, getallKeywords, deleteKeywords } from '../api'
 import QN from 'QAP-SDK';
+import _ from 'lodash';
 let {height} = Dimensions.get('window');
 class GetKeywordsView extends Component {
 	constructor() {
@@ -62,23 +63,43 @@ class GetKeywordsView extends Component {
 		})
 		Modal.alert(JSON.stringify(this.state.keyobj))
 	}
-	delkeywords () {
+    delkeywords () {
 		var keyword_ids=[];
 		var keyobj= this.state.keyobj;
 		var campaign_id= this.state.dataobj.campaign_id;
-		for (var i in keyobj) {
-	 		if(keyobj[i].checked == true) {
-	 			keyword_ids.push(keyobj[i].keyword_id)
-	 		}
-	 	}
+		var keyId= this.state.keyId;
+		var newkeyid= [];
+		for (var i=0; i<keyId.length; i++) {
+			if(keyobj[i].checked == true) {
+				idx= i;
+				keyword_ids.push(keyobj[i].keyword_id);
+			} 
+		}
+//		this.setState({
+//			keyId: newkeyid
+//		})
 		deleteKeywords(campaign_id, keyword_ids).then((result) => {
 	 		Modal.alert(JSON.stringify(result))
+	 		
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
 
             });
-		
-		
+	}
+	highPrice () {
+		Modal.prompt('请填写价格',[ 
+		    {
+		        onPress:(result)=>{
+		        	Modal.alert(JSON.stringify(result))
+		            
+		        },
+		        text:"确认"
+		    },
+		    {
+		        onPress:()=>{console.log('点击了取消')},
+		        text:"取消"
+		    }
+ 		]);
 	}
 	render () {
 		var adgroup_id= this.state.dataobj.adgroup_id;
@@ -104,7 +125,7 @@ class GetKeywordsView extends Component {
 	        				<Button size='small'  onPress={this.showkeywordslist.bind(this, adgroup_id)} type="secondary">
 	        				添加
 	        				</Button>
-	        				<Button size='small' type="secondary">
+	        				<Button size='small' type="secondary" onPress={this.highPrice.bind(this)}>
 	        				提价
 	        				</Button>
 	            			<Button size='small' type="secondary">降价</Button>
