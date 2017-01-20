@@ -1,7 +1,7 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text, Link, Grid, Col, Image, Modal, ScrollView, Button, Navigator, TouchableHighlight } from 'nuke';
+import {View, Text, Link, Image, Modal, ScrollView, Button, Navigator, TouchableHighlight } from 'nuke';
 import QN from 'QAP-SDK';
 import {getCampaign, getAuthSign, setBuget, getArea, setStatus} from '../../api';
 import _ from 'lodash';

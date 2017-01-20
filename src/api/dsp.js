@@ -18,6 +18,14 @@ app.telephone = true; //标记淘外引流页面 是否弹出手机号窗口
 app.account_id = '';
 export function checkIssetDspUser(){
     return new Promise((resolve, reject) => {
+
+        // 1 先从缓冲里面取
+        //2 没有则去检查或者创建 
+        // 3 创建成功后需要放入缓存
+        //4 返回userinfo 数据
+
+
+
             getLocalstoreUser().then((res)=>{
                 app.account_id  = res.taobao_user_id;
              QN.fetch(DateAPi.httphost+'/checkUser', {
@@ -57,47 +65,34 @@ export function checkIssetDspUser(){
 /*
 * 获取dsp 用户余额 cpc type = 1;  日限额: type= 2 ； dsp推广中的宝贝 type =3
 */
-export function getDspUserMarket(type){
+export function getDspUserMarket(user_id,type){
     return new Promise((resolve, reject) => {
-
-         checkIssetDspUser().then((value) => {
+        QN.fetch(DateAPi.httphost+'/getUser', {
           
-            if(value.user_id){
-
-                QN.fetch(DateAPi.httphost+'/getUser', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:"user_id="+ value.user_id+'&type='+type
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                  resolve(data);    
-                })
-                .catch(error => {
-                    Modal.toast(JSON.stringify(error));
-                });
-
-
-
-            }
-           
-          });
+            method: 'POST',
+            mode: 'cors',
+            dataType: 'json',
+            body:"user_id="+user_id+'&type='+type
+        })
+        .then(response => {     
+            return response.json(); // => 返回一个 `Promise` 对象
+        })
+        .then(data => {
+           resolve(data);    
+        })
+        .catch(error => {
+           resolve(error);
+        });
     });
 }
 
 /*
 * 检测dsp用户是否添加了手机号  dsp 用户基本信息 
 */
-export function getUserInfo(tel,type){
+export function getDspUserInfo(user_id,tel){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
                 var param = {
-                    user_id:value.user_id
+                    user_id:user_id
                 };
                 if(tel)
                 {
@@ -115,16 +110,13 @@ export function getUserInfo(tel,type){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
+
                   resolve(data);                
                 })
                 .catch(error => {
-                    Modal.toast(JSON.stringify(error));
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }    
+                    resolve(error);
+                });      
           });
-    });
 }
 
 /*
@@ -210,7 +202,7 @@ export function setItemsOnline(items){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                  resolve(JSON.parse(data));                
+                  resolve(data);                
                 })
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
@@ -245,7 +237,7 @@ export function setItemsOffline(items){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                  resolve(JSON.parse(data));                
+                  resolve(data);                
                 })
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
@@ -280,7 +272,7 @@ export function setCpc(cpc){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                    resolve(JSON.parse(data));
+                    resolve(data);
                 })
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
@@ -317,7 +309,7 @@ export function setBudget(budget){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                    resolve(JSON.parse(data));
+                    resolve(data);
                 })
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
@@ -351,10 +343,10 @@ export function getTodayReport(){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                    resolve(JSON.parse(data));
+                    resolve(data);
                 })
                 .catch(error => {
-                    Modal.toast(JSON.stringify(error));
+                   resolve(error);;
                 });
             }else{
                  Modal.toast("对不起，您还不是dsp注册用户");
@@ -391,10 +383,10 @@ export function getHistoryReport(start_date,end_date){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                    resolve(JSON.parse(data));
+                    resolve(data);
                 })
                 .catch(error => {
-                    Modal.toast(JSON.stringify(error));
+                   resolve(error);
                 });
             }else{
                  Modal.toast("对不起，您还不是dsp注册用户");
@@ -462,10 +454,10 @@ export function getRechargeTempalte(){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                    resolve(JSON.parse(data));
+                    resolve(data);
                 })
                 .catch(error => {
-                    Modal.toast(JSON.stringify(error));
+                    resolve(error);
                 });
             }else{
                  Modal.toast("对不起，您还不是dsp注册用户");

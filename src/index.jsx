@@ -6,6 +6,7 @@ import {browser, browserActive, appCont, appContActive, home, homeActive, my, my
 import HealthyView from './views/healthy';
 import UserView from './views/user';
 import CampaignsListView from './views/campaigns/campaignsList';
+import Drainage from './views/drainage';
 import LinkUs from './views/linkus';
 
 
@@ -192,12 +193,12 @@ let App = class NukeDemoIndex extends Component {
                       >
                       <UserView></UserView>
                     </Tabbar.Item>
-                   {/* <Tabbar.Item
+                   { <Tabbar.Item
                       title="淘外引流"
                       tabKey="m3"
                       icon={{src: shareLight, selected: shareLightActive}}>
-                      {this._renderContent('#783E33', 'Red Tab 大家好我是红色的区域' + this.state.notifCount, this.state.notifCount)}
-                    </Tabbar.Item>*/}
+                     <Drainage></Drainage>
+                    </Tabbar.Item>}
                     <Tabbar.Item
                       renderAsOriginal
                       title="计划"
