@@ -38,7 +38,7 @@ export function getOnsaleItem(){
 
 }
 
-function getOnsaleItem_sign (dataNum){  
+function getOnsaleItem_sign(dataNum){  
      var data= [];
      var page_size = 2;
      var len = Math.ceil(dataNum / page_size);

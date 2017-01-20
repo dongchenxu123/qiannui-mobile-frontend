@@ -316,9 +316,7 @@ class HealthyResult extends Component{
         })
     }
     renderProductItem(item, index){
-        console.log(JSON.stringify(item));
         return (
-            <View>
                 <View style={style.cellItemList} >
                         <Image source={{uri: item.img_url}} style={{width:'180rem',height:'180rem'}}/>
                         <View style={style.itemTextList}>
@@ -328,8 +326,7 @@ class HealthyResult extends Component{
                                 <Button size='small'  type="secondary">查看</Button>
                             </View>
                         </View>
-                </View>    
-            </View>      
+                </View>       
             );
     }
     render(){
@@ -343,7 +340,7 @@ class HealthyResult extends Component{
 
                    { nodata == true ? <View>Loding...</View>:'' } 
   
-                    <View>
+                    <View style={{marginTop:"-100rem"}}>
                     {
                         self.state.qscoreLowerCount == 0 ? '':
                             <View style={style.item}>
@@ -405,12 +402,12 @@ const style={
     },
     text:{
         padding:'20rem 40rem',
-        flex:15
+        flex:11
     },
     button:{
         flex: 4,
-        padding:'20rem 40rem'
-      
+        padding:'20rem 40rem',
+        marginRight:'40rem'      
     },
      listContainer:{
         flex:1,

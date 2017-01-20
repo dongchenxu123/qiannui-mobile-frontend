@@ -14,8 +14,9 @@
     "build": "./node_modules/.bin/gulp build"
   },
   "dependencies": {
-    "nuke": "0.1.x",
     "QAP-SDK": "*",
+    "lodash": "^4.17.4",
+    "nuke": "0.1.x",
     "nuke-mounter": "0.1.x"
   },
   "devDependencies": {

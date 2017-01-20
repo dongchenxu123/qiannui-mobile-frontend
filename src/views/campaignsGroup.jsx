@@ -1,7 +1,7 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text, Link, Grid, Col, Image, Button, Modal, Dimensions, Navigator} from 'nuke';
+import {View, Text, Link, Image, Button, Modal, Dimensions, Navigator} from 'nuke';
 import { ScrollView} from 'nuke-components';
 import QN from 'QAP-SDK';
 import { getAdgroupsByCid, getAuthSign, deleteAdgroup } from '../api'

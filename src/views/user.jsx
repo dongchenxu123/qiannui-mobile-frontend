@@ -12,9 +12,7 @@ import {
     Text,
     Image,
     TouchableHighlight,
-    ScrollView,
-    Grid,
-    Col
+    ScrollView
 } from 'nuke-components';
 import QN from 'QAP-SDK';
 import {getAuthSign, getSellerUser, UserInfo, ProfileReport, WuxianBalance} from '../api';
