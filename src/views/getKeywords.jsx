@@ -1,7 +1,7 @@
 'use strict';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text, Link, Grid, Col, Image, Modal, TouchableHighlight, Navigator, Button, ScrollView, ListView, Dimensions, Checkbox} from 'nuke';
+import {View, Text,Input,TextInput,Image, Modal, Dialog, TouchableHighlight, Navigator, Button, ScrollView, ListView, Dimensions, Checkbox} from 'nuke';
 import { getAuthSign, getallKeywords, deleteKeywords } from '../api'
 import QN from 'QAP-SDK';
 import _ from 'lodash';
@@ -11,26 +11,26 @@ class GetKeywordsView extends Component {
 		super()
 		this.state={
 			subway_token: '',
-			keyWordsData: [],
 			dataobj: {},
-			keyId: [],
-			keyobj: {},
-            keywordList:[]
+            keywordList:[],
 		}
+
+        this.keywordPrice = 0;
 	} 
 	componentDidMount () {
 		var URL= document.URL;
-		let obj= QN.uri.parseQueryString(URL.split('?')[1]);
+        let obj= QN.uri.parseQueryString(URL.split('?')[1]);
         this.setState({
-        	dataobj: obj
+            dataobj: obj
         })
         var adgroup_id= this.state.dataobj.adgroup_id;
-	    var campaign_id= this.state.dataobj.campaign_id;
-	     getAuthSign().then((result) => {
+        var campaign_id= this.state.dataobj.campaign_id;
+
+	   getAuthSign().then((result) => {
 	      	this.setState({
 	                  subway_token: result
 	             })
-	          getallKeywords(this.state.subway_token, adgroup_id, campaign_id).then((result) => {
+	        getallKeywords(this.state.subway_token, adgroup_id, campaign_id).then((result) => {
                     if(result.length > 0){
                         this.setState({keywordList:result});
                     }
@@ -39,8 +39,7 @@ class GetKeywordsView extends Component {
 		            });  
 	         }, (error) => {
 	              Modal.toast(JSON.stringify(error));
-	          });  
-        
+	          });      
 	}
 	showkeywordslist (adgroup_id) {
 		Navigator.push('qap://views/keywordslist.js?adgroup_id='+adgroup_id);
@@ -101,8 +100,10 @@ class GetKeywordsView extends Component {
     ]);
         
 	}
-	highPrice () {
-		Modal.prompt('请填写价格',[ 
+	changePrice () {
+
+         this.refs.modal.show();
+		/*Modal.prompt('请填写关键词出价',[ 
 		    {
 		        onPress:(result)=>{
 		        	Modal.alert(JSON.stringify(result))
@@ -114,16 +115,41 @@ class GetKeywordsView extends Component {
 		        onPress:()=>{console.log('点击了取消')},
 		        text:"取消"
 		    }
- 		]);
+ 		]);*/
 	}
+    hideModal(){
+          this.refs.modal.hide();
+    }
+    checkPrice(){
+        var price = this.keywordPrice;
+        var re =/^\d+(\.\d+)?$/;  
+
+        if(price * 100  <5   || price * 100  > 10000)
+           {
+                Modal.toast('填写价格需要在0.05元 - 100元之间');
+                return;
+            }
+
+         if(!re.test(price)) {
+             Modal.toast('关键词价格必须是正数');
+            return;
+        }   
+
+        return price;
+    }
+    submitPrice(){
+        var price = this.checkPrice();
+        if(price){
+              Modal.alert('修改出价成功');
+        }
+      
+    }
 	render () {
 		var adgroup_id= this.state.dataobj.adgroup_id;
 		var title= this.state.dataobj.name;
 		var imgage= this.state.dataobj.imgage;
 		var online_status= this.state.dataobj.online_status;
 		var itemStatus= online_status == 'online' ? '推广中' : '暂停中';
-		var keyWordsData= this.state.keyId.length=== 0 ? '' : this.state.keyId;
-		/*var keyobj= this.state.keyobj == null ? '' : this.state.keyobj*/
 		return (
 			<View>
 			     <View style={styles.cellItemList}>
@@ -140,10 +166,9 @@ class GetKeywordsView extends Component {
 	        				<Button size='small'  onPress={this.showkeywordslist.bind(this, adgroup_id)} type="secondary">
 	        				添加
 	        				</Button>
-	        				<Button size='small' type="secondary" onPress={this.highPrice.bind(this)}>
-	        				提价
+	        				<Button size='small' type="secondary" onPress={this.changePrice.bind(this)}>
+	        				调价
 	        				</Button>
-	            			<Button size='small' type="secondary">降价</Button>
 	            			<Button size='small' type="secondary" onPress={this.delkeywords.bind(this)}>删除</Button>
         			</View>
         			</View>
@@ -159,7 +184,7 @@ class GetKeywordsView extends Component {
 			        	<Text style={styles.arrow}>质量分</Text>
 			        </View>
 			        { this.state.keywordList.length == 0 ? <Text>您还没有添加关键词</Text> : this.state.keywordList.map((item, index) =>{
-			        	  return (
+			        	return (
 			        			<View style={styles.cellItemList}>
 			        			    <Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/>
 									<Text style={styles.arrows}>{item.word}</Text>
@@ -170,10 +195,22 @@ class GetKeywordsView extends Component {
 									<Text style={styles.arrows}>{item.qscore}</Text>
 								</View>
 			        		)
-			        	})
-			        	
+			        	})   	
 			        }
 			     </ScrollView>
+
+                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow} onHide={this.onHide}>
+                   <View>
+                       <Text style={{padding:'20rem'}}>修改关键词出价</Text>
+                   </View>
+                    <View style={styles.body}>
+                        <Input keyboardType="numbers-and-punctuation"  onBlur={(value)=>{this.keywordPrice =  value.target.attr.value;}}/>   
+                    </View>
+                    <View style={styles.footer}>
+                        <Button type='secondary' size="small" style={{paddingLeft:'20rem'}} onPress={this.hideModal.bind(this)}> 取消</Button>
+                        <Button type='secondary' size="small" style={{paddingRight:'20rem'}} onPress={this.submitPrice.bind(this,value)}> 确定</Button>
+                    </View>
+                </Dialog>
 			</View>
 		)
 	}
@@ -205,6 +242,55 @@ const styles={
   arrow: {
   	flex: 3
   	
+  },
+
+  wrapper: {
+    height: height,
+    paddingLeft: '24rem',
+    paddingRight: '24rem',
+    paddingTop: '24rem'
+  },
+  click: {
+    height: '100rem',
+    lineHeight: '100rem',
+    textAlign: 'center',
+    borderWidth: '1rem',
+    borderStyle: 'solid',
+    borderColor: '#ccc'
+  },
+  modalStyle: {
+    width: '640rem',
+    height: '340rem'
+  },
+  body: {
+    padding:'20rem'
+  },
+  footer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  
+    alignItems:"center",
+    flexDirection:"row",
+    display: 'flex',
+    margin:0
+  },
+  close: {
+    borderWidth: '1rem',
+    borderStyle: 'solid',
+    borderColor: '#ccc',
+    position: 'absolute',
+    top: '-18rem',
+    right: '-18rem',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '40rem',
+    height: '40rem',
+    borderRadius: '20rem',
+    backgroundColor: '#ffffff'
+  },
+  closeText: {
+    fontSize: '28rem',
+    color: '#000000'
   }
 }
 

@@ -28,15 +28,13 @@ class PlatformView extends Component {
 				datas: res
 			})
 			 res.insitePC = res.outsitePC =  res.outsiteMO = res.insiteMO = res.outsiteNosearchPC = res.insiteNosearchPC = '';
-			 if(res.search_channels.number)
-                {
+			 if(res.search_channels.number){
 	                res.insitePC =  _.indexOf(res.search_channels.number,1) >= 0 ? true: false;
 	                res.outsitePC = _.intersection(res.search_channels.number,[2,4]).length >0 ? true: false;
 	                res.outsiteMO = _.indexOf(res.search_channels.number,16) >=0 ? true : false;
 	                res.insiteMO = _.indexOf(res.search_channels.number,8) >=0 ? true : false;
                 }
-            if(res.nonsearch_channels.number)
-                {
+            if(res.nonsearch_channels.number){
                     res.outsiteNosearchPC = _.intersection(res.nonsearch_channels.number,[2,4]).length >0 ? true : false;
                     res.insiteNosearchPC = _.indexOf(res.nonsearch_channels.number,1) >=0 ? true : false;
                 }
@@ -46,9 +44,7 @@ class PlatformView extends Component {
                 			sellerSatus: true
                 		})
                 	}
-                })
-                // 
-               
+                })      
         }, (error) => {
             Modal.alert(JSON.stringify(error));
 
@@ -115,8 +111,6 @@ class PlatformView extends Component {
                 Modal.toast(error);
             });
          }
-        console.log(JSON.stringify(this.state.datas));
-
     }
     changeValue(value,type){
         
@@ -153,7 +147,6 @@ class PlatformView extends Component {
                 this.setState({
                     datas: aa
                 });
-        console.log(JSON.stringify(this.state.datas));
     }
     render() {
   		var mobile_discount= this.state.datas == null ? '' : this.state.datas.mobile_discount;

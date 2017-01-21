@@ -131,14 +131,14 @@ class KeywordslistView extends Component {
 	 	}
 	 	var newData= this.formatNewword(res,2,min,max);
 	 	if(res.length >200) {
-	 		Modal.alert('请你添加关键词数量小于200')
+	 		Modal.alert('添加关键词数量不得大于200')
 	 	}
 	 	addNewKeyword(this.state.adgroup_id, newData).then((result) => {
 	 		Modal.alert(JSON.stringify(result))
          	  if(result.length ===0) {
-         	  	Modal.alert('请你选择关键词')
+         	  	Modal.alert('请选择关键词')
          	  }else if(min==0 && max==0) {
-         	  	Modal.alert('请你填写出价范围')
+         	  	Modal.alert('请填写出价范围')
          	  }else{
          	  	Modal.toast('设置成功！')
          	  }
