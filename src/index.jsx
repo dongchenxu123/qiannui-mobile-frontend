@@ -52,26 +52,6 @@ const app = {
     itemArrow:{flex: 1, width:'18px', height:'18px', }
 }
 
-class Gray extends Component {
-    press() {
-        this.changeTo('m3')
-    }
-
-    onFocus(status) {
-      console.log('gray:', status)
-    }
-
-    render() {
-        return (
-            <View style={[styles.tabContent, {backgroundColor: '#888888'}]}>
-                <Text style={styles.text}>Blue Tab 大家好我是nv色的区域</Text>
-                <Button onPress={this.press.bind(this)} type="normal">切换为m3</Button>
-            </View>
-        )
-    }
-}
-
-
 let App = class NukeDemoIndex extends Component {
     constructor() {
         super();

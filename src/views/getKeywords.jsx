@@ -52,8 +52,7 @@ class GetKeywordsView extends Component {
         this.setState({keywordList:newkeyword});	
 	}
     delkeywords () {
-
-        Modal.confirm('确定删除所选关键词吗？',[ 
+	Modal.confirm('确定删除所选关键词吗？',[ 
         {
             onPress:()=>{
                 var keyword_ids=[];
