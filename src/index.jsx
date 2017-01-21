@@ -165,7 +165,7 @@ let App = class NukeDemoIndex extends Component {
     other() {
         this.setState({test: 999})
     }
-
+    
     render() {
       let self = this;
           const renderTpl = <Button type="normal">m2</Button>
@@ -173,7 +173,7 @@ let App = class NukeDemoIndex extends Component {
             <View style={styles.container}>
                
                 <View style={styles.view}>
-                <Tabbar asContainer={false} iconBar={true} navTop={false} navStyle={{active: app.activeBorder, inactive: app.inactiveBorder}} activeKey={this.state.activeKey} onChange={this.onChange.bind(this)} customChange="changeTo" customFocus="getFocus">
+                <Tabbar asContainer={false} iconBar={true} navTop={false} navStyle={{active: app.activeBorder, inactive: app.inactiveBorder}} activeKey={this.state.activeKey} onChange={this.onChange.bind(this)} customChange="changeTo" customFocus="getFocus" embed={true}>
                   <Tabbar.Item
                         renderAsOriginal
                         title="健康诊断"
@@ -186,11 +186,11 @@ let App = class NukeDemoIndex extends Component {
                     renderAsOriginal
                         title="账户"
                         tabKey="m2"
-                           icon={{src: home,selected:homeActive}}
+                        icon={{src: home,selected:homeActive}}
                       >
-                      <UserView></UserView>
+                     <UserView />
                     </Tabbar.Item>
-                   { <Tabbar.Item
+                    <Tabbar.Item
                       title="淘外引流"
                       tabKey="m3"
                       icon={{src: shareLight, selected: shareLightActive}}>

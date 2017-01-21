@@ -61,6 +61,7 @@ function storeSubwayToken(val){
 
 
 export function localstoreUser(obj){
+	Modal.alert(JSON.stringify(obj))
     return QN.localstore.set({
         query: {userInfo:obj},
         success(result) {

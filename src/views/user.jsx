@@ -15,6 +15,7 @@ import {
     ScrollView
 } from 'nuke-components';
 import QN from 'QAP-SDK';
+import {mount} from 'nuke-mounter';
 import {getAuthSign, getSellerUser, UserInfo, ProfileReport, WuxianBalance} from '../api';
 import {yesterday, threeMonthAgo} from '../api/date';
 import ListViewCommon from './listViewCommon';
@@ -99,6 +100,7 @@ class User extends Component {
         this.setState({active: 0})
     }
     componentDidMount() {
+    	console.log(123)
         getAuthSign().then((result) => {
             this.setState({subway_token: result});
             ProfileReport(this.state.subway_token).then((result) => {
@@ -395,5 +397,5 @@ const styles = {
         paddingBottom: '40rem'
     }
 };
-
+mount(<User />, 'body');
 export default User
