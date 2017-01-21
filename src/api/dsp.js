@@ -172,107 +172,89 @@ export function getDspOnsaleItems(q){
                              url:'https://item.taobao.com/item.htm?id='+item.get('num_iid')
                             };
 */
-export function setItemsOnline(items){
+export function setItemsOnline(user_id,items){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
-                var param = {
-                    user_id:value.user_id,
-                    items:items
-                };
-                
-                QN.fetch(DateAPi.httphost+'/setItemsOnline', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:QN.uri.toQueryString(param)
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                  resolve(data);                
-                })
-                .catch(error => {
-                    Modal.toast(JSON.stringify(error));
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }    
-          });
+ 
+            var param = {
+                user_id:user_id,
+                items:items
+                }
+            
+            QN.fetch(DateAPi.httphost+'/setItemsOnline', {
+              
+                method: 'POST',
+                mode: 'cors',
+                dataType: 'json',
+                body:QN.uri.toQueryString(param)
+            })
+            .then(response => {     
+                return response.json(); // => 返回一个 `Promise` 对象
+            })
+            .then(data => {
+              resolve(data);                
+            })
+            .catch(error => {
+                Modal.toast(JSON.stringify(error));
+            });         
     });
 }
 
 /*
 * items  逗号隔开的 num_iid 值的数组
 */
-export function setItemsOffline(items){
+export function setItemsOffline(user_id,items){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-        	Modal.alert(JSON.stringify(value))
-            if(value.user_id){
-                var param = {
-                    user_id:value.user_id,
-                    item_ids:items
-                };
-                
-                QN.fetch(DateAPi.httphost+'/setItemsOffline', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:QN.uri.toQueryString(param)
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                  resolve(data);                
-                })
-                .catch(error => {
-                    Modal.toast(JSON.stringify(error));
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }    
-          });
+		var param = {
+                user_id:user_id,
+                item_ids:items
+                }
+            QN.fetch(DateAPi.httphost+'/setItemsOffline', {
+              
+                method: 'POST',
+                mode: 'cors',
+                dataType: 'json',
+                body:QN.uri.toQueryString(param)
+            })
+            .then(response => {     
+                return response.json(); // => 返回一个 `Promise` 对象
+            })
+            .then(data => {
+              resolve(data);                
+            })
+            .catch(error => {
+                Modal.toast(JSON.stringify(error));
+            });
+
     });
 }
 
 /*
 * 设置cpc
 */
-export function setCpc(cpc){
+export function setCpc(user_id,cpc){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
-                var param = {
-                    user_id:value.user_id,
-                    cpc:cpc
-                };
-                
-                QN.fetch(DateAPi.httphost+'/setCpc', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:QN.uri.toQueryString(param)
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(error => {
-                    Modal.toast(JSON.stringify(error));
-                });
 
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }    
-       });
+            var param = {
+                user_id:user_id,
+                cpc:cpc
+            };
+            
+            QN.fetch(DateAPi.httphost+'/setCpc', {
+              
+                method: 'POST',
+                mode: 'cors',
+                dataType: 'json',
+                body:QN.uri.toQueryString(param)
+            })
+            .then(response => {     
+                return response.json(); // => 返回一个 `Promise` 对象
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                Modal.toast(JSON.stringify(error));
+            });            
     });
 }
 
@@ -280,69 +262,58 @@ export function setCpc(cpc){
 /*
 * 设置cpc
 */
-export function setBudget(budget){
+export function setBudget(user_id,budget){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
-                var param = {
-                    user_id:value.user_id,
-                    budget:budget
-                };
-                
-                QN.fetch(DateAPi.httphost+'/setBudget', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:QN.uri.toQueryString(param)
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(error => {
-                    Modal.toast(JSON.stringify(error));
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }     
-        });
+      
+            var param = {
+                user_id:user_id,
+                budget:budget
+            };
+            
+            QN.fetch(DateAPi.httphost+'/setBudget', {
+              
+                method: 'POST',
+                mode: 'cors',
+                dataType: 'json',
+                body:QN.uri.toQueryString(param)
+            })
+            .then(response => {     
+                return response.json(); // => 返回一个 `Promise` 对象
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                Modal.toast(JSON.stringify(error));
+            });
     });
 } 
 
 /*
 * 获取今天报表
 */
-export function getTodayReport(){
+export function getTodayReport(user_id){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
-                var param = {
-                    user_id:value.user_id
-                };
-                
-                QN.fetch(DateAPi.httphost+'/getTodayReport', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:QN.uri.toQueryString(param)
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(error => {
-                   resolve(error);;
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }     
-        });
+            var param = {
+                user_id:user_id
+            };
+            
+            QN.fetch(DateAPi.httphost+'/getTodayReport', {
+              
+                method: 'POST',
+                mode: 'cors',
+                dataType: 'json',
+                body:QN.uri.toQueryString(param)
+            })
+            .then(response => {     
+                return response.json(); // => 返回一个 `Promise` 对象
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+               resolve(error);;
+            });
     });
 }
 
@@ -350,39 +321,34 @@ export function getTodayReport(){
 /*
 * 获取历史报表
 */
-export function getHistoryReport(start_date,end_date){
+export function getHistoryReport(user_id,start_date,end_date){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
+      
             start_date = start_date !== undefined ? start_date : DateAPi.formatDate(DateAPi.lastWeek);
             end_date = end_date !== undefined ? end_date :DateAPi.formatDate(DateAPi.yesterday);
+    
+            var param = {
+                user_id:user_id,
+                start_date:start_date,
+                end_date:end_date
+            };
             
-            if(value.user_id){
-                var param = {
-                    user_id:value.user_id,
-                    start_date:start_date,
-                    end_date:end_date
-                };
-                
-                QN.fetch(DateAPi.httphost+'/getDspReport', {
-                  
-                    method: 'POST',
-                    mode: 'cors',
-                    dataType: 'json',
-                    body:QN.uri.toQueryString(param)
-                })
-                .then(response => {     
-                    return response.json(); // => 返回一个 `Promise` 对象
-                })
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(error => {
-                   resolve(error);
-                });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }     
-        });
+            QN.fetch(DateAPi.httphost+'/getDspReport', {
+              
+                method: 'POST',
+                mode: 'cors',
+                dataType: 'json',
+                body:QN.uri.toQueryString(param)
+            })
+            .then(response => {     
+                return response.json(); // => 返回一个 `Promise` 对象
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+               resolve(error);
+            });
     });
 }
 
@@ -390,12 +356,11 @@ export function getHistoryReport(start_date,end_date){
 /*
 * 获取直通车 与dsp 对比报表
 */
-export function contractRpt(subway_token, start_date= null, end_date= null){
+export function contractRpt(user_id,subway_token, start_date= null, end_date= null){
     start_date = start_date != null ? start_date :DateAPi.formatDate(DateAPi.lastWeek);
     end_date = end_date != null ? end_date : DateAPi.formatDate(DateAPi.yesterday);
 
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
              Async.parallel({
                  baserpt:function(callback){
                     getProfileReport(subway_token,start_date,end_date).then((result) => {
@@ -418,7 +383,6 @@ export function contractRpt(subway_token, start_date= null, end_date= null){
                     resolve('');
                 }
              });
-        });
     });
 
 }
@@ -426,10 +390,8 @@ export function contractRpt(subway_token, start_date= null, end_date= null){
 /*
 * 获取充值模板
 */
-export function getRechargeTempalte(){
+export function getRechargeTempalte(user_id){
     return new Promise((resolve, reject) => {
-        checkIssetDspUser.then((value) => {
-            if(value.user_id){
                 var param = {
                     user_id:value.user_id
                 };
@@ -450,10 +412,6 @@ export function getRechargeTempalte(){
                 .catch(error => {
                     resolve(error);
                 });
-            }else{
-                 Modal.toast("对不起，您还不是dsp注册用户");
-            }     
-        });
     });
 }
 
@@ -484,9 +442,8 @@ export function getFeedback(content){
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
                 });  
-         });
-                
-        });
+         });          
+    });
 }
 
 /*

@@ -14,7 +14,8 @@ class GetKeywordsView extends Component {
 			keyWordsData: [],
 			dataobj: {},
 			keyId: [],
-			keyobj: {}
+			keyobj: {},
+            keywordList:[]
 		}
 	} 
 	componentDidMount () {
@@ -30,25 +31,14 @@ class GetKeywordsView extends Component {
 	                  subway_token: result
 	             })
 	          getallKeywords(this.state.subway_token, adgroup_id, campaign_id).then((result) => {
-	            var keyobj={};
-				var keyId=[]
-				for (var i=0; i< result.length; i++) {
-					keyobj[i] = result[i];
-					keyobj[i]['checked'] = false;
-					keyId.push(i);
-				}
-	            this.setState({
-	            	keyobj: keyobj,
-	            	keyId: keyId
-	            })
-	            
+                    if(result.length > 0){
+                        this.setState({keywordList:result});
+                    }
 		       }, (error) => {
-		                Modal.alert(JSON.stringify(error));
-		
+		                Modal.toast(JSON.stringify(error));
 		            });  
 	         }, (error) => {
-	              Modal.alert(JSON.stringify(error));
-	
+	              Modal.toast(JSON.stringify(error));
 	          });  
         
 	}
@@ -56,36 +46,59 @@ class GetKeywordsView extends Component {
 		Navigator.push('qap://views/keywordslist.js?adgroup_id='+adgroup_id);
 	}
 	itemCheck (item, value) {
-		let changeItem = Object.assign({}, this.state.keyobj[item], {checked: value})
-		let newKeywords = Object.assign({},this.state.keyobj, {[item]: changeItem});
-		this.setState({
-			keyobj: newKeywords
-		})
-		Modal.alert(JSON.stringify(this.state.keyobj))
+      
+        var index = _.findIndex( this.state.keywordList, function(o) { return o.word == item.word; });
+        this.state.keywordList[index].checked = (value == true ? 1 : 0);
+        let newkeyword = this.state.keywordList;
+        this.setState({keywordList:newkeyword});	
 	}
     delkeywords () {
-		var keyword_ids=[];
-		var keyobj= this.state.keyobj;
-		var campaign_id= this.state.dataobj.campaign_id;
-		var keyId= this.state.keyId;
-		var newkeyid= [];
-		for (var i=0; i<keyId.length; i++) {
-			if(keyobj[i].checked == true) {
-				idx= i;
-				keyword_ids.push(keyobj[i].keyword_id);
-			} 
-		}
-//		var evens = _.remove(keyId, function(n) {
-//		  return n.checked == true;
-//		});
-//		this.setState({
-//			keyId: newkeyid
-//		})
-		deleteKeywords(campaign_id, keyword_ids).then((result) => {
-	 		}, (error) => {
-                Modal.alert(JSON.stringify(error));
+	Modal.confirm('确定删除所选关键词吗？',[ 
+        {
+            onPress:()=>{
+                var keyword_ids=[];
+                var len = this.state.keywordList.length;
 
-            });
+                this.state.keywordList.map((v,i)=>{
+                    if(v.checked != undefined && v.checked == 1){
+                        keyword_ids.push(v.keyword_id);
+                    }
+                });
+              
+            
+                deleteKeywords(this.state.dataobj.campaign_id, keyword_ids).then((result) => {
+                        var self = this;
+
+                       if(result.length > 0){
+
+                            Modal.toast('删除关键词成功');
+                            var lastKeyword = [];
+                            result.map((v,i)=>{
+                                lastKeyword = _.remove(self.state.keywordList, function(n) {
+                                      return n.keyword_id == v.keyword_id;
+                                    });  
+                            })
+                            var  datas = self.state.keywordList;
+                   
+                            self.setState({keywordList:datas});                             
+                        }
+                    
+                    }, (error) => {
+                        Modal.alert(JSON.stringify(error));
+
+                    });
+
+            },
+            text:"确定"
+        },
+        {
+            onPress:()=>{
+
+            },
+            text:"取消"
+        }
+    ]);
+        
 	}
 	highPrice () {
 		Modal.prompt('请填写价格',[ 
@@ -109,7 +122,7 @@ class GetKeywordsView extends Component {
 		var online_status= this.state.dataobj.online_status;
 		var itemStatus= online_status == 'online' ? '推广中' : '暂停中';
 		var keyWordsData= this.state.keyId.length=== 0 ? '' : this.state.keyId;
-		var keyobj= this.state.keyobj == null ? '' : this.state.keyobj
+		/*var keyobj= this.state.keyobj == null ? '' : this.state.keyobj*/
 		return (
 			<View>
 			     <View style={styles.cellItemList}>
@@ -120,7 +133,7 @@ class GetKeywordsView extends Component {
             				<Text style={{color: '#3089dc'}}>
             					状态: {itemStatus}
             				</Text>
-            				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', color: 'red'}}>已添加关键词: {keyWordsData.length} 个</Text>
+            				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', color: 'red'}}>已添加关键词: {this.state.keywordList.length} 个</Text>
                 		</View>
             			<View style={{flexDirection:'row', marginTop: '10rem', marginLeft: '10rem'}}>
 	        				<Button size='small'  onPress={this.showkeywordslist.bind(this, adgroup_id)} type="secondary">
@@ -144,16 +157,16 @@ class GetKeywordsView extends Component {
 			        	<Text style={styles.arrow}>成交</Text>
 			        	<Text style={styles.arrow}>质量分</Text>
 			        </View>
-			        { this.state.keyId.length == 0 ? <Text>您还没有添加关键词</Text> : this.state.keyId.map((item, index) =>{
+			        { this.state.keywordList.length == 0 ? <Text>您还没有添加关键词</Text> : this.state.keywordList.map((item, index) =>{
 			        	  return (
 			        			<View style={styles.cellItemList}>
-			        			    <Checkbox onChange={this.itemCheck.bind(this, item)}/>
-									<Text style={styles.arrows}>{keyobj[item].word}</Text>
-									<Text style={styles.arrows}>{keyobj[item].max_price/100}</Text>
-									<Text style={styles.arrows}>{ keyobj[item].impressions}</Text>
-									<Text style={styles.arrows}>{keyobj[item].click}</Text>
-									<Text style={styles.arrows}>{keyobj[item].paycount}</Text>
-									<Text style={styles.arrows}>{keyobj[item].qscore}</Text>
+			        			    <Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/>
+									<Text style={styles.arrows}>{item.word}</Text>
+									<Text style={styles.arrows}>{item.max_price/100}</Text>
+									<Text style={styles.arrows}>{item.impressions}</Text>
+									<Text style={styles.arrows}>{item.click}</Text>
+									<Text style={styles.arrows}>{item.paycount}</Text>
+									<Text style={styles.arrows}>{item.qscore}</Text>
 								</View>
 			        		)
 			        	})
