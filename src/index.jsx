@@ -3,22 +3,21 @@ import {createElement, Component} from 'weex-rx';
 import { View, Text, Image, TouchableHighlight} from 'nuke-components';
 import {mount} from 'nuke-mounter';
 import {browser, browserActive, appCont, appContActive, home, homeActive, my, myActive, shareLight, shareLightActive} from './static/static';
+import QN from 'QAP-SDK';
 import HealthyView from './views/healthy';
 import UserView from './views/user';
 import CampaignsListView from './views/campaigns/campaignsList';
 import Drainage from './views/drainage';
 import LinkUs from './views/linkus';
+import {  localstoreUser, getLocalstoreUser  } from './api/authsign';
 
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL);
+let authString = JSON.parse(arr.authString);
+localstoreUser(authString).then((result)=>{
 
-let listData = [];
-for (var i = 0; i < 300; i++) {
-    listData.push({key: i,pic:'//img.alicdn.com/bao/uploaded/i1/TB1gdT4KVXXXXcpXFXXwu0bFXXX.png',text:'近三个月订单' + i});
-}
+});
 
-let listData1 = [];
-for (var i = 0; i < 300; i++) {
-    listData1.push({key: i,pic:'//img.alicdn.com/bao/uploaded/i1/TB1gdT4KVXXXXcpXFXXwu0bFXXX.png',text:'已完成订单' + i});
-}
 
 const styles = {
     icon1:{fontFamily: 'iconfont1', fontSize: '36rem', color:'blue', alignItems:'center'},
@@ -79,8 +78,6 @@ let App = class NukeDemoIndex extends Component {
         this.state =  {
             notifCount: 3,
             presses: 0,
-            data: listData,
-            data1: listData1,
             stop: false,
             activeKey: "m1",
             test: 1

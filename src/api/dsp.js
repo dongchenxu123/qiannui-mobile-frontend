@@ -18,14 +18,6 @@ app.telephone = true; //标记淘外引流页面 是否弹出手机号窗口
 app.account_id = '';
 export function checkIssetDspUser(){
     return new Promise((resolve, reject) => {
-
-        // 1 先从缓冲里面取
-        //2 没有则去检查或者创建 
-        // 3 创建成功后需要放入缓存
-        //4 返回userinfo 数据
-
-
-
             getLocalstoreUser().then((res)=>{
                 app.account_id  = res.taobao_user_id;
              QN.fetch(DateAPi.httphost+'/checkUser', {
