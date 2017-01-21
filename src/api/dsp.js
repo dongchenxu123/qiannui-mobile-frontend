@@ -210,6 +210,7 @@ export function setItemsOnline(items){
 export function setItemsOffline(items){
     return new Promise((resolve, reject) => {
         checkIssetDspUser.then((value) => {
+        	Modal.alert(JSON.stringify(value))
             if(value.user_id){
                 var param = {
                     user_id:value.user_id,

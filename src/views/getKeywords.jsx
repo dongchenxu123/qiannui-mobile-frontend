@@ -82,9 +82,7 @@ class GetKeywordsView extends Component {
 //			keyId: newkeyid
 //		})
 		deleteKeywords(campaign_id, keyword_ids).then((result) => {
-	 		Modal.alert(JSON.stringify(result))
-	 		
-            }, (error) => {
+	 		}, (error) => {
                 Modal.alert(JSON.stringify(error));
 
             });
