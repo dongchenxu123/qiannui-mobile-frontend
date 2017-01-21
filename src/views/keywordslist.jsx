@@ -122,7 +122,7 @@ class KeywordslistView extends Component {
 	 	if(min< 5 && min !== 0) {
 	 		Modal.alert('出价不能低于0.05元')
 	 	}else if(max > 9999) {
-	 		Modal.alert('出价不能高于9999元')
+	 		Modal.alert('出价不能高于99元')
 	 	}
 	 	for (var i in keywords) {
 	 		if(keywords[i].checked == true) {
@@ -156,9 +156,9 @@ class KeywordslistView extends Component {
 			<View>
 			     <View style={styles.cellItemList}>
 	    		    <Text>出价范围: </Text>
-	    		    <Input onChange={this.changeMinnum.bind(this)} value={this.state.minprice}/>
+	    		    <Input onChange={this.changeMinnum.bind(this)} value={this.state.minprice} keyboardType="number-pad" />
 	    		    <Text style={{paddingLeft: '10rem'}}>至</Text>
-	    		    <Input style={{paddingLeft: '10rem'}} onChange={this.changeMaxnum.bind(this)} value={this.state.maxprice}/>
+	    		    <Input style={{paddingLeft: '10rem'}} onChange={this.changeMaxnum.bind(this)} value={this.state.maxprice} keyboardType="number-pad"/>
 	    		    <Text style={{paddingLeft: '10rem'}}>元</Text>
     		    </View>
     		     <TabSlider width={750} style={styles.barStyle} active={this.state.active}  index={this.state.index} onChange={this.sliderChange.bind(this)}  customBar={false} navTop={true}>

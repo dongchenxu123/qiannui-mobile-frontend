@@ -142,7 +142,7 @@ export function getRecommendKeywords(adgroup_id){
 
 /*
 删除关键词
-@param  keyword_ids  关键词id，多个id 用“,”隔开
+@param  keyword_ids 数组
 */
 export function deleteKeywords(campaign_id,keyword_ids){
      return QN.top.invoke({
@@ -153,18 +153,18 @@ export function deleteKeywords(campaign_id,keyword_ids){
                 keyword_ids:keyword_ids.join(',')
             }
         }).then((result)=>{
-        	
+        
         	var data = [];
             var error = checkAPIError(result);
-
+        
             if(error == null)
             {
-                var deleteResult = res.simba_keywords_delete_response.keywords;
-                if(deleteResult && deleteResult.keyword)
+                var deleteResult = result.simba_keywords_delete_response;
+                if(deleteResult && deleteResult.keywords)
                 {
-                    data = deleteResult.keyword;
+                    data = deleteResult.keywords.keyword;
                 }
-               
+           
                 return data;
                
             }else{
