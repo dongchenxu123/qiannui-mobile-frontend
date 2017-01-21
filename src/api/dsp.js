@@ -177,7 +177,7 @@ export function setItemsOnline(user_id,items){
  
             var param = {
                 user_id:user_id,
-                items:items
+                items:items.join(',')
                 }
             
             QN.fetch(DateAPi.httphost+'/setItemsOnline', {
@@ -219,7 +219,8 @@ export function setItemsOffline(user_id,items){
                 return response.json(); // => 返回一个 `Promise` 对象
             })
             .then(data => {
-              resolve(data);                
+              resolve(data);
+              console.log(data, 8888888888)
             })
             .catch(error => {
                 Modal.toast(JSON.stringify(error));

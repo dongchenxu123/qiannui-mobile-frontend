@@ -1,11 +1,12 @@
-import {Button,ListView, Modal, Input, Dimensions} from 'nuke';
+import {Button,ListView, Modal, Input, Dimensions, Dialog } from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
-import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget } from '../api';
+import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
 import _ from 'lodash';
 let {height} = Dimensions.get('window');
+import RechargeView from './recharge'
 class Drainage extends Component{
     constructor() {
         super();   
@@ -34,6 +35,7 @@ class Drainage extends Component{
                 this.getUserInfo();
                 this.getDspUserData();
                 this.getDspOnsaleItems();
+                
             }  
         });
     }
@@ -44,11 +46,17 @@ class Drainage extends Component{
                     this.setState({showPhone:true});//todo需要弹出填写手机号
                  }
                 if(this.state.showPhone === true) {
-                	 Modal.prompt('请填写手机号码',[ 
+                	 Modal.prompt('请绑定手机号码',[ 
 				    {
 				        onPress:(result)=>{
-				        	Modal.alert(JSON.stringify(result))
-				            
+				        	var data = result.data *1;
+				            if(!(/^1[34578]\d{9}$/.test(data))){ 
+						       Modal.alert("手机号码有误，请重填");  
+						     } else {
+						     	getDspUserInfo(this.state.user_id, data).then((res) => {
+						     		
+						     	})
+						     }
 				        },
 				        text:"确认"
 				    },
@@ -112,13 +120,22 @@ class Drainage extends Component{
     		}
     	}
     	Modal.alert(JSON.stringify(items))
-    	setItemsOffline(items).then((res) => {
-    		
-            Modal.alert(JSON.stringify(res))
+    	checkIssetDspUser().then((value) => {
+    		if(value && value.user_id != undefined){
+	            this.setState({
+	                user_id:value.user_id
+	              })
+	        }
+    		setItemsOffline(this.state.user_id, items).then((res) => {
+    			Modal.alert(JSON.stringify(res))
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
-	
-	        });
+			});
+        }, (error) => {
+            Modal.alert(JSON.stringify(error));
+
+        });
+    	
            
     }
     renderItem (item, index) {
@@ -149,13 +166,23 @@ class Drainage extends Component{
 				    {
 				        onPress:(result)=>{
 				        	var data = result.data *1;
-				        	Modal.alert(JSON.stringify(data))
-				            setBudget(data).then((res) => {
-    							Modal.alert(JSON.stringify(res))
-					           	}, (error) => {
+				        	checkIssetDspUser().then((value) => {
+				        		if(value && value.user_id != undefined){
+					                this.setState({
+					                    user_id:value.user_id
+					                  })
+					               }
+				        		setBudget(this.state.user_id, data).then((res) => {
+				        			var newbudget= res.budget;
+				        			this.setState({
+				        				budget: newbudget
+				        			})
+				        		}, (error) => {
 						            Modal.alert(JSON.stringify(error));
 						
 						        });
+				        	})
+				            
 				        },
 				        text:"确认"
 				    },
@@ -165,13 +192,45 @@ class Drainage extends Component{
 				    }
 		 		]);
     }
+    changecpc () {
+    	Modal.prompt('修改出价',[ 
+				    {
+				        onPress:(result)=>{
+				        	var data = result.data *1;
+				        	checkIssetDspUser().then((value) => {
+				        		if(value && value.user_id != undefined){
+					                this.setState({
+					                    user_id:value.user_id
+					                  })
+					               }
+				        		setCpc(this.state.user_id, data).then((res) => {
+				        			var newcpc= res.cpc;
+				        			this.setState({
+				        				cpc: newcpc
+				        			})
+				        		}, (error) => {
+						            Modal.alert(JSON.stringify(error));
+						
+						        });
+				        	})
+				            
+				        },
+				        text:"确认"
+				    },
+				    {
+				        onPress:()=>{console.log('点击了取消')},
+				        text:"取消"
+				    }
+		 		]);
+    }
+   
 	render(){
         return (
                 <View>
                 	<View style={styles.cellItemList}>
                 		<Text>淘外余额: {this.state.balance}</Text>
                 		<View style={{marginLeft: '60rem'}}>
-                			<Button type="primary" size='small' >充值</Button>
+                			<RechargeView />
                 		</View>
                 		<TouchableHighlight style={{marginLeft: '60rem'}}>
                 			<Text style={styles.title}> ? 帮助</Text>
@@ -181,7 +240,7 @@ class Drainage extends Component{
                 		<Text>日限额: </Text>
                 		<Button type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
                 		<Text style={{paddingLeft: '30rem'}}>出价: </Text>
-                		<Button type="primary" size='small'>{this.state.cpc}</Button>
+                		<Button type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
                 		<View style={{marginLeft: '30rem'}}><Button type="primary" size='small'>推广报表</Button></View>
                 	</View>
                 	<View style={styles.cellItemList}>
