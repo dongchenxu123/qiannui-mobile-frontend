@@ -12,7 +12,7 @@ export function getOnsaleItem(){
         QN.top.invoke({
             query: {
                 method:'taobao.items.onsale.get',
-                fields:'pic_url,price,num_iid,title,num,cid',
+                fields:'pic_url,price,props,num_iid,title,num,cid',
                 page_no:1,
                 page_size:1
             }
@@ -51,7 +51,7 @@ function getOnsaleItem_sign(dataNum){
                 return QN.top.invoke({
                     query: {
                         method:'taobao.items.onsale.get',
-                        fields:'pic_url,price,num_iid,title,num,cid',
+                        fields:'pic_url,price,props,num_iid,title,num,cid',
                         page_no:ci,
                         page_size:page_size
                     }

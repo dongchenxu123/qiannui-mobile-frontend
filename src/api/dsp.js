@@ -174,10 +174,9 @@ export function getDspOnsaleItems(q){
 */
 export function setItemsOnline(user_id,items){
     return new Promise((resolve, reject) => {
- 
-            var param = {
+ 			var param = {
                 user_id:user_id,
-                items:items.join(',')
+                items:items
                 }
             
             QN.fetch(DateAPi.httphost+'/setItemsOnline', {
@@ -206,7 +205,7 @@ export function setItemsOffline(user_id,items){
     return new Promise((resolve, reject) => {
 		var param = {
                 user_id:user_id,
-                item_ids:items
+                item_ids:items.join(',')
                 }
             QN.fetch(DateAPi.httphost+'/setItemsOffline', {
               
@@ -220,7 +219,6 @@ export function setItemsOffline(user_id,items){
             })
             .then(data => {
               resolve(data);
-              console.log(data, 8888888888)
             })
             .catch(error => {
                 Modal.toast(JSON.stringify(error));

@@ -91,6 +91,7 @@ class Drainage extends Component{
 
         //获取用户在淘宝中在售的宝贝
         getOnsaleItem().then((onlineItem)=>{
+        	console.log(onlineItem, 8888)
           //获取dsp中已经推广的宝贝
             getDspUserMarket(this.state.user_id,3).then((dspItem) => {  
                 if(dspItem.total > 0){
@@ -111,32 +112,61 @@ class Drainage extends Component{
             });
         })
     }
-    listStatus (dsp_onLineStatus) {
-    	var items= [];
-    	var ItemData= this.state.Items;
-    	for (var i=0;i<ItemData.length; i++) {
-    		if(ItemData[i].dsp_onLineStatus ==1) {
-    			items.push(ItemData[i].num_iid)
-    		}
-    	}
-    	Modal.alert(JSON.stringify(items))
+    listStatus (item) {
+    	console.log(JSON.stringify(item))
     	checkIssetDspUser().then((value) => {
     		if(value && value.user_id != undefined){
 	            this.setState({
 	                user_id:value.user_id
 	              })
 	        }
-    		setItemsOffline(this.state.user_id, items).then((res) => {
-    			Modal.alert(JSON.stringify(res))
+    		var itemevent =[];
+    		var newstatus= item.dsp_onLineStatus ==1 ? 0 : 1;
+    		itemevent.push(item.num_iid)
+    		var index= _.findIndex(this.state.Items,function(v){
+			    		return v.num_iid == item.num_iid ;
+			    		
+		    	})
+    		if(item.dsp_onLineStatus == 1) {
+	    		setItemsOffline(this.state.user_id, itemevent).then((res) => {
+	    			this.state.Items[index].dsp_onLineStatus= newstatus;
+	                var aa =this.state.Items;
+	                this.setState({
+	                	Items:　aa
+	                })
+	
+	
+	           	}, (error) => {
+		            Modal.alert(JSON.stringify(error));
+				});
+			} else {
+				var obj={
+						 item_id:item.num_iid,
+                         cid:item.cid,
+                         title:item.title,
+                         price:item.price,
+                         img_url:item.pic_url,
+                         props:item.props,
+						 url:'https://item.taobao.com/item.htm?id='+item.num_iid
+				}
+				var newArr=[];
+				newArr.push(obj)
+				setItemsOnline(this.state.user_id, newArr).then((res) => {
+	    			Modal.alert(JSON.stringify(res))
+	    			this.state.Items[index].dsp_onLineStatus= newstatus;
+	                var aa =this.state.Items;
+	                this.setState({
+	                	Items:　aa
+	                })
+
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
 			});
+			}
         }, (error) => {
             Modal.alert(JSON.stringify(error));
 
         });
-    	
-           
     }
     renderItem (item, index) {
     	var dsp_onLineStatus = item.dsp_onLineStatus;
@@ -154,7 +184,7 @@ class Drainage extends Component{
 	                		<View style={{marginTop: '20rem',flexDirection:"row",
         display:'flex'}}>
 	                		    <Text style={{flex: 11}}></Text>
-	                			<Button style={{flex: 4}} type="secondary" onPress={this.listStatus.bind(this, dsp_onLineStatus)} size='small'>{newdsp_onLineStatus}</Button>
+	                			<Button style={{flex: 4}} type="secondary" onPress={this.listStatus.bind(this, item)} size='small'>{newdsp_onLineStatus}</Button>
 	                		</View>
 	                	</View>
 	                </View>
