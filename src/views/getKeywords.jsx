@@ -75,6 +75,9 @@ class GetKeywordsView extends Component {
 				keyword_ids.push(keyobj[i].keyword_id);
 			} 
 		}
+//		var evens = _.remove(keyId, function(n) {
+//		  return n.checked == true;
+//		});
 //		this.setState({
 //			keyId: newkeyid
 //		})

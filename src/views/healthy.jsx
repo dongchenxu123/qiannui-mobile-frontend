@@ -1,7 +1,6 @@
-import {Link, ListView, Modal, Layout, Navigator } from 'nuke';
+import {Link, ListView, Modal, Col, Grid, Navigator } from 'nuke';
 
-const  Col = Layout.Col;
-const  Grid = Layout.Grid;
+
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView   } from 'nuke-components';
 import { getAuthSign,getCampaign } from '../api';

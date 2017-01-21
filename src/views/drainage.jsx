@@ -1,10 +1,10 @@
-import {Button,ListView, Modal, Env, NativeDialog } from 'nuke';
-const { isWeex } = Env;
+import {Button,ListView, Modal, Input} from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
+import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem } from '../api';
-import _ from 'lodash'
+import _ from 'lodash';
 
 class Drainage extends Component{
     constructor() {
@@ -22,37 +22,10 @@ class Drainage extends Component{
 
         }    
     }
- showDialog = (src) => {
-        if(isWeex){
-            NativeDialog.show(src, {
-                width : '640rem',
-                height: '300rem',
-                showMask:true,
-                cancelOnTouch:true,
-                data:{
-                    id:123344444,
-                    xx:'xxx'
-                }
-            }, (ret) => {
-                this.setState({'response':ret});
-                console.log(ret);
-            }, (err) => {
-                this.setState({'response':err});
-                console.log(err);
-            }, (info) => {
-                this.setState({'response':JSON.stringify(info)});
-                console.log(JSON.stringify(info));
-            });
-        }else{
-            this.setState({error:'h5环境无效果'})
-        }
-    }
-
-    componentDidMount(){
-
-      checkIssetDspUser().then((value) => {  
-        
-            if(value && value.user_id != undefined){
+ 	componentDidMount(){
+    	checkIssetDspUser().then((value) => { 
+    		Modal.alert(JSON.stringify(value))
+        if(value && value.user_id != undefined){
                 this.setState({
                     user_id:value.user_id,
                     account_id:value.account_id,
@@ -64,7 +37,9 @@ class Drainage extends Component{
                 this.getDspUserData();
                 this.getDspOnsaleItems();
             }  
-        });
+        }, (error) => {
+                Modal.alert(JSON.stringify(error));
+			});
     }
     getUserInfo(){
         //其实就是检测了手机号
@@ -77,6 +52,7 @@ class Drainage extends Component{
     }
     getDspUserData(){
          getDspUserMarket(this.state.user_id,1).then((res) => {  
+         	Modal.alert(JSON.stringify(res))
             if(res){
                 this.setState({
                     cpc:parseFloat(res.cpc).toFixed(2),
@@ -125,16 +101,50 @@ class Drainage extends Component{
     render(){
         return (
                 <View>
-                      <Button onPress={() => {this.showDialog('qap://../docs/innerdialog.js')}}>show</Button>
-                <Text>{this.state.error}</Text>
+                	<View style={styles.cellItemList}>
+                		<Text>淘外余额: 123</Text>
+                		<View style={{marginLeft: '60rem'}}>
+                			<Button type="primary" size='small' >充值</Button>
+                		</View>
+                		<TouchableHighlight style={{marginLeft: '60rem'}}>
+                			<Text style={styles.title}> ? 帮助</Text>
+                		</TouchableHighlight>
+                	</View>
+                	<View style={styles.cellItemList}>
+                		<Text>日限额: </Text>
+                		<Button type="primary" size='small'>51</Button>
+                		<Text style={{paddingLeft: '30rem'}}>出价: </Text>
+                		<Button type="primary" size='small'>0.65</Button>
+                		<View style={{marginLeft: '30rem'}}><Button type="primary" size='small'>推广报表</Button></View>
+                	</View>
+                	<View style={styles.cellItemList}>
+                		<View style={{flex:8}}><Input style={{width: '400rem', height: '60rem'}}/></View>
+                		<Text style={{flex: 4}}>当前推广中0件</Text>
+                	</View>
+                	
                 </View>
             )
     }
 }
 
 const styles={
-  
+  cellItemList:{
+        backgroundColor:"#fff",
+        height:"90rem",
+        borderBottomWidth:"2rem",
+        borderBottomStyle:"solid",
+        borderBottomColor:"#e8e8e8",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        flexDirection:"row",
+        display:'flex' 
+    },
+    title: {
+	    color: '#0894EC',
+	   	fontSize: '30rem',
+	   }
 }
 
 mount(<Drainage />, 'body');
+
 export default Drainage

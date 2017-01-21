@@ -2,8 +2,8 @@
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight, ScrollView} from 'nuke-components';
-import { Button, ListView, Modal, Radio ,Layout, Dialog, Dimensions,Picker} from 'nuke';
-const { Col, Grid } = Layout;
+import { Button, ListView, Modal, Radio ,Col, Grid, Dialog, Dimensions,Picker} from 'nuke';
+
 import QN from 'QAP-SDK';
 import { getSchedule, setSchedule} from '../api';
 import { scheduleAllDayTemplate, scheduleTemplate } from './scheduleTemplate';

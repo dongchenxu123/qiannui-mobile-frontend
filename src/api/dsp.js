@@ -1,5 +1,4 @@
 'use strict';
-
 import QN from 'QAP-SDK';
 import * as DateAPi from './date';
 import {checkAPIError} from './checkerror';
@@ -23,11 +22,10 @@ export function checkIssetDspUser(){
         //2 没有则去检查或者创建 
         // 3 创建成功后需要放入缓存
         //4 返回userinfo 数据
-
-
-
-            getLocalstoreUser().then((res)=>{
-                app.account_id  = res.taobao_user_id;
+		getLocalstoreUser().then((res)=>{
+			Modal.alert(JSON.stringify(res))
+			app.account_id  = res.taobao_user_id;
+                
              QN.fetch(DateAPi.httphost+'/checkUser', {
                     method: 'POST',
                     mode: 'cors',
@@ -38,8 +36,7 @@ export function checkIssetDspUser(){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                 
-                    if(data.user_id == undefined){
+                 	if(data.user_id == undefined){
                         createNewDspUser().then((value) => {
                           if(value.user_id){
                         
