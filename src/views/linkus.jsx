@@ -1,28 +1,37 @@
-import {Navigator,Button,Image } from 'nuke'
+import {Navigator,Button,Image ,Modal} from 'nuke'
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView,TextInput  } from 'nuke-components';
 import {onlineChat,getFeedback } from '../api/dsp';
 import QN from 'QAP-SDK';
 
+QN.on('page.reload', function(data) {
+    QN.navigator.reload();
+   
+});
+
 class LinkUs extends Component{
-   constructor() {
+    constructor() {
         super();   
         this.state = {
            showfeedback:false,
            textAreaValue:''
         }   
-    }
 
-     openChart(){
+       
+    }
+componentDidMount() {
+        console.log('1111111111');
+    }
+    openChart(){
         onlineChat();
-       }
+    }
     feedBack(){
         getFeedback(this.state.textAreaValue);
-      }
-     tel(){
+    }
+    tel(){
           Navigator.push('tel:400-627-0003'); 
-     }
-     changeValue(e){
+    }
+    changeValue(e){
         if(e != undefined && e.target != undefined && e.target.attr != undefined && e.target.attr.value.length > 0){
           this.setState({
             textAreaValue:e.target.attr.value
@@ -78,7 +87,6 @@ class LinkUs extends Component{
             )
      }
 }
-
 const style={
     scroller:{
       backgroundColor:'#ffffff'

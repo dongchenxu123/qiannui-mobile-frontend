@@ -48,6 +48,10 @@ export function formatDate(date, format) {
     if (format === "dd/mm") {
         return dd+'/'+mm;
     }
-    else if (format ==="yyyymmdd"){return yyyy+''+mm+''+dd;}
+    else if (format ==="yyyymmdd"){
+        return yyyy+''+mm+''+dd;
+    }else if(format ==="yyyy/mm/dd"){
+        return yyyy+'/'+mm+'/'+dd;
+    }
     return yyyy+'-'+mm+'-'+dd;
 }

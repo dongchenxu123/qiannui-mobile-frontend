@@ -4,8 +4,13 @@ import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Grid, Col, Image, Modal, Input, Checkbox, TabSlider } from 'nuke';
 import {getRecommendKeywords, addNewKeyword} from '../api'
 import KeywordsView from './recommendKeywords';
+import QN from 'QAP-SDK';
 
 const { Pane } = TabSlider;
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL.split('?')[1]);
+const adgroup_id = arr.adgroup_id;
+
 class KeywordslistView extends Component {
 	constructor() {
 		super()
@@ -16,7 +21,7 @@ class KeywordslistView extends Component {
             presses: 0,
             index:2,
             active:0,
-            adgroup_id: '',
+            adgroup_id: adgroup_id,
             newKeywordList: [],
             minprice: 0,
             maxprice: 0,
@@ -28,22 +33,11 @@ class KeywordslistView extends Component {
 		
 	}
 	componentDidMount () {
-		var URL= document.URL;
-		var arr= URL.split('?')[1];
-		var newarr= arr.split('&');
-		var obj={}
-		var param;
-        for(var i=0;i<newarr.length;i++){
-            param=newarr[i].split('=');
-            obj[param[0]]=param[1];
-        }
-        var adgroup_id= this.state.adgroup_id;
-        this.setState({
-        	adgroup_id: obj.adgroup_id
-        })
         getRecommendKeywords(this.state.adgroup_id).then((result) => {
 	         	var keywords={};
-				var keywrodsId=[]
+				var keywrodsId=[];
+                
+
 				for (var i=0; i< result.length; i++) {
 					keywords[i] = result[i];
 					keywords[i]['checked'] = false;
@@ -55,11 +49,9 @@ class KeywordslistView extends Component {
 	            })
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
-
             });  
        }
 	 sliderChange(index){
-//	    console.log('slide-to', index);
 		this.setState({
 			active: index
 		})
@@ -92,24 +84,18 @@ class KeywordslistView extends Component {
 	 formatNewword (res,type,min,max) {
 	 	var self = this,data = [];
         var obj = {};
-       if(res)
-        {
-            for(var i in res)
-            {
+       if(res){
+            for(var i in res){
                 obj = {'word':res[i].word,isDefaultPrice:0,matchScope:4};
-                {
-                    obj.maxPrice = self.getRandomNum(min,max);
-                }
+                obj.maxPrice = self.getRandomNum(min,max);
                 data.push(obj);
             }
         }
-        return data;
-       
+        return data; 
     }
 	getRandomNum (Min,Max){
         var Range = Max - Min;
         var Rand = Math.random();
-        console.log(Rand);
         var num = Min + Math.round(Rand * Range);
         return num;
     }
@@ -120,37 +106,37 @@ class KeywordslistView extends Component {
 	 	var max= parseInt(this.state.maxprice)*100;
 	 	var keywrodsId= this.state.keywrodsId;
 	 	if(min< 5 && min !== 0) {
-	 		Modal.alert('出价不能低于0.05元')
+	 		Modal.alert('出价不能低于0.05元');
 	 	}else if(max > 9999) {
-	 		Modal.alert('出价不能高于99元')
+	 		Modal.alert('出价不能高于99元');
 	 	}
 	 	for (var i in keywords) {
 	 		if(keywords[i].checked == true) {
-	 			res.push(keywords[i])
+	 			res.push(keywords[i]);
 	 		}
 	 	}
 	 	var newData= this.formatNewword(res,2,min,max);
 	 	if(res.length >200) {
-	 		Modal.alert('添加关键词数量不得大于200')
+	 		Modal.alert('添加关键词数量不得大于200');
 	 	}
 	 	addNewKeyword(this.state.adgroup_id, newData).then((result) => {
-	 		Modal.alert(JSON.stringify(result))
+	 		Modal.alert(JSON.stringify(result));
          	  if(result.length ===0) {
-         	  	Modal.alert('请选择关键词')
+         	  	Modal.alert('请选择关键词');
          	  }else if(min==0 && max==0) {
-         	  	Modal.alert('请填写出价范围')
+         	  	Modal.alert('请填写出价范围');
          	  }else{
-         	  	Modal.toast('设置成功！')
+         	  	Modal.toast('设置成功！');
          	  }
            
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
-
             });  
 	 }
 	render () {
 		let keywords = {
-			data: this.state.keywrodsId, obj: this.state.keywords
+			data: this.state.keywrodsId, 
+            obj: this.state.keywords
 		}
 		return (
 			<View>
@@ -161,11 +147,12 @@ class KeywordslistView extends Component {
 	    		    <Input style={{paddingLeft: '10rem'}} onChange={this.changeMaxnum.bind(this)} value={this.state.maxprice} keyboardType="number-pad"/>
 	    		    <Text style={{paddingLeft: '10rem'}}>元</Text>
     		    </View>
-    		     <TabSlider width={750} style={styles.barStyle} active={this.state.active}  index={this.state.index} onChange={this.sliderChange.bind(this)}  customBar={false} navTop={true}>
-		          <Pane title={'推荐关键词库'}  style={{width:750}}>
+    		    <TabSlider width={750} style={styles.barStyle} active={this.state.active}  index={this.state.index} onChange={this.sliderChange.bind(this)}  customBar={false} navTop={true}>
+		            <Pane title={'推荐关键词库'}  style={{width:750}}>
               			<View style={styles.tab}>
-              				<KeywordsView keywords={keywords} 										 										  changecheckbox={this.changecheckbox.bind(this)}
-              				              submitKeywords={this.submitKeywords.bind(this)}
+              				<KeywordsView 
+                            keywords={keywords} 										 										  changecheckbox={this.changecheckbox.bind(this)}
+              				submitKeywords={this.submitKeywords.bind(this)}
               				/>
               			</View>
             		</Pane>

@@ -1,9 +1,8 @@
 import {Link, ListView, Modal, Col, Grid, Navigator } from 'nuke';
-
-
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView   } from 'nuke-components';
 import { getAuthSign,getCampaign } from '../api';
+import { showLoading,hideLoading } from './util';
 import QN from 'QAP-SDK';
 
 class HealthyView extends Component{
@@ -15,19 +14,21 @@ class HealthyView extends Component{
             normal_val:'正常',
             too_low:'过低'
         }   
+       showLoading();
     }
 
      componentWillMount(){
         getAuthSign().then((result) => {
-       
+     
             this.setState({subway_token:result});
             //获取推广计划
             getCampaign(result).then((campaign) => {
-              
+             hideLoading();
                if(campaign.length >0){
                     this.setState({campaigns:campaign});
                }   
             }, (error) => {
+               hideLoading();
                 Modal.toast(JSON.stringify(error));    
             }); 
         });
@@ -94,7 +95,7 @@ class HealthyView extends Component{
                 }
                 break;
             case 'favcount':
-                if(val <=1)W
+                if(val <=1)
                 {
                     result =  lower;
                 }
@@ -138,7 +139,7 @@ class HealthyView extends Component{
 	render () {
         return (
                
-                this.state.campaigns.length == 0 ? <Text>Loading...</Text> :
+                this.state.campaigns.length == 0 ? '' :
                 <ListView
                 renderFooter={this.renderFooter}
                 renderRow={this.renderItem.bind(this)} 

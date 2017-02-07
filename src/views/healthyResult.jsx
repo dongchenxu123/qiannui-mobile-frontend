@@ -40,9 +40,7 @@ class HealthyResult extends Component{
     componentWillMount(){
         var self = this;
         getAuthSign().then((result) => {
-       
             self.setState({subway_token:result});
-
             getAdgroupsAll(campaign_id).then((result) => {
                 self.setState({adgroups:result});
                 self.renderItem();       
@@ -61,7 +59,6 @@ class HealthyResult extends Component{
         }
 
         return function(callback){
-           
             getallKeywords(subway_token,adgroup.adgroup_id,adgroup.campaign_id,false).then((result) => {
                   
                 if(result.keylist){
@@ -90,112 +87,105 @@ class HealthyResult extends Component{
 
     formatKeywords(keywordsObj){
         var self = this;
-    
         var defaultObj = {garbageCount:0,garbagekeyids:{},littleKeycount:0,littleKeyGroup:{},qscoreLowerCount:0,qscoreLowerkeyids:{},noImpressionsCount : 0,noImpressionskeyids:{}};//所有关键词列表
-            if(keywordsObj.adgroup === null || keywordsObj.adgroup === undefined){
-                return;
+        if(keywordsObj.adgroup === null || keywordsObj.adgroup === undefined){
+            return;
+        }
+
+        var adgroup = keywordsObj.adgroup;
+
+        if(obj.garbageCount === undefined){
+            obj = defaultObj;
+        }
+        var len = keywordsObj.keyword.length;
+        //关键词少于10个
+        if(len < 10){
+            obj.littleKeycount ++; //展示少于十个词的推广组（宝贝）  少于10个词的宝贝 （1）个  检测中(绿色字体) 最终加词
+            self.setState({littleKeycount:obj.littleKeycount});
+
+            if (obj.littleKeyGroup[adgroup.adgroup_id] === undefined){
+                obj.littleKeyGroup[adgroup.adgroup_id] = {};
             }
+            obj.littleKeyGroup[adgroup.adgroup_id].base = adgroup;
+            obj.littleKeyGroup[adgroup.adgroup_id].keyword = [];
 
-            var adgroup = keywordsObj.adgroup;
+            var tasks = self.state.littleKeyGroup.concat(adgroup);
+ 
+            this.setState({littleKeyGroup:tasks});
+        }
 
-            if(obj.garbageCount === undefined){
-                obj = defaultObj;
-            }
-            var len = keywordsObj.keyword.length;
-          
-
-            //关键词少于10个
-            if(len < 10){
-                obj.littleKeycount ++; //展示少于十个词的推广组（宝贝）  少于10个词的宝贝 （1）个  检测中(绿色字体) 最终加词
-                self.setState({littleKeycount:obj.littleKeycount});
-
-                if (obj.littleKeyGroup[adgroup.adgroup_id] === undefined){
-                    obj.littleKeyGroup[adgroup.adgroup_id] = {};
-                }
-                obj.littleKeyGroup[adgroup.adgroup_id].base = adgroup;
-                obj.littleKeyGroup[adgroup.adgroup_id].keyword = [];
-
-                var tasks = self.state.littleKeyGroup.concat(adgroup);
-     
-                this.setState({littleKeyGroup:tasks});
-            }
-
-            if(len >0){
-                var keyword = keywordsObj.keyword;
-                for(var t in keyword){
-                    if(obj.littleKeyGroup[adgroup.adgroup_id] && obj.littleKeyGroup[adgroup.adgroup_id].keyword){
-                        obj.littleKeyGroup[adgroup.adgroup_id].keyword.push(keyword[t].word);
-                    }
-
-                    //垃圾词 （垃圾词是近期无点击的词）
-                    var keyparm = {};
-                    keyparm[keyword[t].keyword_id] = keyword[t].max_price;//为了提价准备
-
-                    if (obj.garbagekeyids[keyword[t].campaign_id] === undefined){
-                        obj.garbagekeyids[keyword[t].campaign_id] = [];
-                    }
-                    //（垃圾词是近期无点击的词）
-                    if(keyword[t].is_garbage ){
-                        obj.garbageCount++;//展示垃圾词     垃圾词（1）个   检测中（绿色字体） 最终删除
-                        obj.garbagekeyids[keyword[t].campaign_id].push(keyparm);
-                        self.setState({garbageCount:obj.garbageCount});  
-                    }
-
-                    //无展现的词
-                    if (obj.qscoreLowerkeyids[keyword[t].campaign_id] === undefined){
-                        obj.qscoreLowerkeyids[keyword[t].campaign_id] = [];
-                    }
-
-                    //质量得分小于3分的词
-                    if(parseInt(keyword[t].qscore) <= 3){
-
-                        obj.qscoreLowerCount++;
-                        obj.qscoreLowerkeyids[keyword[t].campaign_id].push(keyword[t].keyword_id);
-                        self.setState({qscoreLowerCount: obj.qscoreLowerCount});
-                    }
+        if(len >0){
+            var keyword = keywordsObj.keyword;
+            for(var t in keyword){
+                if(obj.littleKeyGroup[adgroup.adgroup_id] && obj.littleKeyGroup[adgroup.adgroup_id].keyword){
+                    obj.littleKeyGroup[adgroup.adgroup_id].keyword.push(keyword[t].word);
                 }
 
-                //基础报表获取无展现的关键词
-                if(keywordsObj.baserpt && keywordsObj.baserpt.length >0){
-                    if (obj.noImpressionskeyids[adgroup.campaign_id] === undefined){
-                       obj.noImpressionskeyids[adgroup.campaign_id] = [];
-                    }
+                //垃圾词 （垃圾词是近期无点击的词）
+                var keyparm = {};
+                keyparm[keyword[t].keyword_id] = keyword[t].max_price;//为了提价准备
 
-                    for(var j in keywordsObj.baserpt) {
-                        var pv = parseInt(keywordsObj.baserpt[j].impressions);
+                if (obj.garbagekeyids[keyword[t].campaign_id] === undefined){
+                    obj.garbagekeyids[keyword[t].campaign_id] = [];
+                }
+                //（垃圾词是近期无点击的词）
+                if(keyword[t].is_garbage ){
+                    obj.garbageCount++;//展示垃圾词     垃圾词（1）个   检测中（绿色字体） 最终删除
+                    obj.garbagekeyids[keyword[t].campaign_id].push(keyparm);
+                    self.setState({garbageCount:obj.garbageCount});  
+                }
 
-                        if(pv === 0){
-                            obj.noImpressionsCount++;//无展现的关键词添加
-                            obj.noImpressionskeyids[adgroup.campaign_id].push(keywordsObj.baserpt[j].keyword_id);
-                            self.setState({noImpressionsCount:obj.noImpressionsCount});
-                        }
+                //无展现的词
+                if (obj.qscoreLowerkeyids[keyword[t].campaign_id] === undefined){
+                    obj.qscoreLowerkeyids[keyword[t].campaign_id] = [];
+                }
+
+                //质量得分小于3分的词
+                if(parseInt(keyword[t].qscore) <= 3){
+
+                    obj.qscoreLowerCount++;
+                    obj.qscoreLowerkeyids[keyword[t].campaign_id].push(keyword[t].keyword_id);
+                    self.setState({qscoreLowerCount: obj.qscoreLowerCount});
+                }
+            }
+
+            //基础报表获取无展现的关键词
+            if(keywordsObj.baserpt && keywordsObj.baserpt.length >0){
+                if (obj.noImpressionskeyids[adgroup.campaign_id] === undefined){
+                   obj.noImpressionskeyids[adgroup.campaign_id] = [];
+                }
+
+                for(var j in keywordsObj.baserpt) {
+                    var pv = parseInt(keywordsObj.baserpt[j].impressions);
+
+                    if(pv === 0){
+                        obj.noImpressionsCount++;//无展现的关键词添加
+                        obj.noImpressionskeyids[adgroup.campaign_id].push(keywordsObj.baserpt[j].keyword_id);
+                        self.setState({noImpressionsCount:obj.noImpressionsCount});
                     }
                 }
             }
-          return obj;
+        }
+        return obj;
     }
     renderItem(){
         var adgroups = this.state.adgroups;
         var adgroupsArr = [],data = [];
-       
         var self = this;
      
         if(adgroups.length > 0 && this.state.subway_token){
-
-                for (let j in  adgroups){
-                    adgroupsArr.push(self.makeKeywordFunc(adgroups[j],self.state.subway_token));   
-                }
-                Async.parallelLimit(adgroupsArr,2, (err, res) => {
-                });
+            for (let j in  adgroups){
+                adgroupsArr.push(self.makeKeywordFunc(adgroups[j],self.state.subway_token));   
+            }
+            Async.parallelLimit(adgroupsArr,2, (err, res) => {
+            });
         }
-
     }
     deleteGarbase(){
         var self = this;
         var keyword = [];
      
         if(self.state.garbageCount > 0 && obj.garbagekeyids[campaign_id]) {
-
             var val = obj.garbagekeyids[campaign_id];
             for( var i in val)
             {
@@ -216,8 +206,7 @@ class HealthyResult extends Component{
       
         if(self.state.qscoreLowerCount > 0 && obj.qscoreLowerkeyids[campaign_id]) {
             keyword = obj.qscoreLowerkeyids[campaign_id];
-
-             deleteKeywords(campaign_id,keyword).then((result)=>{
+            deleteKeywords(campaign_id,keyword).then((result)=>{
                 Modal.toast('删除成功');
                 self.setState({qscoreLowerCount:0, loading:false, disabled:false,buttonText:'删除'});
             });
@@ -241,7 +230,6 @@ class HealthyResult extends Component{
         var self = this;
         switch(type){
             case 'garbage': //删除垃圾关键词
-             
                   Modal.confirm('确定删除垃圾关键词吗?',[ 
                     {
                         onPress:(e)=>{
@@ -260,7 +248,6 @@ class HealthyResult extends Component{
 
                 break;
             case 'qsource': //删除质量得分低的
-
                 Modal.confirm('确定删除质量分低的关键词吗?',[ 
                     {
                         onPress:(e)=>{
@@ -278,7 +265,6 @@ class HealthyResult extends Component{
                 ]);
                 break;
             case 'noImpressions':
-
                 Modal.confirm('确定删除无展现的关键词吗?',[ 
                     {
                         onPress:(e)=>{
@@ -301,8 +287,7 @@ class HealthyResult extends Component{
                     }else{
                         var v = self.state.isShowItems == true ? false :true;
                         self.setState({isShowItems:v});
-                    }
-                   
+                    }                  
                     break
         }
     }

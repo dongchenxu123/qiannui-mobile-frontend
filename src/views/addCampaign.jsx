@@ -6,6 +6,9 @@ import { Tabbar, Button, Icon, ListView, Iconfont, Modal, Dimensions } from 'nuk
 import QN from 'QAP-SDK';
 import { getUnSaleItem, addAdgroup } from '../api';
 let {height} = Dimensions.get('window');
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL.split('?')[1]);
+const campaign_id = arr.campaign_id;
 
 class AddCampaignView extends Component {
     constructor(props) {
@@ -24,20 +27,6 @@ class AddCampaignView extends Component {
     
  
   componentDidMount(){
-  	var URL= document.URL;
-		var arr= URL.split('?')[1];
-		var newarr= arr.split('&');
-		var obj={}
-		var param;
-        for(var i=0;i<newarr.length;i++){
-            param=newarr[i].split('=');
-            obj[param[0]]=param[1];
-            
-        }
-        var itemId=obj.id;
-       this.setState({
-       	campaign_id: itemId
-       })
       getUnSaleItem(itemId).then((result) => {
            this.setState({
            		datalist: result

@@ -17,7 +17,7 @@ import {
 import QN from 'QAP-SDK';
 import {mount} from 'nuke-mounter';
 import {getAuthSign, getSellerUser, UserInfo, ProfileReport, WuxianBalance} from '../api';
-import {yesterday, threeMonthAgo} from '../api/date';
+import {yesterday, threeMonthAgo, formatDate} from '../api/date';
 import ListViewCommon from './listViewCommon';
 
 const {Pane} = TabSlider;
@@ -46,38 +46,31 @@ class User extends Component {
     }
 
     sliderChange(index) {
-        console.log('slide-to', index, new Date().getTime());
-        this.setState({active: index})
+        this.setState({active: index});
     }
     startDate = () => {
-    	var yesterdaydate = JSON.stringify(yesterday);
-        var yesdate = yesterdaydate.substr(1, 10);
-        var threeMonthAgoDate = JSON.stringify(threeMonthAgo);
-	    var threeMonth = threeMonthAgoDate.substr(1,10);
+    	var yesdate = formatDate(yesterday);
+        var threeMonth = formatDate(threeMonthAgo);
         TimePicker.show({
             title: '请选择日期',
             range: [
-                threeMonth, yesdate
+                yesdate,threeMonth
             ],
-            default: '2016/10/18',
+            default: '2016-10-18',
             type: 'date'
         }, (e) => {
-            var date = e.toString().substr(0, 10).split('/').join('-');
-            this.setState({start_date: date})
-            console.log('select date', e)
+           Modal.alert(222);
+           Modal.alert(e);
+            this.setState({start_date: e})
+         
         }, (e) => {
+             Modal.alert(e);
             console.log('canceled ', e)
-        }, () => {
-            console.log('datepicker showed')
-        }, () => {
-            console.log('datepicker render fail')
         });
     }
     endDate = () => {
-    	var yesterdaydate = JSON.stringify(yesterday);
-        var yesdate = yesterdaydate.substr(1, 10);
-        var threeMonthAgoDate = JSON.stringify(threeMonthAgo);
-	    var threeMonth = threeMonthAgoDate.substr(1,10);
+        var yesdate = formatDate(yesterday);
+	    var threeMonth = formatDate(threeMonthAgo);
         TimePicker.show({
             title: '请选择日期',
             range: [
@@ -86,8 +79,8 @@ class User extends Component {
             default: '2016-10-18',
             type: 'date'
         }, (e) => {
-            var date = e.toString().substr(0, 10).split('/').join('-');
-            this.setState({end_date: date})
+            
+            this.setState({end_date: e})
         }, (e) => {
             console.log('canceled ', e)
         }, () => {
@@ -97,10 +90,11 @@ class User extends Component {
         });
     }
     btnClick() {
-        this.setState({active: 0})
+        this.setState({active: 0});
     }
     componentDidMount() {
-    	console.log(123)
+
+        console.log('店铺');
         getAuthSign().then((result) => {
             this.setState({subway_token: result});
             ProfileReport(this.state.subway_token).then((result) => {
@@ -108,7 +102,6 @@ class User extends Component {
 
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
-
             });
             WuxianBalance().then((result) => {
                 this.setState({WuxianData: result})
@@ -135,15 +128,14 @@ class User extends Component {
     }
 
     onPress(index) {
-        console.log('点击了', new Date().getTime());
-        this.setState({active: index})
+        this.setState({active: index});
     }
     submitDate() {
         var start_date = this.state.start_date == ''
-            ? '2016-01-05'
+            ? formatDate(yesterday)
             : this.state.start_date;
         var end_date = this.state.end_date == ''
-            ? '2016-01-06'
+            ? formatDate(yesterday)
             : this.state.end_date;
         ProfileReport(this.state.subway_token, start_date, end_date).then((result) => {
             this.setState({dateAlldays: result.alldays, checked: true})
@@ -397,5 +389,4 @@ const styles = {
         paddingBottom: '40rem'
     }
 };
-mount(<User />, 'body');
 export default User

@@ -23,31 +23,30 @@ class PlatformView extends Component {
     }
     componentDidMount(){
 
-		getPlatfrom(campaign_id).then((res) => {
-			this.setState({
-				datas: res
-			})
-			 res.insitePC = res.outsitePC =  res.outsiteMO = res.insiteMO = res.outsiteNosearchPC = res.insiteNosearchPC = '';
-			 if(res.search_channels.number){
-	                res.insitePC =  _.indexOf(res.search_channels.number,1) >= 0 ? true: false;
-	                res.outsitePC = _.intersection(res.search_channels.number,[2,4]).length >0 ? true: false;
-	                res.outsiteMO = _.indexOf(res.search_channels.number,16) >=0 ? true : false;
-	                res.insiteMO = _.indexOf(res.search_channels.number,8) >=0 ? true : false;
-                }
-            if(res.nonsearch_channels.number){
-                    res.outsiteNosearchPC = _.intersection(res.nonsearch_channels.number,[2,4]).length >0 ? true : false;
-                    res.insiteNosearchPC = _.indexOf(res.nonsearch_channels.number,1) >=0 ? true : false;
-                }
-                getSellerUser ().then((res) => {
-                	if (res.seller_credit.level >5 || res.type === 'B') {
-                		this.setState({
-                			sellerSatus: true
-                		})
-                	}
-                })      
+		  getPlatfrom(campaign_id).then((res) => {
+    			this.setState({
+    				datas: res
+    			});
+  			  res.insitePC = res.outsitePC =  res.outsiteMO = res.insiteMO = res.outsiteNosearchPC = res.insiteNosearchPC = '';
+  			  if(res.search_channels.number){
+  	                res.insitePC =  _.indexOf(res.search_channels.number,1) >= 0 ? true: false;
+  	                res.outsitePC = _.intersection(res.search_channels.number,[2,4]).length >0 ? true: false;
+  	                res.outsiteMO = _.indexOf(res.search_channels.number,16) >=0 ? true : false;
+  	                res.insiteMO = _.indexOf(res.search_channels.number,8) >=0 ? true : false;
+           }
+          if(res.nonsearch_channels.number){
+                  res.outsiteNosearchPC = _.intersection(res.nonsearch_channels.number,[2,4]).length >0 ? true : false;
+                  res.insiteNosearchPC = _.indexOf(res.nonsearch_channels.number,1) >=0 ? true : false;
+          }
+          getSellerUser ().then((res) => {
+          	if (res.seller_credit.level >5 || res.type === 'B') {
+          		this.setState({
+          			sellerSatus: true
+          		})
+          	}
+          });      
         }, (error) => {
             Modal.alert(JSON.stringify(error));
-
         });
 	}
     submitData(){
@@ -73,7 +72,6 @@ class PlatformView extends Component {
             search_channels.push(2);
             search_channels.push(4);
         }
-
 
         if(this.state.datas.insiteMO){
             search_channels.push(8);

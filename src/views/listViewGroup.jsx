@@ -13,7 +13,7 @@ class ListViewGroupView extends Component {
        this.state = {
             stop: false,
             isRefreshing: false,
-            showLoading:true,
+            showLoading:false,
             refreshText: '↓ 下拉刷新',
             checked: false,
             status: ''
@@ -35,37 +35,18 @@ class ListViewGroupView extends Component {
           });
 
         }, 3000);
-      };
+    };
 
     handleLoadMore() {
-        var self = this;
-        // 这里进行异步操作
-        if (self.index == 5) {
-            self.setState({showLoading:false})
-            return;
-        }else{
-            setTimeout(function() {
-				self.state.data.push({key: 'l1',text:'loadmore1'}, {key: 'l2',text:'loadmore2'}, {key: 'l3',text:'loadmore3'},{key: 'l4',text:'loadmore4'}, {key: 'l5',text:'loadmore5'});
-                self.setState(self.state);
-                self.index++;
-            }, 2000);
-
-        }
-
+       
     }
-    linkTo(item,e) {
-        console.log(e);
-    }
+
     press (adgroup_id, online_status) {
     	updateAdgroup(adgroup_id, online_status).then((res) => {
-       
            		var newStatus = res.data.online_status;
-
            		this.props.callbackSetNewSatus(adgroup_id,newStatus);
-         
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
-	
 	        });
 }
     delpress (adgroup_id) {
@@ -78,14 +59,15 @@ class ListViewGroupView extends Component {
 	
 	        });
 	}
-    getkeyWords (adgroup_id, campaign_id, title, imgage, online_status) {
+    getkeyWords (adgroup_id, campaign_id, title, imgage, online_status,default_price) {
           QN.navigator.push({
             url:'qap://views/getKeywords.js',
             query:{adgroup_id:adgroup_id,
                    campaign_id: campaign_id,
                    name: title,
                    imgage: imgage,
-                   online_status: online_status
+                   online_status: online_status,
+                   default_price:default_price
             }
             
         })
@@ -99,10 +81,10 @@ class ListViewGroupView extends Component {
     	var campaign_id= this.props.campaign_id;
     	var title= item.title;
     	var imgage= item.img_url;
-    	
+    
     	return (
         	<View>
-        		<View style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+        		<View style={app.cellItemList}>
                 		<Image source={{uri: item.img_url}} style={{width:'180rem',height:'180rem'}}/>
                 		<View style={app.itemTextList}>
                 			<Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
@@ -117,7 +99,7 @@ class ListViewGroupView extends Component {
                 				{newStatus}
                 				</Button>
                     			<Button size='small' type="secondary" onPress={self.delpress.bind(self, adgroup_id)}>删除推广</Button>
-                    			<Button size='small' type="secondary" onPress={self.getkeyWords.bind(self, adgroup_id, campaign_id, title, imgage, online_status )}>关键词</Button>
+                    			<Button size='small' type="secondary" onPress={self.getkeyWords.bind(self, adgroup_id, campaign_id, title, imgage, online_status ,item.default_price)}>关键词</Button>
                 			</View>
                 		</View>
                 </View>
@@ -139,16 +121,17 @@ class ListViewGroupView extends Component {
         var self=this;
         var listGroup= this.props.data;
         return (
-        	listGroup.length === 0 ? <Text>Loading...</Text> : <ListView
-														            renderHeader={this.renderHeader}
-														            renderFooter={this.renderFooter}
-														            renderRow={this.renderItem.bind(this)} 
-														            dataSource={listGroup}
-														
-														            style={app.listContainer}
-														            onEndReached={this.handleLoadMore.bind(this)} 
-														          />
+        	listGroup.length === 0 ? 
+            <Text>Loading...</Text> : 
+            <ListView
+                renderHeader={this.renderHeader}
+                renderFooter={this.renderFooter}
+                renderRow={this.renderItem.bind(this)} 
+                dataSource={listGroup}
 
+                style={app.listContainer}
+                onEndReached={this.handleLoadMore.bind(this)} 
+              />
         )
     }
 }

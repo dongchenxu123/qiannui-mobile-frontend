@@ -4,6 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Grid, Col, Image, Dimensions, Dialog, Checkbox, ScrollView, TouchableHighlight, MultiRow, Modal, Button} from 'nuke';
 let {height} = Dimensions.get('window');
 import { addNewKeyword } from '../api';
+import {number_format } from './util';
 
 class KeywordsView extends Component {
 	constructor() {
@@ -29,23 +30,24 @@ class KeywordsView extends Component {
 				     	<Text style={{paddingLeft: '20rem'}}>个</Text>
 				    </View>
 				    <View style={styles.cellItemList}>
-				     	<Text style={styles.arrows}>关键词</Text>
-				     	<Text style={styles.arrows}>展现指数</Text>
-				     	<Text style={styles.arrows}>平均出价</Text>
-				     	<Text style={styles.arrows}>相关度</Text>
+                        <Text style={styles.arrow}></Text>
+				     	<Text style={styles.arrow}>关键词</Text>
+				     	<Text style={styles.arrow}>展现指数</Text>
+				     	<Text style={styles.arrow}>平均出价</Text>
+				     	<Text style={styles.arrow}>相关度</Text>
 				    </View>
 				    {
 				    	keywords.length === 0 
-				    	? <Text>Loading...</Text>
+				    	? ''
 				    	: <View>{
 				    		keywords.map((item, index) =>{
 				    			return (
 				    				<View style={styles.cellItemList}>
 				    				   	<Checkbox onChange={this.changeControl.bind(this, item)}/>
-				    					<Text style={styles.arrow}>{keywordObj[item].word}</Text>
-								     	<Text style={styles.arrow}>{keywordObj[item].pv ? keywordObj[item].pv : 0}</Text>
-								     	<Text style={styles.arrow}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text>
-								     	<Text style={styles.arrow}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text>
+				    					<Text style={styles.arrows}>{keywordObj[item].word}</Text>
+								     	<Text style={styles.arrows}>{keywordObj[item].pv ? number_format(keywordObj[item].pv) : 0}</Text>
+								     	<Text style={styles.arrows}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text>
+								     	<Text style={styles.arrows}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text>
 								     	</View>
 				    			)
 				    		})
@@ -77,17 +79,17 @@ const styles={
        	alignItems:"center",
         flexDirection:"row",
         display: 'flex',
-        padding: '20rem'
+        padding: '10rem'
   },
   arrow: {
-  	width: 150,
-  	justifyContent:'center',
-  	paddingLeft: '40rem',
-   	alignItems:'center'
+  	 flex: 3,
+    paddingRight:'10rem',
+     fontSize:'30rem'
   },
   arrows: {
-  	width: 150,
-  	paddingLeft: '40rem',
+  	 flex: 3,
+    paddingRight:'10rem',
+     fontSize:'30rem'
   },
   gridcell:{
         height:'200rem',

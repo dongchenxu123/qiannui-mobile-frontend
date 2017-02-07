@@ -5,6 +5,7 @@ import {View, Text, Link, Image, Modal, ScrollView, Button, Navigator, Touchable
 import QN from 'QAP-SDK';
 import {getCampaign, getAuthSign, setBuget, getArea, setStatus} from '../../api';
 import _ from 'lodash';
+import { showLoading,hideLoading } from '../util';
 import GetAreaView from './getAreaView'
 
 class CampaignsListView extends Component {
@@ -16,21 +17,25 @@ class CampaignsListView extends Component {
 			budget: '',
 			budgetId: ''
 		}
+		showLoading();
 	}
 	componentDidMount(){
+		console.log('计划')
 		getAuthSign().then((result) => {
 			   this.setState({
                         subway_token: result
                     })
                getCampaign(this.state.subway_token).then((result) => {
+               	hideLoading();
                	this.setState({
 	                        campaignData: result
-	                    })
+	                    });
              	}, (error) => {
 	                Modal.alert(JSON.stringify(error));
-	
+					hideLoading();
 	            });
             }, (error) => {
+            	hideLoading();
                 Modal.alert(JSON.stringify(error));
 			});
 			
@@ -68,7 +73,14 @@ class CampaignsListView extends Component {
  		]);
     }
 	onPress (tid) {
-        Navigator.push('qap://views/campaignsGroup.js?id='+tid);
+		QN.navigator.push({
+			    url: 'qap://views/campaignsGroup.js',
+			    query: { campaign_id: tid },
+			    settings: {
+			        animate: true,
+			        request: true,
+			    } 
+			});
     }
 	onPressSche (tid) {
         Navigator.push('qap://views/schedule.js?campaign_id='+tid);
@@ -86,19 +98,17 @@ class CampaignsListView extends Component {
             this.state.campaignData[index].online_status =  newStatus;
             var statusData = this.state.campaignData
            	this.setState({
-   				campaignData: statusData
-   				
+   				campaignData: statusData	
    			}) 
    		}, (error) => {
             Modal.alert(JSON.stringify(error));
-
         });
 	}
 	render () {
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 			   {
-			   	this.state.campaignData.length === 0 ? <Text>Loading...</Text> : this.state.campaignData.map((item, index) =>{
+			   	this.state.campaignData.length === 0 ? " " : this.state.campaignData.map((item, index) =>{
 			   		var tid= item.campaign_id;
 			   		var is_smooth= item.is_smooth;
 			   		var itemcost= item.cost;
@@ -111,7 +121,6 @@ class CampaignsListView extends Component {
 				   			    <View style={styles.cellItemList}>
 				   			    	<TouchableHighlight onPress={this.onPress.bind(this, tid)} style={styles.itemTextList}>
 					   			    	<Text style={{color:"#0894EC"}}>{title}</Text>
-	                        			
 				   			    	</TouchableHighlight>
 				   			    	<View style={styles.Arrow}>
 				   			    		<Button style={{width: 150, margintLeft: '40rem'}} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
@@ -298,8 +307,4 @@ const styles={
 	        marginLeft: '20rem'
 	   }
 	 }
-
-mount(<CampaignsListView />, 'body');
-
-
 export default CampaignsListView

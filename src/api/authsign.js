@@ -59,7 +59,9 @@ function storeSubwayToken(val){
     });
 }
 
-
+/*
+* 存储当前用户的登陆基本基本信息
+*/
 export function localstoreUser(obj){
 	return QN.localstore.set({
         query: {userInfo:obj},

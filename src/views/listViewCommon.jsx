@@ -29,64 +29,49 @@ class ListViewCommon extends Component {
       };
 
     handleLoadMore() {
-        var self = this;
-        // 这里进行异步操作
-        if (self.index == 5) {
-            self.setState({showLoading:false})
-            return;
-        }else{
-            setTimeout(function() {
-					self.state.data.push({key: 'l1',text:'loadmore1'}, {key: 'l2',text:'loadmore2'}, {key: 'l3',text:'loadmore3'},{key: 'l4',text:'loadmore4'}, {key: 'l5',text:'loadmore5'});
-                self.setState(self.state);
-                self.index++;
-            }, 2000);
-
-        }
 
     }
-    linkTo(item,e) {
-        console.log(e);
-    }
+  
    renderItem (item, index){
         return (
         	<View>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList} >
                     <Text style={app.itemTextList}>展现量</Text>
                     <Text style={app.itemArrow}>{item.pv}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>点击量</Text>
                     <Text style={app.itemArrow}>{item.click}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>点击率</Text>
                     <Text style={app.itemArrow}>{item.ctr} %</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList} >
                     <Text style={app.itemTextList}>转化率</Text>
                     <Text style={app.itemArrow}>{item.click_ROi} %</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>平均点击花费</Text>
                     <Text style={app.itemArrow}>￥ {item.cpc}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>花费</Text>
                     <Text style={app.itemArrow}>￥ {item.cost}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>总成交金额</Text>
                     <Text style={app.itemArrow}>￥ {item.pay}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList} >
                     <Text style={app.itemTextList}>投入产出比</Text>
                     <Text style={app.itemArrow}>{item.ROI} %</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList} >
                     <Text style={app.itemTextList}>总成交笔数</Text>
                     <Text style={app.itemArrow}>{item.paycount}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
+                <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>总收藏数</Text>
                     <Text style={app.itemArrow}>{item.favcount}</Text>
                 </TouchableHighlight>

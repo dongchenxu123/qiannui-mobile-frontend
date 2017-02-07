@@ -234,7 +234,6 @@ class GetAreaView extends Component {
    showModal () {
         var self = this;
         getArea(this.props.localId).then((result) => {
-        	//Modal.alert(result.area)
         	if(result.area === 'all') {
         		result.area='19,461,125,393,333,294,234,165,417,255,508,39,1,368,145,184,212,279,68,120,92,532,438,488,109,463,406,52,357,351,471,578,599,576,574'
         	}        	
@@ -258,7 +257,6 @@ class GetAreaView extends Component {
         		areaArr: areaNewArr,
         		checked: !check
         	})
-            //Modal.alert(JSON.stringify(this.state.areaArr))
      		}, (error) => {
             Modal.alert(JSON.stringify(error));
 
@@ -276,7 +274,6 @@ class GetAreaView extends Component {
          for(var i in areaobj) {
          	if(areaobj[i].s == 1) {
          		areaItem.push(i)
-         		
          	}
          }
          setArea(areaId, areaItem).then((result) => {
@@ -287,13 +284,12 @@ class GetAreaView extends Component {
 	                Modal.alert(JSON.stringify(error));
 	
 	            }); 
-       
     }
     onShow() {
       
     }
 	onHide = (param) => {
-        console.log('modal hide', param);
+   
     }
     changeArea (id, value) {
     	var arrId = [];
@@ -305,7 +301,6 @@ class GetAreaView extends Component {
     }
     render() {
     	var self= this;
-    	//var localItemId= self.props.localId;
     	return (
             <View>
                 <View style={{left:'-22rem'}} >        
@@ -353,8 +348,6 @@ class GetAreaView extends Component {
                     </TouchableHighlight>
                 </Dialog>
             </View>
-
-
         );
     }
 }

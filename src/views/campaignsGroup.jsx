@@ -6,54 +6,45 @@ import { ScrollView} from 'nuke-components';
 import QN from 'QAP-SDK';
 import { getAdgroupsByCid, getAuthSign, deleteAdgroup } from '../api'
 import ListViewGroupView from './listViewGroup'
+import { showLoading,hideLoading } from './util';
+
+
 let {height} = Dimensions.get('window');
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL.split('?')[1]);
+const campaign_id = arr.campaign_id;
+
 class CampaignsGroupView extends Component {
 	constructor() {
 		super()
 		this.state={
 			subway_token: '',
 			campaginsData: [],
-			linkId: ''
+			campaign_id: campaign_id
 		}
 		this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 		this.delItemsFunc = this.delItemsFunc.bind(this);
-
+        showLoading();
 	}
 	componentDidMount () {
-		var URL= document.URL;
-		var arr= URL.split('?')[1];
-		var newarr= arr.split('&');
-		var obj={}
-		var param;
-        for(var i=0;i<newarr.length;i++){
-            param=newarr[i].split('=');
-            obj[param[0]]=param[1];
-            
-        }
-        var itemId=obj.id;
-        this.setState({
-        	linkId: itemId
-        })
         getAuthSign().then((result) => {
            	this.setState({
            		subway_token: result
            	})
-           	getAdgroupsByCid(this.state.subway_token, itemId, 1).then((res) => {
+           	getAdgroupsByCid(this.state.subway_token, campaign_id, 1).then((res) => {
            		
            		this.setState({
            			campaginsData: res
            		})
-               
+               hideLoading();
            	}, (error) => {
+                hideLoading();
 	            Modal.alert(JSON.stringify(error));
-	
 	        });
      	}, (error) => {
+            hideLoading();
             Modal.alert(JSON.stringify(error));
-
-        });
-        
-	    
+        });    
 	}
 	setNewSatusFunc(adgroup_id,status){
 		var index = _.findIndex( this.state.campaginsData,function(v){
@@ -61,9 +52,9 @@ class CampaignsGroupView extends Component {
                 });
             this.state.campaginsData[index].online_status =  status;
             var aa = this.state.campaginsData
-           this.setState({
-   			campaginsData: aa
-   		}) 
+            this.setState({
+   			  campaginsData: aa
+   		   }) 
 
 	}
     delItemsFunc (adgroup_id, itemId) {
@@ -79,18 +70,18 @@ class CampaignsGroupView extends Component {
    			campaginsData: newArrs
    		})
     }
-    addToView(linkId) {
-			Navigator.push('qap://views/addCampaign.js?id='+linkId);
+    addToView(campaign_id) {
+			Navigator.push('qap://views/addCampaign.js?campaign_id='+campaign_id);
 		}
    
 	render () {
-		var linkId= this.state.linkId
+	
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
-			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, linkId)} block="true" type="secondary"> 新增宝贝推广</Button></View>
+			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, this.state.campaign_id)} block="true" type="secondary"> 新增宝贝推广</Button></View>
 			   <ListViewGroupView data={this.state.campaginsData} 					callbackSetNewSatus={this.setNewSatusFunc}
 			        delItems={this.delItemsFunc}
-			        campaign_id={linkId}
+			        campaign_id={this.state.campaign_id}
 			    />
 			</ScrollView>
 		)

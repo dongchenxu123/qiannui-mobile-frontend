@@ -30,7 +30,7 @@ class RechargeView extends Component {
    
     render() {
     	var self= this;
-    	//var localItemId= self.props.localId;
+  
     	return (
             <View>
                 <View style={{left:'-22rem'}} >        

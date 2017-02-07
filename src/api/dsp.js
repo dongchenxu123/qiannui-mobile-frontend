@@ -18,6 +18,9 @@ app.account_id = '';
 export function checkIssetDspUser(){
     return new Promise((resolve, reject) => {
 		getLocalstoreUser().then((res)=>{
+            if(!res.taobao_user_id){
+                return;
+            }
 			app.account_id  = res.taobao_user_id;
              QN.fetch(DateAPi.httphost+'/checkUser', {
                     method: 'POST',
@@ -178,7 +181,7 @@ export function setItemsOnline(user_id,items){
                 user_id:user_id,
                 items:items
                 }
-            
+         
             QN.fetch(DateAPi.httphost+'/setItemsOnline', {
               
                 method: 'POST',
@@ -190,6 +193,7 @@ export function setItemsOnline(user_id,items){
                 return response.json(); // => 返回一个 `Promise` 对象
             })
             .then(data => {
+    
               resolve(data);                
             })
             .catch(error => {
@@ -418,7 +422,7 @@ export function getRechargeTempalte(user_id){
 * 反馈
 */
 export function getFeedback(content){
-    return new Promise((resolve, reject) => {
+ /*   return new Promise((resolve, reject) => {
          getLocalstoreUser().then((res)=>{
             var param = {
                     id: res.taobao_user_id,
@@ -442,7 +446,7 @@ export function getFeedback(content){
                     Modal.toast(JSON.stringify(error));
                 });  
          });          
-    });
+    });*/
 }
 
 /*

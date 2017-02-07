@@ -33,7 +33,8 @@ import {getallKeywords,
         deleteKeywords,
         addNewKeyword,
         getItemNumByKeyword,
-        getStoreKeyword
+        getStoreKeyword,
+        setKeywordPricevon
     } from './keywords';
 
 import {checkIssetDspUser,
@@ -86,6 +87,7 @@ const api = {
     setItemsOffline:setItemsOffline,//设置淘外宝贝推广下线
     setItemsOnline:setItemsOnline,//设置淘外宝贝推广
     getAdgroupsAll:getAdgroupsAll,//获取计划下所有的推广组
+    setKeywordPricevon:setKeywordPricevon // 设置关键词出价
 
 
 }

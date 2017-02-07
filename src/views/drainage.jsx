@@ -23,6 +23,7 @@ class Drainage extends Component{
 		}    
     }
  	componentDidMount(){
+        console.log('淘外引流');
     	checkIssetDspUser().then((value) => { 
     	if(value && value.user_id != undefined){
                 this.setState({
@@ -91,7 +92,6 @@ class Drainage extends Component{
 
         //获取用户在淘宝中在售的宝贝
         getOnsaleItem().then((onlineItem)=>{
-        	console.log(onlineItem, 8888)
           //获取dsp中已经推广的宝贝
             getDspUserMarket(this.state.user_id,3).then((dspItem) => {  
                 if(dspItem.total > 0){
@@ -108,12 +108,11 @@ class Drainage extends Component{
                 });
             itemList =  _.sortBy(onlineItem,[function(o) { return -o.dsp_onLineStatus; }]);
             this.setState({Items:itemList});
-            console.log(JSON.stringify(this.state.Items),32545435)
             });
         })
     }
     listStatus (item) {
-    	console.log(JSON.stringify(item))
+
     	checkIssetDspUser().then((value) => {
     		if(value && value.user_id != undefined){
 	            this.setState({
@@ -151,13 +150,21 @@ class Drainage extends Component{
 				}
 				var newArr=[];
 				newArr.push(obj)
+
 				setItemsOnline(this.state.user_id, newArr).then((res) => {
-	    			Modal.alert(JSON.stringify(res))
-	    			this.state.Items[index].dsp_onLineStatus= newstatus;
-	                var aa =this.state.Items;
-	                this.setState({
-	                	Items:　aa
-	                })
+	    			 if(res.status !== undefined && res.status === 'ok'){
+                        this.state.Items[index].dsp_onLineStatus= newstatus;
+                        var aa =this.state.Items;
+                        this.setState({
+                            Items:　aa
+                        })
+                         Modal.toast('设置推广成功');
+                    }else{
+                        if(res.error){
+                            Modal.toast('没有足够的余额推广');
+                        }
+                    }
+	    			
 
            	}, (error) => {
 	            Modal.alert(JSON.stringify(error));
@@ -317,7 +324,4 @@ const styles={
 	   	fontSize: '30rem',
 	   }
 }
-
-mount(<Drainage />, 'body');
-
 export default Drainage
