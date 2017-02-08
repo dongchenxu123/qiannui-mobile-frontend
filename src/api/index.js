@@ -44,7 +44,9 @@ import {checkIssetDspUser,
         setCpc,
         setBudget,
         setItemsOffline,
-        setItemsOnline
+        setItemsOnline,
+        setDspPassword,
+        getRechargeTempalte
     } from './dsp';
 
 
@@ -87,9 +89,9 @@ const api = {
     setItemsOffline:setItemsOffline,//设置淘外宝贝推广下线
     setItemsOnline:setItemsOnline,//设置淘外宝贝推广
     getAdgroupsAll:getAdgroupsAll,//获取计划下所有的推广组
-    setKeywordPricevon:setKeywordPricevon // 设置关键词出价
-
-
+    setKeywordPricevon:setKeywordPricevon, // 设置关键词出价
+    getRechargeTempalte:getRechargeTempalte,//充值模板
+    setDspPassword:setDspPassword //设置dsp登陆密码
 }
 
 export default api 
