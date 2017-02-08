@@ -394,6 +394,8 @@ export function contractRpt(user_id,subway_token, start_date= null, end_date= nu
 * 获取充值模板
 */
 export function getRechargeTempalte(user_id){
+		Modal.alert(user_id)
+	/*
     return new Promise((resolve, reject) => {
                 var param = {
                     user_id:user_id
@@ -410,13 +412,19 @@ export function getRechargeTempalte(user_id){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
+<<<<<<< HEAD
                  
+=======
+                	Modal.alert(JSON.stringify(data))
+>>>>>>> d86f0fc70c9ea2a814efdeafc777b588137610f2
                     resolve(data);
+                    
                 })
                 .catch(error => {
                     resolve(error);
                 });
     });
+    */
 }
 
 /*
