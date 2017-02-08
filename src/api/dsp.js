@@ -396,7 +396,7 @@ export function contractRpt(user_id,subway_token, start_date= null, end_date= nu
 export function getRechargeTempalte(user_id){
     return new Promise((resolve, reject) => {
                 var param = {
-                    user_id:value.user_id
+                    user_id:user_id
                 };
                 
                 QN.fetch(DateAPi.httphost+'/getLuckilyPlan', {
