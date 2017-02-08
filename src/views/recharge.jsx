@@ -136,7 +136,7 @@ var styles = {
     justifyContent: 'center',
     width: '80rem',
     height: '80rem',
-    borderRadius: '40rem',
+    borderRadius: '60rem',
     backgroundColor: '#ffffff'
   },
   closeText: {
