@@ -1,7 +1,6 @@
 import { Dialog, Dimensions, Modal, Checkbox, Button } from 'nuke';
 import {createElement, Component} from 'weex-rx';
 import { View, Text,TouchableHighlight, ScrollView} from 'nuke-components';
-
 import {mount} from 'nuke-mounter';
 import QN from 'QAP-SDK';
 
@@ -12,7 +11,7 @@ class RechargeView extends Component {
         super(props);
         this.state={
         	
-    }
+    	}
     }
    showModal () {
         var self = this;
@@ -30,8 +29,7 @@ class RechargeView extends Component {
    
     render() {
     	var self= this;
-  
-    	return (
+  		return (
             <View>
                 <View style={{left:'-22rem'}} >        
                   <Button type="primary" onPress={this.showModal.bind(self)}>充值</Button>
@@ -39,20 +37,28 @@ class RechargeView extends Component {
                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>
                     <ScrollView style={styles.body} onEndReachedThreshold={300}>
                     	<View>
-	                    	<Text>选择充值金额元</Text>
+	                    	<Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额</Text>
 	                    	<View style={styles.cellItemList}>
 	                    		<View style={styles.ItemList}>
 	                    			<Text>1元</Text>
-	                    			<Text>实得4元</Text>
+	                    			<Text style={styles.highfont}>实得4元</Text>
 	                    			<Text>赠送您2元</Text>
 	                    			<Text>再赠送您1元红包</Text>
 	                    		</View>
-	                    		<View style={styles.ItemList}>
+	                    		<View style={[styles.ItemList,{marginLeft: '40rem'}]}>
 	                    			<Text>3元</Text>
 	                    			<Text>3.3折</Text>
-	                    			<Text>现仅需1元</Text>
+	                    			<Text style={styles.highfont}>现仅需1元</Text>
 	                    			<Text>赠送您1元</Text>
 	                    			<Text>再赠送您1元 红包3</Text>
+	                    		</View>
+	                    	</View>
+	                    	<View style={styles.cellItemList}>
+	                    		<View style={styles.ItemList}>
+	                    			<Text>9元</Text>
+	                    			<Text style={styles.highfont}>现仅需3元</Text>
+	                    			<Text>赠送您3元</Text>
+	                    			<Text>再赠送您3元  红包2</Text>
 	                    		</View>
 	                    	</View>
                     	</View>
@@ -93,7 +99,9 @@ var styles = {
         borderColor:"#e8e8e8",
        	paddingLeft:"30rem",
         alignItems:"center",
-        height: '300rem'
+        height: '300rem',
+        width: '300rem',
+        lineHeight: '60rem'
    },
   body: {
     alignItems: 'left',
@@ -147,8 +155,10 @@ var styles = {
    	    alignItems:"center",
         flexDirection:"row",
         display:'flex'
-       }
-   
+      },
+   highfont: {
+   	color: '#FF6600'
+   }
 };
 
 export default RechargeView

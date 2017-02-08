@@ -411,6 +411,7 @@ export function getRechargeTempalte(user_id){
                 })
                 .then(data => {
                     resolve(data);
+                    Modal.alert(JSON.stringify(data))
                 })
                 .catch(error => {
                     resolve(error);
