@@ -134,9 +134,9 @@ var styles = {
     right: '-18rem',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '40rem',
-    height: '40rem',
-    borderRadius: '20rem',
+    width: '80rem',
+    height: '80rem',
+    borderRadius: '40rem',
     backgroundColor: '#ffffff'
   },
   closeText: {

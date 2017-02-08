@@ -4,7 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
-import getRechargeTempalte from '../api/dsp'
+import {getRechargeTempalte} from '../api/dsp'
 import _ from 'lodash';
 let {height} = Dimensions.get('window');
 import RechargeView from './recharge'
@@ -38,10 +38,7 @@ class Drainage extends Component{
                 this.getUserInfo();
                 this.getDspUserData();
                 this.getDspOnsaleItems();
-                var _this= this;
-                getRechargeTempalte(_this.state.user_id).then((res) => {
-                	Modal.alert(JSON.stringify(res))
-                })
+                getRechargeTempalte(1322064)
             }  
         });
     }
