@@ -35,8 +35,7 @@ export function checkIssetDspUser(){
                  	if(data.user_id == undefined){
                         createNewDspUser().then((value) => {
                           if(value.user_id){
-                        
-                            resolve(value);
+                        	resolve(value);
                           }else{
                             resolve([]);
                           }
@@ -409,7 +408,7 @@ export function getRechargeTempalte(user_id){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-					resolve(data);
+                	resolve(data);
 				})
                 .catch(error => {
                     resolve(error);
