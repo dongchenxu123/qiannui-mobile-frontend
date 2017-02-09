@@ -20,6 +20,10 @@ class Drainage extends Component{
                 budget:0,
                 balance:0,
                 Items:[],
+				RechargeData: [],
+                real_text: '',
+                luckily_text_1: ''
+
 		}    
     }
  	componentDidMount(){
@@ -32,10 +36,18 @@ class Drainage extends Component{
                     nick:value.nick,
                     name:value.name
                 });
-              
-                this.getUserInfo();
+              	this.getUserInfo();
                 this.getDspUserData();
-                this.getDspOnsaleItems();  
+				this.getDspOnsaleItems();
+                getRechargeTempalte(this.state.user_id).then((res) => {
+                	this.setState({
+                		RechargeData: res.data.data.moneys,
+                		real_text: res.data.data.real_text,
+                		luckily_text_1: res.data.data.luckily_text_1
+                	})
+                	
+                })
+
             }  
         });
     }
@@ -275,7 +287,9 @@ class Drainage extends Component{
                 	<View style={styles.cellItemList}>
                 		<Text>淘外余额: {this.state.balance}</Text>
                 		<View style={{marginLeft: '60rem'}}>
-                			<RechargeView />
+                			<RechargeView moneys={this.state.RechargeData}
+                						  real_text={this.state.real_text}
+                						  luckily_text_1={this.state.luckily_text_1}/>
                 		</View>
                 		<TouchableHighlight style={{marginLeft: '60rem'}}>
                 			<Text style={styles.title}> ? 帮助</Text>
@@ -288,11 +302,7 @@ class Drainage extends Component{
                 		<Button type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
                 		<View style={{marginLeft: '30rem'}}><Button type="primary" size='small' onPress={this.drainageRpt.bind(this)}>推广报表</Button></View>
                 	</View>
-                	<View style={styles.cellItemList}>
-                		<View style={{flex:8}}><Input style={{width: '400rem', height: '60rem'}}/></View>
-                		<Text style={{flex: 4}}>当前推广中0件</Text>
-                	</View>
-                	<ScrollView style={styles.scroller}>
+					<ScrollView style={styles.scroller}>
                 		{
                 			this.state.Items.length == 0 
                 			? <Text>Loading...</Text>
@@ -310,11 +320,11 @@ class Drainage extends Component{
 const styles={
   scroller:{
 	      width: 750,
-	      height: height-450,
+	      height: height-330,
 	      flex: 1
 	   },
    listContainer: {
-		height: height-450
+		height: height-330
 	},
   cellItemList:{
         backgroundColor:"#fff",
