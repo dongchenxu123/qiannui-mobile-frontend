@@ -302,14 +302,7 @@ class Drainage extends Component{
                 		<Button type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
                 		<View style={{marginLeft: '30rem'}}><Button type="primary" size='small' onPress={this.drainageRpt.bind(this)}>推广报表</Button></View>
                 	</View>
-<<<<<<< HEAD
-=======
-                	<View style={styles.cellItemList}>
-                		<View style={{flex:8}}><Input style={{width: '400rem', height: '60rem'}}/></View>
-                		<Text style={{flex: 4}}>当前推广中0件</Text>
-                	</View>
->>>>>>> 5aefce3bbc8fa5134531aaddeb89b80faa359d83
-                	<ScrollView style={styles.scroller}>
+					<ScrollView style={styles.scroller}>
                 		{
                 			this.state.Items.length == 0 
                 			? <Text>Loading...</Text>
