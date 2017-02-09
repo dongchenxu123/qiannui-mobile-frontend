@@ -126,12 +126,12 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                 }
             ]
         }).then(result => {
-           
+          
             var baseData = result[0].simba_rpt_custbase_get_response.rpt_cust_base_list;
             var effect = result[1].simba_rpt_custeffect_get_response.rpt_cust_effect_list;
             if(baseData.code && baseData.sub_msg){
-                return baseData.sub_msg;
-            }else{
+                return baseData;
+            }else{      
                 return formatbaseData(baseData, effect);
             }
           

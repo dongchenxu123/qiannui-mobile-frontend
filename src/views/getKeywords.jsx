@@ -276,12 +276,12 @@ class GetKeywordsView extends Component {
                         自定义出价
                       </Text>
 
-                      <Input keyboardType="number-pad" onFocus={() => this.setState({value:1})} onBlur={(value)=>{this.keywordPrice =  value.target.attr.value;}}/>   
+                      <Input keyboardType="number-pad" onFocus={() => this.setState({value:1})} onBlur={(value)=>{this.keywordPrice =  value.target.attr.value;}}/> 元  
                     </View>
                     <View style={styles.item}>
                       <Radio size="small" value={2} ></Radio>
                       <Text style={[styles.title,{marginRight:"260rem"}]}>
-                        默认出价  {this.state.dataobj.default_price/100}  
+                        默认出价  {this.state.dataobj.default_price/100}   元
                       </Text>
                         
                     </View>

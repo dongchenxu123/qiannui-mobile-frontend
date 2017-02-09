@@ -1,6 +1,7 @@
 import { Icon, ListView } from 'nuke';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight , RefreshControl} from 'nuke-components';
+import { number_format} from './util';
 class ListViewCommon extends Component {
     constructor() {
         super();
@@ -37,11 +38,11 @@ class ListViewCommon extends Component {
         	<View>
                 <TouchableHighlight style={app.cellItemList} >
                     <Text style={app.itemTextList}>展现量</Text>
-                    <Text style={app.itemArrow}>{item.pv}</Text>
+                    <Text style={app.itemArrow}>{number_format(item.pv)}</Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>点击量</Text>
-                    <Text style={app.itemArrow}>{item.click}</Text>
+                    <Text style={app.itemArrow}>{number_format(item.click)}</Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>点击率</Text>
@@ -57,11 +58,11 @@ class ListViewCommon extends Component {
                 </TouchableHighlight>
                 <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>花费</Text>
-                    <Text style={app.itemArrow}>￥ {item.cost}</Text>
+                    <Text style={app.itemArrow}>￥ {number_format(item.cost)}</Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={app.cellItemList}>
                     <Text style={app.itemTextList}>总成交金额</Text>
-                    <Text style={app.itemArrow}>￥ {item.pay}</Text>
+                    <Text style={app.itemArrow}>￥ {number_format(item.pay)}</Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={app.cellItemList} >
                     <Text style={app.itemTextList}>投入产出比</Text>

@@ -409,9 +409,8 @@ export function getRechargeTempalte(user_id){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                	resolve(data);
-                    
-                })
+					resolve(data);
+				})
                 .catch(error => {
                     resolve(error);
                 });
@@ -465,4 +464,30 @@ export function onlineChat(){
         }, error => {
             
         });
+}
+
+export function setDspPassword(user_id,password){
+     return new Promise((resolve, reject) => {
+                var param = {
+                    user_id:user_id,
+                    password:password
+                };
+                
+                QN.fetch(DateAPi.httphost+'/setPassword', {
+                  
+                    method: 'POST',
+                    mode: 'cors',
+                    dataType: 'json',
+                    body:QN.uri.toQueryString(param)
+                })
+                .then(response => {     
+                    return response.json(); // => 返回一个 `Promise` 对象
+                })
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(error => {
+                    resolve(error);
+                });
+    });
 }

@@ -18,6 +18,7 @@ import QN from 'QAP-SDK';
 import {mount} from 'nuke-mounter';
 import {getAuthSign, getSellerUser, UserInfo, ProfileReport, WuxianBalance} from '../api';
 import {yesterday, threeMonthAgo, formatDate} from '../api/date';
+import {showLoading, hideLoading, number_format} from './util';
 import ListViewCommon from './listViewCommon';
 
 const {Pane} = TabSlider;
@@ -43,30 +44,36 @@ class User extends Component {
             dateAlldays: []
 
         };
+        showLoading();
     }
 
     sliderChange(index) {
         this.setState({active: index});
     }
     startDate = () => {
+
     	var yesdate = formatDate(yesterday);
         var threeMonth = formatDate(threeMonthAgo);
-        TimePicker.show({
+       TimePicker.show({
             title: '请选择日期',
             range: [
                 yesdate,threeMonth
             ],
-            default: '2016-10-18',
+            default: formatDate(yesterday),
             type: 'date'
         }, (e) => {
-           Modal.alert(222);
-           Modal.alert(e);
-            this.setState({start_date: e})
-         
         }, (e) => {
-             Modal.alert(e);
-            console.log('canceled ', e)
+           
+        },(e)=>{
+            if(e){
+                var date_start = e.split(' ')[0].replace(/\//g,'-');
+                this.setState({start_date: date_start});
+            }
+            
+        },()=>{
+           
         });
+
     }
     endDate = () => {
         var yesdate = formatDate(yesterday);
@@ -76,32 +83,33 @@ class User extends Component {
             range: [
                 threeMonth, yesdate
             ],
-            default: '2016-10-18',
+            default: formatDate(yesterday),
             type: 'date'
         }, (e) => {
-            
-            this.setState({end_date: e})
+
         }, (e) => {
-            console.log('canceled ', e)
+           
+        }, (e) => {
+            if(e){
+                var date_end = e.split(' ')[0].replace(/\//g,'-');
+                this.setState({end_date: date_end})
+            }     
         }, () => {
-            console.log('datepicker showed')
-        }, () => {
-            console.log('datepicker render fail')
+           
         });
     }
     btnClick() {
         this.setState({active: 0});
     }
     componentDidMount() {
-
-        console.log('店铺');
         getAuthSign().then((result) => {
             this.setState({subway_token: result});
             ProfileReport(this.state.subway_token).then((result) => {
                 this.setState({profileData: result, yesterday: result.yesterday, alldays: result.alldays, threedaysago: result.threedaysago})
-
+                hideLoading();
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
+                hideLoading();
             });
             WuxianBalance().then((result) => {
                 this.setState({WuxianData: result})
@@ -111,6 +119,7 @@ class User extends Component {
 
             });
         }, (error) => {
+            hideLoading();
             Modal.toast(JSON.stringify(error));
 
         })
@@ -127,9 +136,10 @@ class User extends Component {
         );
     }
 
-    onPress(index) {
+    onPress(index) {     
         this.setState({active: index});
     }
+
     submitDate() {
         var start_date = this.state.start_date == ''
             ? formatDate(yesterday)
@@ -137,8 +147,15 @@ class User extends Component {
         var end_date = this.state.end_date == ''
             ? formatDate(yesterday)
             : this.state.end_date;
+
+
         ProfileReport(this.state.subway_token, start_date, end_date).then((result) => {
-            this.setState({dateAlldays: result.alldays, checked: true})
+            if(result.sub_msg == undefined){
+                 this.setState({dateAlldays: result.alldays, checked: true})
+            }else{
+                Modal.toast(result.sub_msg);
+            }
+           
         }, (error) => {
             Modal.alert(JSON.stringify(error));
 
@@ -234,7 +251,7 @@ class User extends Component {
                         <Text style={styles.title}>
                             {this.state.yesterday.length === 0
                                 ? 0
-                                : this.state.yesterday[0].click
+                                : number_format(this.state.yesterday[0].click)
 }
                         </Text>
                     </View>
