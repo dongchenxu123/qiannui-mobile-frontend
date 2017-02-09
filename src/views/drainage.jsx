@@ -4,7 +4,6 @@ import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
-import {getRechargeTempalte} from '../api/dsp'
 import _ from 'lodash';
 let {height} = Dimensions.get('window');
 import RechargeView from './recharge'
@@ -21,7 +20,6 @@ class Drainage extends Component{
                 budget:0,
                 balance:0,
                 Items:[],
-                RechargeData: []
 		}    
     }
  	componentDidMount(){
@@ -34,11 +32,10 @@ class Drainage extends Component{
                     nick:value.nick,
                     name:value.name
                 });
-               
+              
                 this.getUserInfo();
                 this.getDspUserData();
-                this.getDspOnsaleItems();
-                getRechargeTempalte(1322064)
+                this.getDspOnsaleItems();  
             }  
         });
     }
@@ -114,7 +111,8 @@ class Drainage extends Component{
         })
     }
     listStatus (item) {
-		checkIssetDspUser().then((value) => {
+
+    	checkIssetDspUser().then((value) => {
     		if(value && value.user_id != undefined){
 	            this.setState({
 	                user_id:value.user_id
@@ -151,6 +149,7 @@ class Drainage extends Component{
 				}
 				var newArr=[];
 				newArr.push(obj)
+
 				setItemsOnline(this.state.user_id, newArr).then((res) => {
 	    			 if(res.status !== undefined && res.status === 'ok'){
                         this.state.Items[index].dsp_onLineStatus= newstatus;
@@ -260,7 +259,16 @@ class Drainage extends Component{
 				    }
 		 		]);
     }
-   
+   drainageRpt(){
+
+       QN.navigator.push({
+            url:'qap://views/drainageRpt.js',
+            query:{user_id:this.state.user_id,account_id:this.state.account_id},
+            settings: {
+                    animate: true
+             }
+        })
+   }
 	render(){
         return (
                 <View>
@@ -278,11 +286,11 @@ class Drainage extends Component{
                 		<Button type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
                 		<Text style={{paddingLeft: '30rem'}}>出价: </Text>
                 		<Button type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
-                		<View style={{marginLeft: '30rem'}}><Button type="primary" size='small'>推广报表</Button></View>
+                		<View style={{marginLeft: '30rem'}}><Button type="primary" size='small' onPress={this.drainageRpt.bind(this)}>推广报表</Button></View>
                 	</View>
                 	<View style={styles.cellItemList}>
                 		<View style={{flex:8}}><Input style={{width: '400rem', height: '60rem'}}/></View>
-                	
+                		<Text style={{flex: 4}}>当前推广中0件</Text>
                 	</View>
                 	<ScrollView style={styles.scroller}>
                 		{

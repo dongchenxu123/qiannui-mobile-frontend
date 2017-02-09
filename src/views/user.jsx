@@ -59,7 +59,7 @@ class User extends Component {
             range: [
                 yesdate,threeMonth
             ],
-            default: '2016-10-18',
+            default: formatDate(yesterday),
             type: 'date'
         }, (e) => {
         }, (e) => {
@@ -83,7 +83,7 @@ class User extends Component {
             range: [
                 threeMonth, yesdate
             ],
-            default: '2016-10-18',
+            default: formatDate(yesterday),
             type: 'date'
         }, (e) => {
 
@@ -150,7 +150,12 @@ class User extends Component {
 
 
         ProfileReport(this.state.subway_token, start_date, end_date).then((result) => {
-            this.setState({dateAlldays: result.alldays, checked: true})
+            if(result.sub_msg == undefined){
+                 this.setState({dateAlldays: result.alldays, checked: true})
+            }else{
+                Modal.toast(result.sub_msg);
+            }
+           
         }, (error) => {
             Modal.alert(JSON.stringify(error));
 

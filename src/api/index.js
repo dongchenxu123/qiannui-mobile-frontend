@@ -46,7 +46,9 @@ import {checkIssetDspUser,
         setItemsOffline,
         setItemsOnline,
         setDspPassword,
-        getRechargeTempalte
+        getRechargeTempalte,
+        getTodayReport,
+        getHistoryReport
     } from './dsp';
 
 
@@ -91,7 +93,10 @@ const api = {
     getAdgroupsAll:getAdgroupsAll,//获取计划下所有的推广组
     setKeywordPricevon:setKeywordPricevon, // 设置关键词出价
     getRechargeTempalte:getRechargeTempalte,//充值模板
-    setDspPassword:setDspPassword //设置dsp登陆密码
+    setDspPassword:setDspPassword ,//设置dsp登陆密码
+    getTodayReport:getTodayReport,//dsp报表 今天
+    getHistoryReport:getHistoryReport //dsp 报表历史
+
 }
 
 export default api 
