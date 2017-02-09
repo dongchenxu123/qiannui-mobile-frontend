@@ -3,73 +3,158 @@ import {createElement, Component} from 'weex-rx';
 import { View, Text,TouchableHighlight, ScrollView} from 'nuke-components';
 import {mount} from 'nuke-mounter';
 import QN from 'QAP-SDK';
-
+import {number_format} from './util';
 let {height} = Dimensions.get('window');
-
+var  ItemList={
+        backgroundColor:"#fff",
+        padding: '20rem',
+        borderWidth:"2rem",
+        borderStyle:"solid",
+        borderColor:"#e8e8e8",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        width: '650rem'
+   }
+   var hightItemList={
+        backgroundColor:"#fff",
+        padding: '20rem',
+        borderWidth:"2rem",
+        borderStyle:"solid",
+        borderColor:"#f50",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        width: '650rem'
+   }
 class RechargeView extends Component {
     constructor(props) {
         super(props);
         this.state={
-        	
-    	}
+          defaultStyle: ItemList,
+          hightStyle: hightItemList,
+          currentIndex: 0,
+          rechargeMoney: 1
+      }
     }
    showModal () {
         var self = this;
         this.refs.modal.show();
     }
-	hideModal = () => {
+  hideModal = () => {
         this.refs.modal.hide();
+    }
+  
+  hideSureModal = () => {
+        this.refs.suremodal.hide();
     }
     onShow() {
       
     }
-	onHide = (param) => {
+  onHide = (param) => {
         console.log('modal hide', param);
     }
-   
+    changeHighlight (index, total_fee) {
+      this.setState({
+        currentIndex: index,
+        rechargeMoney: total_fee
+      })
+      
+    }
+    check_highlight_index(index){
+        return index===this.state.currentIndex ? this.state.hightStyle : this.state.defaultStyle;
+    }
+    gopay () {
+      this.refs.suremodal.show();
+    }
     render() {
-    	var self= this;
-  		return (
+      var self= this;
+      var moneys= this.props.moneys;
+      var real_text= this.props.real_text;
+      var luckily_text_1= this.props.luckily_text_1;
+      return (
             <View>
                 <View style={{left:'-22rem'}} >        
                   <Button type="primary" onPress={this.showModal.bind(self)}>充值</Button>
                 </View>
                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>
                     <ScrollView style={styles.body} onEndReachedThreshold={300}>
-                    	<View>
-	                    	<Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额</Text>
-	                    	<View style={styles.cellItemList}>
-	                    		<View style={styles.ItemList}>
-	                    			<Text>1元</Text>
-	                    			<Text style={styles.highfont}>实得4元</Text>
-	                    			<Text>赠送您2元</Text>
-	                    			<Text>再赠送您1元红包</Text>
-	                    		</View>
-	                    		<View style={[styles.ItemList,{marginLeft: '40rem'}]}>
-	                    			<Text>3元</Text>
-	                    			<Text>3.3折</Text>
-	                    			<Text style={styles.highfont}>现仅需1元</Text>
-	                    			<Text>赠送您1元</Text>
-	                    			<Text>再赠送您1元 红包3</Text>
-	                    		</View>
-	                    	</View>
-	                    	<View style={styles.cellItemList}>
-	                    		<View style={styles.ItemList}>
-	                    			<Text>9元</Text>
-	                    			<Text style={styles.highfont}>现仅需3元</Text>
-	                    			<Text>赠送您3元</Text>
-	                    			<Text>再赠送您3元  红包2</Text>
-	                    		</View>
-	                    	</View>
-                    	</View>
+                      <View>
+                        <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额  {this.state.rechargeMoney} 元</Text>
+                        
+                        {
+                          moneys.length ===0 ? <Text>Loading123...</Text> : moneys.map((item, index) => {
+                            var discount = parseInt(item.discount);
+                              var total_fee = parseInt(item.total_fee);
+                              var luckily_money_1 = parseInt(item.luckily_money_1);
+                              var luckily_money_2 = parseInt(item.luckily_money_2);
+                              var tl1l2 = total_fee + luckily_money_1 + luckily_money_2;
+                             
+                            return (
+                              <View style={styles.cellItemList}>
+                                <TouchableHighlight 
+                                  style={this.check_highlight_index(index)}                       onPress={this.changeHighlight.bind(this, index, total_fee)} 
+                                  >
+                                  <View>
+                                      {discount == 1
+                                        ? <Text>{number_format(tl1l2)}元</Text>
+                                        : <Text>{number_format(total_fee)}元</Text>
+                                      }
+                                  </View>
+                                  <View>
+                                      {parseInt(item.discount) == 1 && total_fee > 0
+                                        ? <View>
+                                                                  <Text> {(parseFloat(total_fee)/tl1l2 * 10).toFixed(1)} 折</Text>
+                                          <Text style={styles.highfont}>现仅需{
+                                            item.total_fee
+                                          }元</Text>
+                                                                  
+                                        </View>
+                                        : <Text style={styles.highfont}>实得{number_format(tl1l2)}元</Text>
+                                      }
+                                  </View> 
+                                  <View>
+                                    {luckily_money_1>0 
+                                        ? <Text>{real_text.replace(/\{money\}/gi, luckily_money_1)}</Text>
+                                        : ''
+                                    }
+                                    {
+                                      luckily_money_2> 0
+                                        ? <Text>{luckily_text_1.replace(/\{money\}/gi, luckily_money_2)}</Text>
+                                        : ''
+                                    }
+                                    {
+                                      item.luckily_text ? item.luckily_text : ''
+                                    }
+                                  </View>   
+                                </TouchableHighlight>
+                              </View>
+                            )
+                          })
+                        }
+                        </View>
+                      
                     </ScrollView>
                     <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
-                            <Button style={{height:"80rem",marginBottom:'30rem'}} block="true" type="secondary">支付宝充值</Button>
+                            <Button style={{height:"80rem",marginBottom:'30rem'}} block="true" type="secondary" onPress={this.gopay.bind(this)}>支付宝充值</Button>
                     </View>
  
                     <TouchableHighlight style={styles.close} onPress={this.hideModal}>
                         <Text style={styles.closeText}>x</Text>
                     </TouchableHighlight>
+                    <Dialog ref="suremodal" contentStyle={styles.modalStyle} onShow={this.onShow} onHide={this.onHide}>
+                      <View style={styles.body}>
+                          <Text>
+                            Conetnt
+                          </Text>
+                      </View>
+                      <View style={styles.footer}>
+                          <TouchableHighlight style={styles.button} onPress={this.hideSureModal}>
+                              <Text>OK</Text>
+                          </TouchableHighlight>
+                      </View>
+                      <TouchableHighlight style={styles.close} onPress={this.hideSureModal}>
+                          <Text style={styles.closeText}>x</Text>
+                      </TouchableHighlight>
+                  </Dialog>
                 </Dialog>
             </View>
 
@@ -86,7 +171,7 @@ var styles = {
   cellItemList:{
         backgroundColor:"#fff",
         padding: '20rem',
-       	paddingLeft:"30rem",
+        paddingLeft:"30rem",
         alignItems:"center",
         flexDirection:"row",
         display:'flex' 
@@ -97,11 +182,19 @@ var styles = {
         borderWidth:"2rem",
         borderStyle:"solid",
         borderColor:"#e8e8e8",
-       	paddingLeft:"30rem",
+        paddingLeft:"30rem",
         alignItems:"center",
-        height: '300rem',
-        width: '300rem',
-        lineHeight: '60rem'
+        width: '650rem'
+   },
+   hightItemList:{
+        backgroundColor:"#fff",
+        padding: '20rem',
+        borderWidth:"2rem",
+        borderStyle:"solid",
+        borderColor:"#f50",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        width: '650rem'
    },
   body: {
     alignItems: 'left',
@@ -114,7 +207,7 @@ var styles = {
     justifyContent: 'center',
     height: '120rem',
     flexDirection:"row",
-	display:'flex'
+  display:'flex'
   },
   button: {
     width: '300rem',
@@ -134,9 +227,9 @@ var styles = {
     right: '-18rem',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '80rem',
-    height: '80rem',
-    borderRadius: '60rem',
+    width: '60rem',
+    height: '60rem',
+    borderRadius: '40rem',
     backgroundColor: '#ffffff'
   },
   closeText: {
@@ -144,20 +237,20 @@ var styles = {
     color: '#000000'
   },
   title: {
-   	    padding: '30rem',
-   	    backgroundColor: '#e8e8e8',
-	   	color: '#333',
-	   	fontSize: '35rem'
-	   
-	   },
+        padding: '30rem',
+        backgroundColor: '#e8e8e8',
+      color: '#333',
+      fontSize: '35rem'
+     
+     },
    amoutList:{
-   	    paddingLeft:'30rem',
-   	    alignItems:"center",
+        paddingLeft:'30rem',
+        alignItems:"center",
         flexDirection:"row",
         display:'flex'
       },
    highfont: {
-   	color: '#FF6600'
+    color: '#FF6600'
    }
 };
 
