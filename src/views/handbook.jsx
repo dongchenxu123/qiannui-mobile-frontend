@@ -171,7 +171,7 @@ const app = {
         borderRadius: '0.1rem',
         fontSize: '0.7rem',
         backgroundColor: '#e5e5e5',
-        height: '400rem',
+        height: '300rem',
         textAlign: 'center'
     },
     cardContent:{
