@@ -26,7 +26,7 @@ class User extends Component {
     constructor() {
         super();
         this.state = {
-            index: 1,
+            index: 0,
             active: 0,
             stop: false,
             page: 0,

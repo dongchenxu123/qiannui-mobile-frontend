@@ -394,15 +394,12 @@ export function contractRpt(user_id,subway_token, start_date= null, end_date= nu
 * 获取充值模板
 */
 export function getRechargeTempalte(user_id){
-		Modal.alert(user_id)
-	/*
-    return new Promise((resolve, reject) => {
+	return new Promise((resolve, reject) => {
                 var param = {
                     user_id:user_id
                 };
                 
                 QN.fetch(DateAPi.httphost+'/getLuckilyPlan', {
-                  
                     method: 'POST',
                     mode: 'cors',
                     dataType: 'json',
@@ -412,15 +409,14 @@ export function getRechargeTempalte(user_id){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                	Modal.alert(JSON.stringify(data))
-                    resolve(data);
+                	resolve(data);
                     
                 })
                 .catch(error => {
                     resolve(error);
                 });
     });
-    */
+    
 }
 
 /*
