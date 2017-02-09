@@ -6,8 +6,6 @@ import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
 import _ from 'lodash';
 let {height} = Dimensions.get('window');
-import RechargeView from './recharge';
-import getRechargeTempalte from '../api/dsp';
 class Drainage extends Component{
     constructor() {
         super();   
@@ -20,16 +18,14 @@ class Drainage extends Component{
                 cpc:0,
                 budget:0,
                 balance:0,
-                Items:[],
-				RechargeData: [],
-                real_text: '',
-                luckily_text_1: ''
+                Items:[]
+				
 
 		}    
     }
  	componentDidMount(){
         console.log('淘外引流');
-    	checkIssetDspUser().then((value) => { 
+    	checkIssetDspUser().then((value) => {
     	if(value && value.user_id != undefined){
                 this.setState({
                     user_id:value.user_id,
@@ -40,15 +36,6 @@ class Drainage extends Component{
               	this.getUserInfo();
                 this.getDspUserData();
 				this.getDspOnsaleItems();
-                getRechargeTempalte(this.state.user_id).then((res) => {
-                	this.setState({
-                		RechargeData: res.data.data.moneys,
-                		real_text: res.data.data.real_text,
-                		luckily_text_1: res.data.data.luckily_text_1
-                	})
-                	
-                })
-
             }  
         });
     }
@@ -273,11 +260,19 @@ class Drainage extends Component{
 		 		]);
     }
    drainageRpt(){
-
-       QN.navigator.push({
+		QN.navigator.push({
             url:'qap://views/drainageRpt.js',
             query:{user_id:this.state.user_id,account_id:this.state.account_id},
             settings: {
+                    animate: true
+             }
+        })
+   }
+   linkrecharge(){
+		QN.navigator.push({
+            url:'qap://views/recharge.js',
+            query:{user_id:this.state.user_id,account_id:this.state.account_id},
+           	settings: {
                     animate: true
              }
         })
@@ -287,10 +282,8 @@ class Drainage extends Component{
                 <View>
                 	<View style={styles.cellItemList}>
                 		<Text>淘外余额: {this.state.balance}</Text>
-                		<View style={{marginLeft: '60rem'}}>
-                			<RechargeView moneys={this.state.RechargeData}
-                						  real_text={this.state.real_text}
-                						  luckily_text_1={this.state.luckily_text_1}/>
+                		<View style={{marginLeft: '60rem'}}>        
+                  			<Button type="primary" onPress={this.linkrecharge.bind(this)}>充值</Button>
                 		</View>
                 		<TouchableHighlight style={{marginLeft: '60rem'}}>
                 			<Text style={styles.title}> ? 帮助</Text>
