@@ -11,7 +11,7 @@ export default class HandBook extends Component{
     constructor() {
         super();   
         this.state = {
-            user_id:''
+            user_id:'',
             user_name:'',
             dspPassword:'',
             reDspPassword:''
