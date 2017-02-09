@@ -283,7 +283,7 @@ class Drainage extends Component{
         })
    }
    showHandbook(){
-        console.log(2);
+        
        QN.navigator.push({
             url:'qap://views/handbook.js',
             settings: {
@@ -310,7 +310,9 @@ class Drainage extends Component{
                         <Button type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
                         <Text style={{paddingLeft: '30rem'}}>出价: </Text>
                         <Button type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
-                        <View style={{marginLeft: '30rem'}}><Button type="primary" size='small' onPress={this.drainageRpt.bind(this)}>推广报表</Button></View>
+                        <TouchableHighlight style={{marginLeft: '30rem'}} onPress={this.drainageRpt.bind(this)}>
+                            <Text style={styles.title}> 推广报表</Text>
+                        </TouchableHighlight>
                     </View>
                     <ScrollView style={styles.scroller}>
                         {

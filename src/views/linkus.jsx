@@ -19,9 +19,7 @@ class LinkUs extends Component{
 
        
     }
-componentDidMount() {
-        console.log('1111111111');
-    }
+
     openChart(){
         onlineChat();
     }

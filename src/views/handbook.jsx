@@ -3,23 +3,37 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView} from 'nuke-components';
 import { checkIssetDspUser,setDspPassword  } from '../api';
-
 import QN from 'QAP-SDK';
 
 let {height} = Dimensions.get('window');
+
 export default class HandBook extends Component{
     constructor() {
         super();   
         this.state = {
+            user_id:''
+            user_name:'',
             dspPassword:'',
             reDspPassword:''
         }    
     }
-     componentDidMount(){
-       
+    componentDidMount(){
+          checkIssetDspUser().then((result)=>{
+                if(result && result.user_id != undefined){
+                    this.setState({
+                        user_id:result.user_id,
+                        user_name:result.name
+                    })
+                }
+            });
     }
     setDspWeb(){
-        this.refs.modal.show();
+        if(this.state.user_id){
+            this.refs.modal.show();
+        }else{
+            Modal.toast('缺少参数');
+        }
+        
     }
     submitPwd(){
         var password = this.state.dspPassword;
@@ -49,21 +63,18 @@ export default class HandBook extends Component{
                 Modal.toast('密码长度不能少于6位');
                 return;
             }
-            checkIssetDspUser().then((result)=>{
-                if(result && result.user_id != undefined){
-                    setDspPassword(result.user_id,password).then((res)=>{
-                        if(res && res.password){
-                            Modal.toast('密码设置成功');
-                        }else{
-                            Modal.toast('密码设置失败');
-                        }
-                        this.hideModal();
-                    },(error)=>{
-                        Modal.toast('请求错误');
-                        this.hideModal();
-                    }) 
+            setDspPassword(this.state.user_id,password).then((res)=>{
+                if(res && res.password){
+                    Modal.toast('密码设置成功');
+                }else{
+                    Modal.toast('密码设置失败');
                 }
-            })
+                this.hideModal();
+            },(error)=>{
+                Modal.toast('请求错误');
+                this.hideModal();
+            }) 
+            
     }
     hideModal(){
          this.refs.modal.hide();
@@ -133,7 +144,7 @@ export default class HandBook extends Component{
                         </View>
                         <View style={app.cellItemList} >
                             <Text style={app.itemTextList}>用户名</Text>
-                            <Text style={app.itemArrow}> https://dsp.xibao100.com </Text>
+                            <Text style={app.itemArrow}>{this.state.name ? this.state.name :''}</Text>
                         </View>
                         <View style={app.cellItemList} >
                             <Text style={app.itemTextList}>密码</Text>
@@ -146,10 +157,10 @@ export default class HandBook extends Component{
                     </View>
 
                     <View style={app.footer}>
-                        <View style={{paddingLeft:'20rem'}}>
+                        <View style={{marginLeft:'30rem'}}>
                            <Button type='secondary' size="medium" onPress={this.hideModal.bind(this)}>取消</Button>
                         </View>
-                        <View style={{paddingRight:'20rem'}}>
+                        <View >
                             <Button type='secondary' size="medium" onPress={this.submitPwd.bind(this)}>确定</Button>
                         </View>
                     </View>
@@ -161,7 +172,6 @@ export default class HandBook extends Component{
 }
 const app = {
     content:{
-      
         height:{height}
     },
     car:{
@@ -197,7 +207,8 @@ const app = {
     },
     listBlock:{
         margin: 0,
-        fontSize: '0.7rem'
+        fontSize: '0.7rem',
+        color:'#999999'
     },
     modalStyle: {
         height: '600rem'

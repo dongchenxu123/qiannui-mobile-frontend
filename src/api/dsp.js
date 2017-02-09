@@ -422,7 +422,7 @@ export function getRechargeTempalte(user_id){
 * 反馈
 */
 export function getFeedback(content){
- /*   return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
          getLocalstoreUser().then((res)=>{
             var param = {
                     id: res.taobao_user_id,
@@ -446,7 +446,7 @@ export function getFeedback(content){
                     Modal.toast(JSON.stringify(error));
                 });  
          });          
-    });*/
+    });
 }
 
 /*
