@@ -3,40 +3,19 @@ import {createElement, Component} from 'weex-rx';
 import { View, Text,TouchableHighlight, ScrollView} from 'nuke-components';
 import {mount} from 'nuke-mounter';
 import QN from 'QAP-SDK';
-import {number_format} from './util';
+
 let {height} = Dimensions.get('window');
-var  ItemList={
-        backgroundColor:"#fff",
-        padding: '20rem',
-        borderWidth:"2rem",
-        borderStyle:"solid",
-        borderColor:"#e8e8e8",
-       	paddingLeft:"30rem",
-        alignItems:"center",
-        width: '650rem'
-   }
-   var hightItemList={
-        backgroundColor:"#fff",
-        padding: '20rem',
-        borderWidth:"2rem",
-        borderStyle:"solid",
-        borderColor:"#f50",
-       	paddingLeft:"30rem",
-        alignItems:"center",
-        width: '650rem'
-   }
+
 class RechargeView extends Component {
     constructor(props) {
         super(props);
         this.state={
-        	defaultStyle: ItemList,
-        	hightStyle: hightItemList
+        	
     	}
     }
    showModal () {
         var self = this;
         this.refs.modal.show();
-        Modal.alert(JSON.stringify(this.props.moneys))
     }
 	hideModal = () => {
         this.refs.modal.hide();
@@ -50,74 +29,39 @@ class RechargeView extends Component {
    
     render() {
     	var self= this;
-    	var moneys= this.props.moneys;
-    	var real_text= this.props.real_text;
-    	var luckily_text_1= this.props.luckily_text_1;
-    	return (
+  		return (
             <View>
                 <View style={{left:'-22rem'}} >        
                   <Button type="primary" onPress={this.showModal.bind(self)}>充值</Button>
                 </View>
                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>
                     <ScrollView style={styles.body} onEndReachedThreshold={300}>
-                    	<TouchableHighlight>
+                    	<View>
 	                    	<Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额</Text>
-	                    	
-	                    	{
-	                    	  moneys.length ===0 ? <Text>Loading...</Text> : moneys.map((item, index) => {
-	                    	  	var discount = parseInt(item.discount);
-	                            var total_fee = parseInt(item.total_fee);
-	                            var luckily_money_1 = parseInt(item.luckily_money_1);
-	                            var luckily_money_2 = parseInt(item.luckily_money_2);
-	                            var highlight = parseInt(item.highlight);
-	                            var tl1l2 = total_fee + luckily_money_1 + luckily_money_2;
-	                           
-	                    	  	return (
-	                    	  		<View style={styles.cellItemList}>
-	                    	  			<TouchableHighlight style={highlight == 1 ? this.state.hightStyle: this.state.defaultStyle}>
-	                    	  				<View>
-	                    	  				    {discount == 1
-	                    	  				    	? <Text>{number_format(tl1l2)}元</Text>
-	                    	  				    	: <Text>{number_format(total_fee)}元</Text>
-	                    	  				    }
-	                    	  				</View>
-	                    	  				<View>
-	                    	  				    {parseInt(item.discount) == 1 && total_fee > 0
-	                    	  				    	? <View>
-	                    	  				    														<Text> {(parseFloat(total_fee)/tl1l2 * 10).toFixed(1)} 折</Text>
-	                    	  				    		<Text style={styles.highfont}>现仅需{
-	                    	  				    			item.total_fee
-	                    	  				    		}元</Text>
-	                    	  				    														
-	                    	  				    	</View>
-	                    	  				    	: <Text style={styles.highfont}>实得{number_format(tl1l2)}元</Text>
-	                    	  				    }
-	                    	  				</View>	
-	                    	  				<View>
-	                    	  					{luckily_money_1>0 
-	                    	  							? <Text>{real_text.replace(/\{money\}/gi, luckily_money_1)}</Text>
-	                    	  							: ''
-	                    	  					}
-	                    	  					{
-	                    	  						luckily_money_2> 0
-	                    	  							? <Text>{luckily_text_1.replace(/\{money\}/gi, luckily_money_2)}</Text>
-	                    	  							: ''
-	                    	  					}
-	                    	  					{
-	                    	  						item.luckily_text ? item.luckily_text : ''
-	                    	  					}
-	                    	  				</View>
-	                    	  				
-	                    	  				
-	                    	  				
-	                    	  				
-	                    	  			</TouchableHighlight>
-	                    	  		</View>
-	                    	  	)
-	                    	  })
-	                    	}
-	                    	</TouchableHighlight>
-	                    
+	                    	<View style={styles.cellItemList}>
+	                    		<View style={styles.ItemList}>
+	                    			<Text>1元</Text>
+	                    			<Text style={styles.highfont}>实得4元</Text>
+	                    			<Text>赠送您2元</Text>
+	                    			<Text>再赠送您1元红包</Text>
+	                    		</View>
+	                    		<View style={[styles.ItemList,{marginLeft: '40rem'}]}>
+	                    			<Text>3元</Text>
+	                    			<Text>3.3折</Text>
+	                    			<Text style={styles.highfont}>现仅需1元</Text>
+	                    			<Text>赠送您1元</Text>
+	                    			<Text>再赠送您1元 红包3</Text>
+	                    		</View>
+	                    	</View>
+	                    	<View style={styles.cellItemList}>
+	                    		<View style={styles.ItemList}>
+	                    			<Text>9元</Text>
+	                    			<Text style={styles.highfont}>现仅需3元</Text>
+	                    			<Text>赠送您3元</Text>
+	                    			<Text>再赠送您3元  红包2</Text>
+	                    		</View>
+	                    	</View>
+                    	</View>
                     </ScrollView>
                     <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
                             <Button style={{height:"80rem",marginBottom:'30rem'}} block="true" type="secondary">支付宝充值</Button>
@@ -155,17 +99,9 @@ var styles = {
         borderColor:"#e8e8e8",
        	paddingLeft:"30rem",
         alignItems:"center",
-        width: '650rem'
-   },
-   hightItemList:{
-        backgroundColor:"#fff",
-        padding: '20rem',
-        borderWidth:"2rem",
-        borderStyle:"solid",
-        borderColor:"#f50",
-       	paddingLeft:"30rem",
-        alignItems:"center",
-        width: '650rem'
+        height: '300rem',
+        width: '300rem',
+        lineHeight: '60rem'
    },
   body: {
     alignItems: 'left',
@@ -198,9 +134,9 @@ var styles = {
     right: '-18rem',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '60rem',
-    height: '60rem',
-    borderRadius: '40rem',
+    width: '80rem',
+    height: '80rem',
+    borderRadius: '60rem',
     backgroundColor: '#ffffff'
   },
   closeText: {

@@ -10,8 +10,6 @@ import UserView from './views/user';
 import CampaignsListView from './views/campaigns/campaignsList';
 import Drainage from './views/drainage';
 import {  localstoreUser} from './api/authsign';
-import { getRechargeTempalte } from './api/dsp'
-
 
 let URL= document.URL
 let arr= QN.uri.parseQueryString(URL);
@@ -19,10 +17,6 @@ let authString = JSON.parse(arr.authString);
 localstoreUser(authString).then((result)=>{
 
 });
-
-getRechargeTempalte(1367524).then((result)=>{
-  console.log(JSON.stringify(result));
-}); // 1322064
 
 let WuXianCheShou = class WuXianCheShou extends Component {
     constructor() {
