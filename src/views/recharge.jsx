@@ -64,7 +64,7 @@ class RechargeView extends Component {
 	                    	<Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额</Text>
 	                    	
 	                    	{
-	                    	  moneys.length ===0 ? <Text>Loading...</Text> : moneys.map((item, index) => {
+	                    	  moneys.length ===0 ? <Text>Loading123...</Text> : moneys.map((item, index) => {
 	                    	  	var discount = parseInt(item.discount);
 	                            var total_fee = parseInt(item.total_fee);
 	                            var luckily_money_1 = parseInt(item.luckily_money_1);

@@ -6,7 +6,8 @@ import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
 import _ from 'lodash';
 let {height} = Dimensions.get('window');
-import RechargeView from './recharge'
+import RechargeView from './recharge';
+import getRechargeTempalte from '../api/dsp';
 class Drainage extends Component{
     constructor() {
         super();   
