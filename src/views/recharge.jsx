@@ -78,7 +78,7 @@ class RechargeView extends Component {
     }
     gopaymoney () {
     	this.refs.suremodal.hide();
-    	QN.navigator.go({
+    	QN.navigator.push({
             url:httphost+'/recharge',
             query:{money:this.state.rechargeMoney,account_id:this.state.account_id},
             settings: {

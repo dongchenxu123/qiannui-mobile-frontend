@@ -1,8 +1,8 @@
-import {Button,ListView, Modal, Input,  Col, Grid, Dimensions,TimePicker} from 'nuke';
+import {Button, Modal, Col, Grid, Dimensions,TimePicker} from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView} from 'nuke-components';
-import { checkIssetDspUser, getTodayReport, getHistoryReport } from '../api';
+import { getTodayReport, getHistoryReport } from '../api';
 import {yesterday, threeMonthAgo, lastWeek,formatDate} from '../api/date';
 import { showLoading,hideLoading,number_format } from './util';
 import QN from 'QAP-SDK';
