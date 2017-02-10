@@ -87,28 +87,22 @@ class HealthyView extends Component{
             case 'click':
             case 'ctr'://点击率
             case 'click_ROi'://转化率
-                {
-                    if(val <=10 )
-                    {
+                    if(val <=10 ){
                         result =  lower; 
                     }
-                }
                 break;
             case 'favcount':
-                if(val <=1)
-                {
+                if(val <=1){
                     result =  lower;
                 }
                 break;
             case 'ROI':
-                if(val  === 0)
-                {
+                if(val  === 0){
                     result =  lower;
                 }
                 break;
             case 'cost':
-                if((value - val < 1 && val >0) || val === 0)
-                {
+                if((value - val < 1 && val >0) || val === 0){
                     result =  lower;
                 }
                 break;
@@ -168,7 +162,7 @@ const app = {
         display:'flex' 
     },
     itemTextList:{
-        fontSize:"30rem",
+        fontSize:"32rem",
         color:"#0894EC",
         flex:15
     },
@@ -192,12 +186,12 @@ const app = {
         color:"#666666"
     },
     amoutList:{
-            backgroundColor:"#ffffff",
-            padding:"15rem",
-            alignItems:"center",
-            flexDirection:"row",
-            display:'flex'
-        },
+        backgroundColor:"#ffffff",
+        padding:"15rem",
+        alignItems:"center",
+        flexDirection:"row",
+        display:'flex'
+    },
     scroller:{
         backgroundColor:'#ffffff'  
       },
@@ -208,7 +202,7 @@ const app = {
         borderBottomColor:'#e8e8e8'
     },
     subCell:{
-        height:'449rem',
+        height:'490rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',  
@@ -219,21 +213,25 @@ const app = {
         display:'flex',
     },
     col1:{
+        fontSize:'30rem',
         padding:'20rem',
         marginLeft:'10rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',
-        flex:15
+        flex:15,
+        color:'#5F646E'
     },
     col2:{
+        fontSize:'30rem',
         padding:'20rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',
         flex:4,
         textAlign: 'right',
-        marginRight:'20rem' 
+        marginRight:'20rem',
+        color:'#5F646E'
     },
     itemArrow:{
         flex: 4,

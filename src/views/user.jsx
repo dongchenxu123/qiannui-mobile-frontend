@@ -153,7 +153,7 @@ class User extends Component {
             if(result.sub_msg == undefined){
                  this.setState({dateAlldays: result.alldays, checked: true})
             }else{
-                Modal.toast(result.sub_msg);
+                Modal.alert(result.sub_msg);
             }
            
         }, (error) => {
@@ -173,7 +173,8 @@ class User extends Component {
         switch (index) {
             case 0:
                 var style = {
-                    width: 180
+                    width: 180,
+                    fontSize:'32rem'
                 };
                 style = Object.assign(style, commonSty);
                 if (index == current)
@@ -186,7 +187,8 @@ class User extends Component {
 
             case 1:
                 var style = {
-                    width: 180
+                    width: 180,
+                    fontSize:'32rem'
                 };
                 style = Object.assign(style, commonSty);
                 if (index == current)
@@ -199,7 +201,8 @@ class User extends Component {
 
             case 2:
                 var style = {
-                    width: 180
+                    width: 180,
+                    fontSize:'32rem'
                 };
                 style = Object.assign(style, commonSty);
                 if (index == current)
@@ -211,7 +214,8 @@ class User extends Component {
                 )
             case 3:
                 var style = {
-                    width: 180
+                    width: 180,
+                    fontSize:'32rem'
                 };
                 style = Object.assign(style, commonSty);
                 if (index == current)
@@ -403,7 +407,8 @@ const styles = {
 	},
     title: {
         textAlign: 'center',
-        paddingBottom: '40rem'
+        paddingBottom: '40rem',
+        fontSize:'32rem'
     }
 };
 export default User

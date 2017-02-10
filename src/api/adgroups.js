@@ -91,6 +91,8 @@ export function getAdgroupsAll(campaign_id){
                 }else{
                     resolve(data);
                 }
+        },(error)=>{   
+            return error.error_response;
         }) 
         .catch(error=>{
 
@@ -136,7 +138,9 @@ function getAdgroups_sign(campaign_id,dataNum){
                             resolve(data);
                         }
                     }
-                })
+                },(error)=>{   
+                        return error.error_response;
+                    })
                 .catch(error=>{
                 }); 
             })(i)        
@@ -318,6 +322,8 @@ export function deleteAdgroup(adgroup_id){
             {
                 return error;
             }
+        },(error)=>{   
+            return error.error_response;
         }).catch(error=>{
             Modal.toast(JSON.stringify(error));
         }); 
@@ -344,13 +350,14 @@ export function updateAdgroup(adgroup_id,statusnew){
             {
                 return error;
             }
+        },(error)=>{   
+            return error.error_response;
         }).catch(error=>{
             Modal.toast(JSON.stringify(error));
         }); 
 }
 
 export function addAdgroup(campaign_id,num_iid,title,img_url){
-    
     return QN.top.invoke({
             query: {
                 method: 'taobao.simba.adgroup.add', 
@@ -362,7 +369,6 @@ export function addAdgroup(campaign_id,num_iid,title,img_url){
                 img_url:img_url
             }
         }).then((result)=>{
-       
             var error = null;
             error = checkAPIError(result);
            
@@ -373,6 +379,8 @@ export function addAdgroup(campaign_id,num_iid,title,img_url){
             {
                 return error;
             }
+        },(error)=>{   
+            return error.error_response;
         }).catch(error=>{
             Modal.toast(JSON.stringify(error));
         }); 

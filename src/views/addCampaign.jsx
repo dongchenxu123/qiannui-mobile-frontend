@@ -19,7 +19,7 @@ class AddCampaignView extends Component {
         isRefreshing: false,
         showLoading:true,
         refreshText: '↓ 下拉刷新',
-        campaign_id: ''
+        campaign_id: campaign_id
         
       }
         
@@ -27,7 +27,7 @@ class AddCampaignView extends Component {
     
  
   componentDidMount(){
-      getUnSaleItem(itemId).then((result) => {
+      getUnSaleItem(campaign_id).then((result) => {
            this.setState({
            		datalist: result
            	})
@@ -72,10 +72,15 @@ class AddCampaignView extends Component {
     linkTo(item,e) {
         console.log(e);
     }
-    jointuiguang (campaign_id,num_iid,title,imgUrl) {
-    	addAdgroup(campaign_id,num_iid,title,imgUrl).then((result) => {
-           	Modal.alert(JSON.stringify(result))
-           var idx= 0;
+    jointuiguang (num_iid,title,imgUrl) {
+    	addAdgroup(this.state.campaign_id,num_iid,title,imgUrl).then((result) => {
+     
+        if(result.code && result.sub_msg){
+          Modal.alert(result.sub_msg);
+          return;
+        }
+
+        var idx= 0;
 	   		for (var i=0; i<this.state.datalist.length; i++) {
 	   			if(num_iid === this.state.datalist[i].num_iid) {
 	   				idx = i
@@ -89,10 +94,7 @@ class AddCampaignView extends Component {
 	   		})
      	}, (error) => {
             Modal.alert(JSON.stringify(error));
-
         });
-    	
-   		Modal.alert(JSON.stringify(this.state.datalist))
     }
     renderItem (item, index){
     	var itemcid= item.cid;
@@ -107,7 +109,7 @@ class AddCampaignView extends Component {
                 		<View style={app.itemTextList}>
                 			<Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
                 			<Text style={{color: 'red', paddingBottom: '20rem'}}>状态: 未推广</Text>
-                		    <Button style={{color: '#3089dc'}} block="true" onPress={this.jointuiguang.bind(this,campaign_id,num_iid,title,imgUrl)}>参与推广</Button>
+                		    <Button style={{color: '#3089dc'}} block="true" onPress={this.jointuiguang.bind(this,num_iid,title,imgUrl)}>参与推广</Button>
                 		</View>
                 </View>
         		

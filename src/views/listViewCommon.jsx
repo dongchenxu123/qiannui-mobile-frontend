@@ -78,7 +78,6 @@ class ListViewCommon extends Component {
                 </TouchableHighlight>
             </View>
             );
-
     }
     renderHeader=()=>{
         return <RefreshControl style={app.refresh} refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh}><Text style={app.loadingText}>{this.state.refreshText}</Text></RefreshControl>;
@@ -94,13 +93,12 @@ class ListViewCommon extends Component {
         return (
         	<View>
         		{
-        			this.props.amount.length === 0 ? <Text>Loading...</Text> : <ListView
+        			this.props.amount.length === 0 ? <Text style={{padding:'30rem',textAlign:'center',fontSize:'30rem'}}>加载中...</Text> : <ListView
 		           	renderHeader={this.renderHeader}
             		renderFooter={this.renderFooter}
             		renderRow={this.renderItem.bind(this)} 
 		            dataSource={this.props.amount}
-					style={app.listContainer}
-		            
+					style={app.listContainer}   
 		          />
         		}
         		
