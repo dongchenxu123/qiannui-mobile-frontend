@@ -324,6 +324,8 @@ export function getPlatfrom(campaign_id){
             }
         }).then((result)=>{
             return result.simba_campaign_platform_get_response.campaign_platform;        
+        },(error)=>{
+            return error;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -340,18 +342,29 @@ export function getPlatfrom(campaign_id){
     }
 */
 export function setPlatfrom(obj){
-     return QN.top.invoke({
-            query: {
+
+
+        var fields = 'campaign_id,search_channels,outside_discount,mobile_discount';
+        if(obj.nonsearch_channels.length >0 ){
+            fields = fields +' ,nonsearch_channels';
+        }
+        var param =  {
                 method:'taobao.simba.campaign.platform.update',
-                fields:'campaign_id,search_channels,nonsearch_channels,outside_discount,mobile_discount',
+                fields:fields,
                 campaign_id:obj.campaign_id,
                 search_channels:obj.search_channels.join(','),
-                nonsearch_channels:obj.nonsearch_channels.join(','),
                 outside_discount:obj.outside_discount,
                 mobile_discount:obj.mobile_discount
             }
+           if(obj.nonsearch_channels.length >0 ){
+            param.nonsearch_channels =obj.nonsearch_channels.join(',')
+        }
+     return QN.top.invoke({
+            query: param
         }).then((result)=>{
             return result.simba_campaign_platform_update_response.campaign_platform;        
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);

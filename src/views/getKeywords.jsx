@@ -48,9 +48,9 @@ class GetKeywordsView extends Component {
                 Modal.toast(JSON.stringify(error));
             });      
   }
-  showkeywordslist (adgroup_id) {
+  addkeywords (adgroup_id) {
       QN.navigator.push({
-      url: 'qap://views/keywordslist.js',
+      url: 'qap://views/addkeywords.js',
       query: { adgroup_id:adgroup_id },
       settings: {
           animate: true,
@@ -77,7 +77,7 @@ class GetKeywordsView extends Component {
           Modal.alert("请选择需要删除的关键词",[ 
             {
                 onPress:(e)=>{console.log(e)},
-                text:"知道了"
+                text:"好的"
             }
         ])
         return;
@@ -89,13 +89,13 @@ class GetKeywordsView extends Component {
             onPress:()=>{
                 var keyword_ids=[];
                 var len = this.state.keywordList.length;
-
+                Modal.toast('正在删除~')
                 this.state.keywordList.map((v,i)=>{
                     if(v.checked != undefined && v.checked == 1){
                         keyword_ids.push(v.keyword_id);
                     }
                 });
-              
+                
                 deleteKeywords(this.state.dataobj.campaign_id, keyword_ids).then((result) => {
                     
                       if(result.length > 0){
@@ -236,7 +236,7 @@ class GetKeywordsView extends Component {
                     <Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>已添加关键词: {this.state.keywordList.length} 个</Text>
                     </View>
                   <View style={{flexDirection:'row', marginTop: '10rem', marginLeft: '10rem'}}>
-                  <Button size='small'  onPress={this.showkeywordslist.bind(this, adgroup_id)} type="secondary">
+                  <Button size='small'  onPress={this.addkeywords.bind(this, adgroup_id)} type="secondary">
                   添加
                   </Button>
                   <Button size='small' type="secondary" onPress={this.changePrice.bind(this)}>
@@ -260,12 +260,12 @@ class GetKeywordsView extends Component {
                 return (
                     <View style={styles.cellItemList}>
                       <Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/>
-                      <Text style={styles.arrows}>{item.word}</Text>
-                      <Text style={styles.arrows}>{(item.max_price/100).toFixed(2)}</Text>
-                      <Text style={styles.arrows}>{number_format(item.impressions)}</Text>
-                      <Text style={styles.arrows}>{number_format(item.click)}</Text>
-                      <Text style={styles.arrows}>{number_format(item.paycount)}</Text>
-                      <Text style={styles.arrows}>{item.qscore}</Text>
+                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{item.word}</Text>
+                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{(item.max_price/100).toFixed(2)}</Text>
+                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{number_format(item.impressions)}</Text>
+                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{number_format(item.click)}</Text>
+                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{number_format(item.paycount)}</Text>
+                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{item.qscore}</Text>
                     </View>
                   )
                 })    
@@ -373,8 +373,8 @@ const styles={
     borderStyle: 'solid',
     borderColor: '#ccc',
     position: 'absolute',
-    top: '-15rem',
-    right: '-15rem',
+    top: '1rem',
+    right: '1rem',
     alignItems: 'center',
     justifyContent: 'center',
     width: '40rem',

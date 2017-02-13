@@ -209,7 +209,7 @@ class DrainageRpt extends Component{
                     <View style={app.cellItemList}>
                         <Text style={app.itemTextList}>历史数据</Text> 
                     </View> 
-                    <View style={app.dateList}>
+                   {/* <View style={app.dateList}>
                         <Button style={app.amoutitemArrow} onPress={this.selectData.bind(this,1)}>
                             {this.state.start_date === ''
                                 ? '开始日期'
@@ -223,7 +223,7 @@ class DrainageRpt extends Component{
                             }
                         </Button>
                        
-                    </View>
+                    </View>*/}
                     { 
                         this.state.historyRpt.length == 0 || this.state.showLoading == true ? '加载中...':
                         this.state.historyRpt.map((item,index)=>{

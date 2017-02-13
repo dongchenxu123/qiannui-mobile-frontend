@@ -4,7 +4,7 @@ import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView} from 'nuke-components';
 import { checkIssetDspUser,setDspPassword  } from '../api';
 import QN from 'QAP-SDK';
-
+import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
 
 export default class HandBook extends Component{
@@ -15,10 +15,12 @@ export default class HandBook extends Component{
             user_name:'',
             dspPassword:'',
             reDspPassword:''
-        }    
+        }   
+        showLoading(); 
     }
     componentDidMount(){
           checkIssetDspUser().then((result)=>{
+            hideLoading();
                 if(result && result.user_id != undefined){
                     this.setState({
                         user_id:result.user_id,

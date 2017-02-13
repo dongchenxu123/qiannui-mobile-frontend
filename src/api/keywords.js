@@ -201,6 +201,8 @@ export function addNewKeyword(adgroup_id,word){
             }else{
                 return error;
             }
+        },(error)=>{
+             return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);

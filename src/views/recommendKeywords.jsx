@@ -6,7 +6,7 @@ let {height} = Dimensions.get('window');
 import { addNewKeyword } from '../api';
 import {number_format } from './util';
 
-class KeywordsView extends Component {
+class RecommendKeywords extends Component {
 	constructor() {
         super();
         this.state = {
@@ -25,9 +25,9 @@ class KeywordsView extends Component {
 			    <View>
 				<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 				    <View style={[styles.cellItemList, {borderTopWidth:"2rem",borderTopStyle:"solid",borderTopColor:"#e8e8e8"}]}>
-				     	<Text style={{padding: '10rem',alignItems:"center", justifyContent: 'center'}}>推荐关键词数量为</Text>
-				     	<Text style={{padding: '20rem', color: '#3089dc'}}>{lengths}</Text>
-				     	<Text style={{paddingLeft: '20rem'}}>个</Text>
+				     	<Text style={{padding: '10rem',alignItems:"center", justifyContent: 'center',fontSize:'32rem'}}>推荐关键词数量为</Text>
+				     	<Text style={{padding: '20rem', color: '#3089dc',fontSize:'30rem'}}>{lengths}</Text>
+				     	<Text style={{paddingLeft: '20rem',fontSize:'30rem'}}>个</Text>
 				    </View>
 				    <View style={styles.cellItemList}>
                         <Text style={styles.arrow}></Text>
@@ -48,16 +48,15 @@ class KeywordsView extends Component {
 								     	<Text style={styles.arrows}>{keywordObj[item].pv ? number_format(keywordObj[item].pv) : 0}</Text>
 								     	<Text style={styles.arrows}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text>
 								     	<Text style={styles.arrows}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text>
-								     	</View>
+								     </View>
 				    			)
 				    		})
 				    	}
-				    	</View>	
-				    	
+				        </View>	
 				    }
 				    
 			     </ScrollView>
-			     <View style={{margin: '20rem 0'}}>
+			     <View style={{margin: '10rem'}}>
                     <Button type="secondary" block="true" onPress={this.props.submitKeywords}>保存设置</Button>
                 </View>
 			</View>
@@ -82,25 +81,25 @@ const styles={
         padding: '10rem'
   },
   arrow: {
-  	 flex: 3,
+  	flex: 3,
     paddingRight:'10rem',
-     fontSize:'30rem'
+    fontSize:'30rem'
   },
   arrows: {
-  	 flex: 3,
+  	flex: 3,
     paddingRight:'10rem',
-     fontSize:'30rem'
+    fontSize:'28rem'
   },
   gridcell:{
-        height:'200rem',
-        'justifyContent':'center',
-        'alignItems':'center',
-        'border':'1rem',
-        'borderStyle':'solid',
-        'borderColor':'#e8e8e8',
-        'marginTop':'-1rem',
-        'marginLeft':'-1rem'
+     height:'200rem',
+    'justifyContent':'center',
+    'alignItems':'center',
+    'border':'1rem',
+    'borderStyle':'solid',
+    'borderColor':'#e8e8e8',
+    'marginTop':'-1rem',
+    'marginLeft':'-1rem'
     }
 }
 
-export default KeywordsView
+export default RecommendKeywords

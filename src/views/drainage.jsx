@@ -5,6 +5,7 @@ import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
 import _ from 'lodash';
+import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
 import { getRechargeTempalte } from '../api/dsp';
 class Drainage extends Component{
@@ -23,11 +24,10 @@ class Drainage extends Component{
                 RechargeData: [],
                 real_text: '',
                 luckily_text_1: ''
-
-        }    
+        } 
+        showLoading();   
     }
     componentDidMount(){
-        console.log('淘外引流');
         checkIssetDspUser().then((value) => { 
         if(value && value.user_id != undefined){
                 this.setState({
@@ -103,6 +103,7 @@ class Drainage extends Component{
 
         //获取用户在淘宝中在售的宝贝
         getOnsaleItem().then((onlineItem)=>{
+            hideLoading();
           //获取dsp中已经推广的宝贝
             getDspUserMarket(this.state.user_id,3).then((dspItem) => {  
                 if(dspItem.total > 0){

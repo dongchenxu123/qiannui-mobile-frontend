@@ -298,7 +298,7 @@ class HealthyResult extends Component{
     }
     addKeyWords(adgroup_id){
         QN.navigator.push({
-            url:'qap://views/keywordslist.js',
+            url:'qap://views/addkeywords.js',
             query:{adgroup_id:adgroup_id},
             settings: {
                     animate: true

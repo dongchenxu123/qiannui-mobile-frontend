@@ -2,7 +2,7 @@
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight} from 'nuke-components';
-import { Button, ListView, Modal, ScrollView, Switch, Dimensions, Input, Dialog } from 'nuke';
+import { Button, ListView, Modal, ScrollView, Switch, Dimensions, Input,TextInput,Dialog } from 'nuke';
 import QN from 'QAP-SDK';
 import { getPlatfrom, getSellerUser,setPlatfrom,getStoreKeyword } from '../api'
 import _ from 'lodash';
@@ -24,9 +24,7 @@ class PlatformView extends Component {
     componentDidMount(){
 
 		  getPlatfrom(campaign_id).then((res) => {
-    			this.setState({
-    				datas: res
-    			});
+    		  Modal.alert(campaign_id);
   			  res.insitePC = res.outsitePC =  res.outsiteMO = res.insiteMO = res.outsiteNosearchPC = res.insiteNosearchPC = '';
   			  if(res.search_channels.number){
   	                res.insitePC =  _.indexOf(res.search_channels.number,1) >= 0 ? true: false;
@@ -38,6 +36,11 @@ class PlatformView extends Component {
                   res.outsiteNosearchPC = _.intersection(res.nonsearch_channels.number,[2,4]).length >0 ? true : false;
                   res.insiteNosearchPC = _.indexOf(res.nonsearch_channels.number,1) >=0 ? true : false;
           }
+
+          this.setState({
+            datas: res
+          });
+
           getSellerUser ().then((res) => {
           	if (res.seller_credit.level >5 || res.type === 'B') {
           		this.setState({
@@ -51,7 +54,7 @@ class PlatformView extends Component {
 	}
     submitData(){
         var search_channels = [1];
-        var nonsearch_channels = [];
+        var nonsearch_channels = [0];
 
         if(this.state.sellerSatus){
             //pc站内搜索
@@ -67,7 +70,7 @@ class PlatformView extends Component {
                 nonsearch_channels.push(2);
             }
         }
-
+       
         if(this.state.datas.outsitePC){
             search_channels.push(2);
             search_channels.push(4);
@@ -92,7 +95,7 @@ class PlatformView extends Component {
         var mobile_discount = this.state.datas.mobile_discount;
 
         //更新平台设置
-        if(outside_discount > 0  && outside_discount <=200 && mobile_discount >0 && mobile_discount <= 200){
+        if((outside_discount > 0  && outside_discount <=200) && (mobile_discount >0 && mobile_discount <= 200)){
             var param = {
                 'campaign_id':campaign_id,
                 'search_channels':search_channels,
@@ -102,8 +105,11 @@ class PlatformView extends Component {
             };
 
             setPlatfrom(param).then((res) => {
-                if(res){
+              console.log(JSON.stringify(res),'++');
+                if(res.msg == undefined){
                     Modal.toast('设置投放平台成功');
+                }else{
+                  Modal.alert('参数错误');
                 }
             },error=>{
                 Modal.toast(error);
@@ -146,6 +152,7 @@ class PlatformView extends Component {
                     datas: aa
                 });
     }
+
     render() {
   		var mobile_discount= this.state.datas == null ? '' : this.state.datas.mobile_discount;
   		var outside_discount= this.state.datas == null ? '' : this.state.datas.outside_discount;
@@ -161,83 +168,111 @@ class PlatformView extends Component {
 	           <ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 	              <Text style={styles.title}>计算机设备</Text>                              
 	              <Text style={styles.contitle}>淘宝站内</Text>
-	              {
-	              	this.state.sellerSatus === true ? 
-	              			<View style={styles.cellItemList}>
-			              		<Text>搜索推广: </Text>
-			              		<Text style={styles.commonStyle}>不投放 </Text>
-			              		<Switch checked={insitePC} onValueChange={(value)=>this.changeValue(value,"insitePC")}/>
-				                <Text>投放 </Text>
-	             			</View> : 
-		             		<View style={styles.cellItemList}>
-		             			<Text>投放</Text>		
-		             		</View>
-	              }
+              		<View style={styles.cellItemList}>
+		              		<Text style={{fontSize:'30rem'}}>搜索推广: </Text>
+                      {
+                        this.state.sellerSatus === true ? 
+                        <View>
+  		              		  <Text style={styles.commonStyle}>不投放 </Text>
+  		              		  <Switch style={{fontSize:'30rem'}} checked={insitePC} onValueChange={(value)=>this.changeValue(value,"insitePC")}/>
+  			                  <Text style={{fontSize:'30rem'}}>投放 </Text>
+                        </View>
+                        :
+                        <Text style={{fontSize:'30rem'}}>投放</Text>
+                      }
+             			</View>
 	              
 	              {
-	              	this.state.sellerSatus === true ?  <View style={styles.cellItemList}>
-	              		<Text>定向推广: </Text>
+	              	this.state.sellerSatus === true ?  
+                  <View style={styles.cellItemList}>
+	              		<Text style={{fontSize:'30rem'}}>定向推广： </Text>
 	              		<Text style={styles.commonStyle}>不投放 </Text>
 	              		<Switch checked={insiteNosearchPC} onValueChange={(value)=>this.changeValue(value,"insiteNosearchPC")} />
-	              		<Text>投放 </Text>
-	              </View> : ''
+	              		<Text style={{fontSize:'30rem'}}>投放 </Text>
+	                 </View> : <Text></Text>
 	              }
 	              <Text style={styles.contitle}>淘宝站外</Text>
 	              <View style={styles.cellItemList}>
-	              		<Text>搜索推广: </Text>
+	              		<Text style={{fontSize:'30rem'}}>搜索推广： </Text>
 	              		<Text style={styles.commonStyle}>不投放 </Text>
 	              		<Switch checked={outsitePC} onValueChange={(value)=>this.changeValue(value,"outsitePC")} />
-	              		<Text>投放 </Text>
+	              		<Text style={{fontSize:'30rem'}}>投放 </Text>
 	              </View>
 	              {
-	              	this.state.sellerSatus === true ? <View style={styles.cellItemList}>
-	              		<Text>定向推广: </Text>
+	              	this.state.sellerSatus === true ? 
+                  <View style={styles.cellItemList}>
+	              		<Text style={{fontSize:'30rem'}}>定向推广： </Text>
 	              		<Text style={styles.commonStyle}>不投放</Text>
 	              		{
                             disabled == false ? <Switch checked={outsiteNosearchPC} onValueChange={(value)=>this.changeValue(value,"outsiteNosearchPC")}/>:
-
                             <Switch disabled='false' onValueChange={(value)=>this.changeValue(value,"outsiteNosearchPC")}/>
 	              		}
 	              		
-	              		<Text>投放 </Text>
-	              </View> :''
+	              		<Text style={{fontSize:'30rem'}}>投放 </Text>
+	              </View> :<View></View>
 	              }
 	               
 	              <View style={styles.cellItemList}>
-	              	投放价格 = 淘宝站内投放价格 * 站外折扣
+	              	<Text style={{fontSize:'30rem'}}>投放价格 = 淘宝站内投放价格 * 站外折扣</Text>
 	              </View>
 	              <View style={styles.cellItemList}>
-	              	<Text>站外折扣:</Text>
-	              	<Input value={outside_discount} keyboardType= "numbers-and-punctuation" style={styles.commonStyle} onBlur={(value)=>{this.changeValue(value,"outside_discount")}} />
-	              	<Text>%</Text>
-	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣1-200之间的整数</Text>
+	              	<Text style={{fontSize:'30rem'}}>站外折扣：</Text>
+                  <TextInput
+                    value={outside_discount}
+                    keyboardType='numeric'
+                    onBlur={(value)=>{this.changeValue(value,"outside_discount")}}
+                    style={{
+                        width: '120rem',
+                        height:'80rem',
+                        borderWidth: '1rem',
+                        borderStyle:'solid',
+                        borderColor:'#dddddd'
+                    }}
+                    />
+	              	<Text style={{fontSize:'30rem'}}>%</Text>
+	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣为1-200之间的整数</Text>
 	              </View>
 
 	            <Text style={styles.title}>移动设备</Text>  
 
 	            <Text style={styles.contitle}>淘宝站内</Text>
 	            <View style={styles.cellItemList}>
-	              	<Text>推广: </Text>
+	              	<Text style={{fontSize:'30rem'}}>推广： </Text>
 	              	<Text style={styles.commonStyle}>不投放 </Text>
 	              	<Switch checked={insiteMO} onValueChange={(value)=>this.changeValue(value,"insiteMO")}/>
-	              	<Text>投放 </Text>
+	              	<Text style={{fontSize:'30rem'}}>投放 </Text>
 	            </View>
 
-	            <View style={styles.cellItemList}>投放价格 = 计算机淘宝站内投放价格 * 移动折扣</View>
+	            <View style={styles.cellItemList}>
+                <Text style={{fontSize:'30rem'}}>投放价格 = 计算机淘宝站内投放价格 * 移动折扣</Text>
+              </View>
 	              <Text style={styles.contitle}>淘宝站外</Text>
 	               <View style={styles.cellItemList}>
-	              		<Text>推广: </Text>
+	              		<Text style={{fontSize:'30rem'}}>推广： </Text>
 	              		<Text style={styles.commonStyle}>不投放 </Text>
 	              		<Switch checked={outsiteMO} onValueChange={(value)=>this.changeValue(value,"outsiteMO")}/>
-	              		<Text>投放 </Text>
+	              		<Text style={{fontSize:'30rem'}}>投放 </Text>
 	              </View>
 	              <View style={styles.cellItemList}>
-	              	投放价格 = 计算机淘宝站内投放价格 * 移动折扣
+	              	<Text style={{fontSize:'30rem'}}>
+                    投放价格 = 计算机淘宝站内投放价格 * 移动折扣
+                  </Text>
 	              </View>
 	              <View style={styles.cellItemList}>
-	              	<Text>移动折扣:</Text>
-	              	<Input value={mobile_discount} keyboardType= "numbers-and-punctuation" style={[styles.commonStyle,{width: '100rem'}]} onBlur={(value)=>{this.changeValue(value,"mobile_discount")}}/>
-	              	<Text>%</Text>
+	              	<Text style={{fontSize:'30rem'}}>移动折扣：</Text>
+                  <TextInput
+                    value={mobile_discount}
+                    keyboardType='number-pad'
+                    onBlur={(value)=>{this.changeValue(value,"mobile_discount")}}
+                    style={{
+                        width: '120rem',
+                        height:'80rem',
+                        borderWidth: '1rem',
+                        borderStyle:'solid',
+                        borderColor:'#dddddd'
+                    }}
+                    />
+	              	<Text style={{fontSize:'30rem'}}>%</Text>
 	              	<Text style={{fontSize: '26rem', color: 'red',paddingLeft: '30rem'}}>折扣1-200之间的整数</Text>
 	              </View>
 	            </ScrollView>
@@ -245,7 +280,7 @@ class PlatformView extends Component {
                     <Button style={styles.btn}  onPress={this.submitData.bind(this)} block="true" type="secondary">保存设置</Button>
                 </View>      
             </Dialog>
- 		  );
+ 		  )
     }
 }
 
@@ -255,7 +290,8 @@ const styles = {
 	      height: 500
 	   },
 	commonStyle:{
-		paddingLeft: '30rem'
+		paddingLeft: '30rem',
+    fontSize:'30rem'
 	},
 	modalStyle: {
 	    width: 750,
@@ -277,13 +313,14 @@ const styles = {
 	   },  
 	 cellItemList:{
         backgroundColor:"#ffffff",
-        padding: '20rem',
+        padding: '20rem 50rem',
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
         borderBottomColor:"#e8e8e8",
        	alignItems:"center",
         flexDirection:"row",
-        display: 'flex'
+        display: 'flex',
+        marginLeft:'40rem'
     },
   button: {
   	    width: '300rem',
