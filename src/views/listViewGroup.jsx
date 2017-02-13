@@ -50,14 +50,27 @@ class ListViewGroupView extends Component {
 	        });
 }
     delpress (adgroup_id) {
-    	deleteAdgroup(adgroup_id).then((res) => {
-    		var itemId= res.data.adgroup_id;
-       		this.props.delItems(adgroup_id, itemId);
-            
-           	}, (error) => {
-	            Modal.alert(JSON.stringify(error));
-	
-	        });
+        Modal.confirm('确定删除推广吗？',[ 
+            {
+                onPress:()=>{
+                    deleteAdgroup(adgroup_id).then((res) => {
+                        var itemId= res.data.adgroup_id;
+                        this.props.delItems(adgroup_id, itemId);
+                        
+                        }, (error) => {
+                            Modal.alert(JSON.stringify(error));
+                
+                    });
+                },
+                text:"确定"
+            },
+            {
+                onPress:()=>{},
+                text:"取消"
+            }
+        ]);
+
+    	
 	}
     getkeyWords (adgroup_id, campaign_id, title, imgage, online_status,default_price) {
           QN.navigator.push({
@@ -80,19 +93,19 @@ class ListViewGroupView extends Component {
     	var newStatus= item.online_status == 'online' ? '暂停宝贝' : '推广宝贝';
     	var campaign_id= this.props.campaign_id;
     	var title= item.title;
-    	var imgage= item.img_url;
+    	var imgage= item.img_url.replace('jpg_sum.','jpg_150x150.');
     
     	return (
         	<View>
         		<View style={app.cellItemList}>
-                		<Image source={{uri: item.img_url}} style={{width:'180rem',height:'180rem'}}/>
+                		<Image source={{uri: imgage}} style={{width:'160rem',height:'180rem'}}/>
                 		<View style={app.itemTextList}>
-                			<Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
+                			<Text style={{fontSize: '32rem', paddingBottom: '15rem'}}>{item.title}</Text>
                 			<View style={{ flexDirection:"row",display: 'flex'}}>
-                				<Text style={{color: '#3089dc'}}>
+                				<Text style={{fontSize:'30rem',color:'#f50'}}>
                 					状态: {itemStatus}
                 				</Text>
-                				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', color: 'red'}}>昨日点击: {item.report.click}</Text>
+                				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>昨日点击: {item.report.click}</Text>
                 			</View>
                 			<View style={{flexDirection:'row'}}>
                 				<Button size='small' type="secondary" onPress={self.press.bind(self, adgroup_id, online_status)}>
@@ -122,13 +135,12 @@ class ListViewGroupView extends Component {
         var listGroup= this.props.data;
         return (
         	listGroup.length === 0 ? 
-            <Text>Loading...</Text> : 
+            <Text style={{fontSize:'30rem',padding:'100rem'}}>暂时还没有推广宝贝，赶快去推广吧</Text> : 
             <ListView
                 renderHeader={this.renderHeader}
                 renderFooter={this.renderFooter}
                 renderRow={this.renderItem.bind(this)} 
                 dataSource={listGroup}
-
                 style={app.listContainer}
                 onEndReached={this.handleLoadMore.bind(this)} 
               />
@@ -138,7 +150,7 @@ class ListViewGroupView extends Component {
 const app = {
     listContainer:{
         flex:1,
-        height: height
+        height: height-100
     },
     cellItemList:{
         backgroundColor:"#ffffff",

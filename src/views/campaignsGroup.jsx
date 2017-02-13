@@ -71,11 +71,16 @@ class CampaignsGroupView extends Component {
    		})
     }
     addToView(campaign_id) {
-			Navigator.push('qap://views/addCampaign.js?campaign_id='+campaign_id);
-		}
+        QN.navigator.push({
+            url:'qap://views/addCampaign.js',
+            query:{campaign_id:campaign_id},
+            settings: {
+                    animate: true
+             }
+        })	
+	}
    
 	render () {
-	
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, this.state.campaign_id)} block="true" type="secondary"> 新增宝贝推广</Button></View>

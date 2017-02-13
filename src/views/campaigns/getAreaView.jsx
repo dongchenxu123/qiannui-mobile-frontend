@@ -303,7 +303,7 @@ class GetAreaView extends Component {
     	var self= this;
     	return (
             <View>
-                <View style={{left:'-22rem'}} >        
+                <View style={{marginRight: '60rem'}}>        
                   <Button type="primary" onPress={this.showModal.bind(self)}>设置</Button>
                 </View>
                 <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>

@@ -66,6 +66,24 @@ class GetKeywordsView extends Component {
         this.setState({keywordList:newkeyword});  
   }
   delkeywords () {
+      var select_num =0;
+      this.state.keywordList.map((v,i)=>{
+              if(v.checked != undefined && v.checked == 1){
+                  select_num = 1;
+                  return;
+              }
+          });
+      if(select_num == 0){
+          Modal.alert("请选择需要删除的关键词",[ 
+            {
+                onPress:(e)=>{console.log(e)},
+                text:"知道了"
+            }
+        ])
+        return;
+       }
+
+
        Modal.confirm('确定删除所选关键词吗？',[ 
         {
             onPress:()=>{
@@ -107,7 +125,23 @@ class GetKeywordsView extends Component {
         
   }
   changePrice () {
-      this.refs.modal.show();
+    var select_num =0;
+      this.state.keywordList.map((v,i)=>{
+              if(v.checked != undefined && v.checked == 1){
+                  select_num = 1;
+                  return;
+              }
+          });
+      if(select_num > 0){
+         this.refs.modal.show();
+       }else{
+        Modal.alert("请选择需要调价的关键词",[ 
+            {
+                onPress:(e)=>{console.log(e)},
+                text:"知道了"
+            }
+        ])
+       }   
   }
   hideModal(){
         this.refs.modal.hide();
@@ -176,33 +210,6 @@ class GetKeywordsView extends Component {
         }else{
            Modal.alert('请填写关键处出价');
         }
- 
-    /*    if(keywords.length > 0){
-             Modal.toast('修改出价成功');
-            setKeywordPricevon(keywords).then((result)=>{
- Modal.toast('修改出价成功2');
-              this.state.keywordList.map((v,i)=>{
-                if(v.checked != undefined && v.checked == 1){
-                   this.state.keywordList[i].max_price = price;
-                    this.state.keywordList[i].checked = 0;
-                }
-              });
-              let newkeyword = this.state.keywordList;
-              this.setState({keywordList:newkeyword});
-             
-
-              setTimeout(function(){
-               //this.refs.modal.hide();
-              } ,2000);
-              
-            },(error)=>{
-              Modal.alert(error)
-            });
-          }
-        }else{
-           this.refs.modal.hide();
-          Modal.toast('请选择需要调价的关键词');
-        } */
   }
   groupChange(value){
        this.setState({
@@ -221,12 +228,12 @@ class GetKeywordsView extends Component {
            <View style={styles.cellItemList}>
             <Image source={{uri: imgage}} style={{width:'180rem',height:'180rem'}}/>
                 <View style={styles.itemTextList}>
-                  <Text style={{fontSize: '30rem', paddingBottom: '15rem', width: '600rem'}}>{title}</Text>
+                  <Text style={{fontSize: '32rem', paddingBottom: '15rem', textOverflow:'ellipsis',lines:2,width:'480rem'}}>{title}</Text>
                   <View style={{ flexDirection:"row",display: 'flex'}}>
-                    <Text style={{color: '#3089dc'}}>
+                    <Text style={{color: '#3089dc',fontSize:'30rem'}}>
                       状态: {itemStatus}
                     </Text>
-                    <Text style={{paddingLeft: '40rem',paddingBottom: '20rem', color: 'red'}}>已添加关键词: {this.state.keywordList.length} 个</Text>
+                    <Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>已添加关键词: {this.state.keywordList.length} 个</Text>
                     </View>
                   <View style={{flexDirection:'row', marginTop: '10rem', marginLeft: '10rem'}}>
                   <Button size='small'  onPress={this.showkeywordslist.bind(this, adgroup_id)} type="secondary">
@@ -249,24 +256,24 @@ class GetKeywordsView extends Component {
                 <Text style={styles.arrow}>成交</Text>
                 <Text style={styles.arrow}>质量分</Text>
               </View>
-              { this.state.keywordList.length == 0 ? <Text>您还没有添加关键词</Text> : this.state.keywordList.map((item, index) =>{
+              { this.state.keywordList.length == 0 ? <Text style={{fontSize:'30rem',padding:'200rem'}}>您还没有添加关键词</Text> : this.state.keywordList.map((item, index) =>{
                 return (
                     <View style={styles.cellItemList}>
-                    <Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/>
-                  <Text style={styles.arrows}>{item.word}</Text>
-                  <Text style={styles.arrows}>{(item.max_price/100).toFixed(2)}</Text>
-                  <Text style={styles.arrows}>{number_format(item.impressions)}</Text>
-                  <Text style={styles.arrows}>{number_format(item.click)}</Text>
-                  <Text style={styles.arrows}>{number_format(item.paycount)}</Text>
-                  <Text style={styles.arrows}>{item.qscore}</Text>
-                </View>
+                      <Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/>
+                      <Text style={styles.arrows}>{item.word}</Text>
+                      <Text style={styles.arrows}>{(item.max_price/100).toFixed(2)}</Text>
+                      <Text style={styles.arrows}>{number_format(item.impressions)}</Text>
+                      <Text style={styles.arrows}>{number_format(item.click)}</Text>
+                      <Text style={styles.arrows}>{number_format(item.paycount)}</Text>
+                      <Text style={styles.arrows}>{item.qscore}</Text>
+                    </View>
                   )
                 })    
               }
            </ScrollView>
             <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow} onHide={this.onHide}>
                <View>
-                   <Text style={{padding:'20rem'}}>修改关键词出价</Text>
+                   <Text style={{padding:'20rem',fontSize:'32rem'}}>修改关键词出价</Text>
                </View>
                 <View style={styles.body}>
                    <Radio.Group onChange = {this.groupChange.bind(this)} value={this.state.value}>
@@ -275,12 +282,12 @@ class GetKeywordsView extends Component {
                       <Text style={styles.title}>
                         自定义出价
                       </Text>
-
-                      <Input keyboardType="number-pad" onFocus={() => this.setState({value:1})} onBlur={(value)=>{this.keywordPrice =  value.target.attr.value;}}/> 元  
+                      <Input  keyboardType="number-pad"  onBlur={(value)=>{this.keywordPrice =  value.target.attr.value;}}/>
+                      <Text style={{fontSize:'30rem'}}> 元  </Text>
                     </View>
                     <View style={styles.item}>
                       <Radio size="small" value={2} ></Radio>
-                      <Text style={[styles.title,{marginRight:"260rem"}]}>
+                      <Text style={[styles.title,{marginRight:"260rem",fontSize:'30rem'}]}>
                         默认出价  {this.state.dataobj.default_price/100}   元
                       </Text>
                         
@@ -382,21 +389,22 @@ const styles={
   title:{
         color:'#383B3E',
         height:'44px',
-        lineHeight: '44px'
+        lineHeight: '44px',
+        fontSize:'30rem'
     },
-    item:{
-        display:'flex',
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'space-between',
-        borderTopWidth:'1px',
-        borderTopColor:'#EDEDEF',
-        borderTopStyle:'solid',
-        paddingTop:'5px',
-        paddingBottom:'5px',
-        paddingLeft:'20px',
-        paddingRight:'20px'
-    },
+  item:{
+      display:'flex',
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'space-between',
+      borderTopWidth:'1px',
+      borderTopColor:'#EDEDEF',
+      borderTopStyle:'solid',
+      paddingTop:'5px',
+      paddingBottom:'5px',
+      paddingLeft:'20px',
+      paddingRight:'20px'
+  },
     delayValue:{
         color:'#383B3E'
     }

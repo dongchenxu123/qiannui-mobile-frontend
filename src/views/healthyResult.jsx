@@ -3,6 +3,7 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { getAuthSign,getAdgroupsAll,getallKeywords ,deleteKeywords} from '../api';
+import { showLoading,hideLoading } from './util';
 import QN from 'QAP-SDK';
 import Async from 'async';
 import _ from 'lodash';
@@ -32,6 +33,7 @@ class HealthyResult extends Component{
             isShowItems:false,
             littleKeyGroup:[],
         }   
+        showLoading();
         this.makeKeywordFunc = this.makeKeywordFunc.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.formatKeywords = this.formatKeywords.bind(this);
@@ -100,6 +102,7 @@ class HealthyResult extends Component{
         var len = keywordsObj.keyword.length;
         //关键词少于10个
         if(len < 10){
+            hideLoading();
             obj.littleKeycount ++; //展示少于十个词的推广组（宝贝）  少于10个词的宝贝 （1）个  检测中(绿色字体) 最终加词
             self.setState({littleKeycount:obj.littleKeycount});
 
@@ -130,6 +133,7 @@ class HealthyResult extends Component{
                 }
                 //（垃圾词是近期无点击的词）
                 if(keyword[t].is_garbage ){
+                    hideLoading();
                     obj.garbageCount++;//展示垃圾词     垃圾词（1）个   检测中（绿色字体） 最终删除
                     obj.garbagekeyids[keyword[t].campaign_id].push(keyparm);
                     self.setState({garbageCount:obj.garbageCount});  
@@ -142,7 +146,7 @@ class HealthyResult extends Component{
 
                 //质量得分小于3分的词
                 if(parseInt(keyword[t].qscore) <= 3){
-
+                    hideLoading();
                     obj.qscoreLowerCount++;
                     obj.qscoreLowerkeyids[keyword[t].campaign_id].push(keyword[t].keyword_id);
                     self.setState({qscoreLowerCount: obj.qscoreLowerCount});
@@ -159,6 +163,7 @@ class HealthyResult extends Component{
                     var pv = parseInt(keywordsObj.baserpt[j].impressions);
 
                     if(pv === 0){
+                        hideLoading();
                         obj.noImpressionsCount++;//无展现的关键词添加
                         obj.noImpressionskeyids[adgroup.campaign_id].push(keywordsObj.baserpt[j].keyword_id);
                         self.setState({noImpressionsCount:obj.noImpressionsCount});
@@ -300,6 +305,28 @@ class HealthyResult extends Component{
              }
         })
     }
+  
+    showProduct(adgroup_id){
+        var index = _.findIndex(this.state.littleKeyGroup, function(o) { return o.adgroup_id == adgroup_id; });
+        
+        if(this.state.littleKeyGroup[index]){
+            var adgroup = this.state.littleKeyGroup[index];
+            QN.navigator.push({
+            url:'qap://views/getKeywords.js',
+            query:{adgroup_id:adgroup_id,
+                   campaign_id: campaign_id,
+                   name: adgroup.title,
+                   imgage: adgroup.img_url,
+                   online_status: adgroup.online_status,
+                   default_price:adgroup.default_price
+            }           
+        })
+
+        }else{
+            Modal.alert('参数有误');
+        }
+
+    }
     renderProductItem(item, index){
         return (
                 <View style={style.cellItemList} >
@@ -308,7 +335,7 @@ class HealthyResult extends Component{
                             <Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
                             <View style={{flexDirection:'row'}}>
                                 <Button size='small'  type="secondary" onPress={this.addKeyWords.bind(this, item.adgroup_id)} >加词</Button>
-                                <Button size='small'  type="secondary">查看</Button>
+                                <Button size='small'  type="secondary" onPress={this.showProduct.bind(this,item.adgroup_id)}>查看</Button>
                             </View>
                         </View>
                 </View>       
@@ -322,10 +349,12 @@ class HealthyResult extends Component{
         }
         return (
              <ScrollView style={style.scroller} >
-
-                   { nodata == true ? <View>Loding...</View>:'' } 
-  
-                    <View style={{marginTop:"-100rem"}}>
+                    <View>
+                        <Text style={{fontSize:'32rem',padding:'30rem'}}>{arr.campaign_title}</Text>
+                    </View>
+                   { nodata == true ? 
+                    <View style={{fontSize:'30rem',textAlign:'center'}}>Loding...</View> : 
+                    <View >
                     {
                         self.state.qscoreLowerCount == 0 ? '':
                             <View style={style.item}>
@@ -358,7 +387,7 @@ class HealthyResult extends Component{
                             </View>
                     }
                     </View>
-            
+                    }
                     {
                         self.state.isShowItems == false ? '' :
                             <ListView    
@@ -373,7 +402,8 @@ class HealthyResult extends Component{
 }
 const style={
     scroller:{
-      backgroundColor:'#ffffff'
+      backgroundColor:'#ffffff',
+      height:'900rem'
     },
     item:{
         height:'90rem',
@@ -387,7 +417,8 @@ const style={
     },
     text:{
         padding:'20rem 40rem',
-        flex:11
+        flex:11,
+        fontSize:'30rem'
     },
     button:{
         flex: 4,

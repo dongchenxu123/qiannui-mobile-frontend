@@ -5,34 +5,10 @@ import { number_format} from './util';
 class ListViewCommon extends Component {
     constructor() {
         super();
-        this.state = {
-           	stop: false,
-            isRefreshing: false,
-            showLoading:true,
-            refreshText: '↓ 下拉刷新',
-        };
+        this.state = {};
         this.index = 0;
-
     }
-    handleRefresh = (e) => {
-        this.setState({
-          isRefreshing: true,
-          refreshText: '加载中',
-        });
-        setTimeout(() => {
-          this.setState({
-            isRefreshing: false,
-            data: this.props.amount,
-            refreshText: '↓ 下拉刷新',
-          });
-
-        }, 3000);
-      };
-
-    handleLoadMore() {
-
-    }
-  
+   
    renderItem (item, index){
         return (
         	<View>
@@ -79,23 +55,13 @@ class ListViewCommon extends Component {
             </View>
             );
     }
-    renderHeader=()=>{
-        return <RefreshControl style={app.refresh} refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh}><Text style={app.loadingText}>{this.state.refreshText}</Text></RefreshControl>;
-    }
-    renderFooter=()=>{
-        return this.state.showLoading ?
-        <View style={[app.loading]}><Text style={app.loadingText}>加载完成</Text></View>
-        :null
-    }
-
+  
     render(){
         var self=this;
         return (
         	<View>
         		{
         			this.props.amount.length === 0 ? <Text style={{padding:'30rem',textAlign:'center',fontSize:'30rem'}}>加载中...</Text> : <ListView
-		           	renderHeader={this.renderHeader}
-            		renderFooter={this.renderFooter}
             		renderRow={this.renderItem.bind(this)} 
 		            dataSource={this.props.amount}
 					style={app.listContainer}   

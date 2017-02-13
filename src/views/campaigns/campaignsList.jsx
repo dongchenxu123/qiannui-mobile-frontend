@@ -120,7 +120,7 @@ class CampaignsListView extends Component {
 			   			    <View>
 				   			    <View style={styles.cellItemList}>
 				   			    	<TouchableHighlight onPress={this.onPress.bind(this, tid)} style={styles.itemTextList}>
-					   			    	<Text style={{color:"#0894EC"}}>{title}</Text>
+					   			    	<Text style={{color:"#0894EC",fontSize:'32rem'}}>{title}</Text>
 				   			    	</TouchableHighlight>
 				   			    	<View style={styles.Arrow}>
 				   			    		<Button style={{width: 150, margintLeft: '40rem'}} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
@@ -131,9 +131,9 @@ class CampaignsListView extends Component {
 				   			    <View style={styles.report}>
 							   		<View style={styles.amoutList}>
 							   			<View style={styles.dayArrow}>
-			  		   	                  每日限额:  
+			  		   	                  <Text style={styles.setFontSize}>每日限额:</Text>  
 			   							</View>
-			  		   	              	 <View style={{left:'-20rem'}} >	
+			  		   	              	 <View style={{left:'-30rem',fontSize:'30rem'}} >	
 			  		   	                  <Button
 			  		   	                  	onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
 											id={this.state.budgetId}
@@ -142,9 +142,9 @@ class CampaignsListView extends Component {
 			  		   	                  </Button >
 			  		   	                </View>
 			  		   	                <View style={styles.itemArrow}>
-			  		   	                  投放平台:
+			  		   	                  <Text style={[styles.setFontSize,{left:'30rem'}]}>投放平台:</Text>
 			  		   	                </View>
-			  		   	                <View style={{left:'-20rem'}} >
+			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}} >
 				  		   	                 <Button
 				  		   	                  	onPress={this.onPressPlat.bind(this, tid)}
 				  		   	                  	type="primary"
@@ -155,13 +155,13 @@ class CampaignsListView extends Component {
 			  		   	            </View>
 					                <View style={styles.amoutList}>
 							   		    <View style={styles.dayArrow}>
-			  		   	                	投放地域:
+			  		   	                	<Text style={styles.setFontSize}>投放地域:</Text>
 			  		   	                </View>
 			  		   	                <GetAreaView style={styles.amoutitemArrow} localId={item.campaign_id}/>
 			  		   	                <View style={styles.itemArrow}>
-			  		   	                	投放时段:
+			  		   	                	<Text style={styles.setFontSize}>投放时段:</Text>
 			  		   	                </View>
-			  		   	                <View style={{left:'-20rem'}} >
+			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}} >
 			  		   	                	<Button
 			  		   	                  	onPress={this.onPressSche.bind(this, tid)}
 			  		   	                  	type="primary"
@@ -176,45 +176,45 @@ class CampaignsListView extends Component {
 			                <View style={styles.report}>
 			                	<View style={styles.amoutList}>
 		                			<View style={styles.dayArrow}>
-		  		   	                	花费:
+		  		   	                	<Text style={styles.setFontSize}>花费:</Text>
 		  		   	                </View>
 		  		   	                <View style={{left:'-120rem'}} >
-		  		   	                   {item.cost}
+		  		   	                   <Text style={styles.setFontSize}>{item.cost}</Text>
 		  		   	                </View>
 
-		  		   	                <View style={styles.itemArrow}>
-			  		   	                  展现量:
-			  		   	                </View>
+		  		   	                <View style={[styles.itemArrow,{left:'-10rem'}]}>
+			  		   	                <Text style={styles.setFontSize}>展现量:</Text>
+			  		   	            </View>
+			  		   	            <View style={{left:'-90rem'}} >
+			  		   	                <Text style={styles.setFontSize}>{item.pv}</Text>
+			  		   	            </View>
+			  		   	            <View style={styles.itemArrow}>
+			  		   	                <Text style={styles.setFontSize}>点击量:</Text>
+			  		   	            </View>
 			  		   	            <View style={{left:'-80rem'}} >
-			  		   	                {item.pv}
-			  		   	             </View>
-			  		   	             <View style={styles.itemArrow}>
-			  		   	                  点击量:
-			  		   	                </View>
-			  		   	            <View style={{left:'-80rem'}} >
-			  		   	                {item.click}
+			  		   	                <Text style={styles.setFontSize}>{item.click}</Text>
 			  		   	             </View>
 			  		   	                	
 			                	</View>
 			                	<View style={styles.amoutList}>
 		                			<View style={styles.dayArrow}>
-		  		   	                	成交金额:
+		  		   	                	<Text style={styles.setFontSize}>成交金额:</Text>
 		  		   	                </View>
 		  		   	                <View style={{left:'-40rem'}} >
-		  		   	                   {item.pay}
+		  		   	                   <Text style={styles.setFontSize}>{item.pay}</Text>
 		  		   	                </View>
 
 		  		   	                <View style={styles.itemArrow}>
-			  		   	                  点击率:
-			  		   	                </View>
+			  		   	                <Text style={styles.setFontSize}>点击率:</Text>
+			  		   	            </View>
 			  		   	            <View style={{left:'-80rem'}} >
-			  		   	                {item.ctr +'%'}
-			  		   	             </View>
-			  		   	             <View style={styles.itemArrow}>
-			  		   	                  转化率:
-			  		   	                </View>
+			  		   	                <Text style={styles.setFontSize}>{item.ctr +'%'}</Text>
+			  		   	            </View>
+			  		   	            <View style={styles.itemArrow}>
+			  		   	                <Text style={styles.setFontSize}>转化率:</Text>
+			  		   	            </View>
 			  		   	            <View style={{left:'-80rem'}} >
-			  		   	                {item.click_ROi}
+			  		   	                <Text style={styles.setFontSize}>{item.click_ROi}</Text>
 			  		   	             </View>
 			  		   	                	
 			                	</View>
@@ -305,6 +305,9 @@ const styles={
 	    	fontSize:"24rem",
 	        color:"#5F646E",
 	        marginLeft: '20rem'
+	   },
+	   setFontSize:{
+	   	fontSize:'30rem'
 	   }
 	 }
 export default CampaignsListView

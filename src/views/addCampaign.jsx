@@ -107,8 +107,8 @@ class AddCampaignView extends Component {
         		<View style={app.cellItemList} onPress={this.linkTo.bind(this,item)}>
                 		<Image source={{uri: item.pic_url}} style={{width:'180rem',height:'180rem'}}/>
                 		<View style={app.itemTextList}>
-                			<Text style={{fontSize: '30rem', paddingBottom: '15rem'}}>{item.title}</Text>
-                			<Text style={{color: 'red', paddingBottom: '20rem'}}>状态: 未推广</Text>
+                			<Text style={{fontSize: '32rem', paddingBottom: '15rem'}}>{item.title}</Text>
+                			<Text style={{fontSize:'30rem', paddingBottom: '20rem'}}>状态: 未推广</Text>
                 		    <Button style={{color: '#3089dc'}} block="true" onPress={this.jointuiguang.bind(this,num_iid,title,imgUrl)}>参与推广</Button>
                 		</View>
                 </View>
@@ -125,7 +125,7 @@ class AddCampaignView extends Component {
         	<ScrollView style={app.scroller} onEndReachedThreshold={300}>
 	        	{
 		        	listGroup.length === 0 ? 
-		        	<Text>Loading...</Text> : 
+		        	<Text style={{fontSize:'30rem',padding:'100rem'}}>没有可推广的宝贝</Text> : 
 		        	<ListView
 						renderRow={this.renderItem.bind(this)} 
 						dataSource={listGroup}
@@ -142,11 +142,11 @@ const app = {
 	 scroller:{
       backgroundColor:'#ffffff',
       width: 750,
-      height: height
+      height: height-100
       },
     listContainer:{
         flex:1,
-        height: height
+        height: height-100
     },
     cellItemList:{
         backgroundColor:"#ffffff",

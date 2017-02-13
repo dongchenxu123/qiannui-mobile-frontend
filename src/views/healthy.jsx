@@ -124,7 +124,7 @@ class HealthyView extends Component{
     onPress (campaign_id,title) {
        QN.navigator.push({
             url:'qap://views/healthyResult.js',
-            query:{campaign_id:campaign_id,title:title},
+            query:{campaign_id:campaign_id,campaign_title:title},
             settings: {
                     animate: true
              }
