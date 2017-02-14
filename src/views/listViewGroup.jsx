@@ -54,8 +54,9 @@ class ListViewGroupView extends Component {
             {
                 onPress:()=>{
                     deleteAdgroup(adgroup_id).then((res) => {
+                        Modal.toast('已取消推广');
                         var itemId= res.data.adgroup_id;
-                        this.props.delItems(adgroup_id, itemId);
+                        this.props.delItems(itemId);
                         
                         }, (error) => {
                             Modal.alert(JSON.stringify(error));
@@ -68,9 +69,7 @@ class ListViewGroupView extends Component {
                 onPress:()=>{},
                 text:"取消"
             }
-        ]);
-
-    	
+        ]); 	
 	}
     getkeyWords (adgroup_id, campaign_id, title, imgage, online_status,default_price) {
           QN.navigator.push({
@@ -81,8 +80,7 @@ class ListViewGroupView extends Component {
                    imgage: imgage,
                    online_status: online_status,
                    default_price:default_price
-            }
-            
+            }   
         })
 	}
     renderItem (item, index){
@@ -133,8 +131,9 @@ class ListViewGroupView extends Component {
    render(){
         var self=this;
         var listGroup= this.props.data;
+        var showNodata = this.props.showNodata;
         return (
-        	listGroup.length === 0 ? 
+        	showNodata == true ? 
             <Text style={{fontSize:'30rem',padding:'100rem'}}>暂时还没有推广宝贝，赶快去推广吧</Text> : 
             <ListView
                 renderHeader={this.renderHeader}

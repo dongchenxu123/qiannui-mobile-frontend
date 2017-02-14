@@ -8,7 +8,6 @@ import { getAdgroupsByCid, getAuthSign, deleteAdgroup } from '../api'
 import ListViewGroupView from './listViewGroup'
 import { showLoading,hideLoading } from './util';
 
-
 let {height} = Dimensions.get('window');
 let URL= document.URL;
 let arr= QN.uri.parseQueryString(URL.split('?')[1]);
@@ -20,7 +19,8 @@ class CampaignsGroupView extends Component {
 		this.state={
 			subway_token: '',
 			campaginsData: [],
-			campaign_id: campaign_id
+			campaign_id: campaign_id,
+      showNodata:false
 		}
 		this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 		this.delItemsFunc = this.delItemsFunc.bind(this);
@@ -31,11 +31,19 @@ class CampaignsGroupView extends Component {
            	this.setState({
            		subway_token: result
            	})
+
            	getAdgroupsByCid(this.state.subway_token, campaign_id, 1).then((res) => {
-           		
-           		this.setState({
-           			campaginsData: res
-           		})
+              if(_.isArray(res) && res.length > 0){
+                if( res.length > 0){
+                  this.setState({
+                        campaginsData: res,
+                    })
+                }else{
+                  this.setState({
+                    showNodata: true,
+                    })
+                }   
+              }	
                hideLoading();
            	}, (error) => {
                 hideLoading();
@@ -57,15 +65,13 @@ class CampaignsGroupView extends Component {
    		   }) 
 
 	}
-    delItemsFunc (adgroup_id, itemId) {
-		var idx= 0;
-   		for (var i=0; i<this.state.campaginsData.length; i++) {
-   			if(itemId === this.state.campaginsData[i].adgroup_id) {
-   				idx = i
-   				break
-   			}
-   		}
-   		var newArrs= this.state.campaginsData.splice(idx+1, this.state.campaginsData.length);
+    delItemsFunc (itemId) {
+	    var newArrs= [];
+      this.state.campaginsData.map((item, index) => {
+        if(item.adgroup_id !== itemId) {
+            newArrs.push(item)
+        }
+      })
    		this.setState({
    			campaginsData: newArrs
    		})
@@ -84,7 +90,9 @@ class CampaignsGroupView extends Component {
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, this.state.campaign_id)} block="true" type="secondary"> 新增宝贝推广</Button></View>
-			   <ListViewGroupView data={this.state.campaginsData} 					callbackSetNewSatus={this.setNewSatusFunc}
+			   <ListViewGroupView data={this.state.campaginsData} 	
+              showNodata={this.state.showNodata}				
+              callbackSetNewSatus={this.setNewSatusFunc}
 			        delItems={this.delItemsFunc}
 			        campaign_id={this.state.campaign_id}
 			    />

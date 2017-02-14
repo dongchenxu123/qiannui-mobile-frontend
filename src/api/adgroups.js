@@ -75,10 +75,11 @@ export function getAdgroupsAll(campaign_id){
         }).then((result)=>{
         	  
                 var data = [];
-
-                if( result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group){
+                var adgroups = result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list;
+               
+                if( adgroups.a_d_group != undefined){
+                   console.log(JSON.stringify(result),'wwwwww');     
                     var dataNum =  parseInt(result.simba_adgroupsbycampaignid_get_response.adgroups.total_item);
-
                     if(dataNum > 0){
                         getAdgroups_sign(campaign_id,dataNum).then((data) => {
                                 resolve(data);
@@ -92,6 +93,7 @@ export function getAdgroupsAll(campaign_id){
                     resolve(data);
                 }
         },(error)=>{   
+            console.log(JSON.stringify(error));
             return error.error_response;
         }) 
         .catch(error=>{
@@ -119,7 +121,7 @@ function getAdgroups_sign(campaign_id,dataNum){
                     }
                 }).then((result)=>{  
                   
-                   if( result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group){
+                   if( result.simba_adgroupsbycampaignid_get_response && result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group != undefined){
 
                         var res = result.simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group;
 
@@ -134,6 +136,7 @@ function getAdgroups_sign(campaign_id,dataNum){
                             resolve(data);
                         }
                     }else{
+                        Modal.alert('错误');
                         if(ci == len){
                             resolve(data);
                         }
@@ -147,47 +150,6 @@ function getAdgroups_sign(campaign_id,dataNum){
         }
     });
 }
-
-
-/*
-* 获取一个计划下的所有关键词
-*/
-/*export function getAllKeyWordsByCampaignAdgroup(campaign_id){
-    return new Promise((resolve,reject)=>{
-         getAdgroupsAll(campaign_id).then((result) => {
-            var adgroups = result;
-            var adgroupsArr = [],data = [];
-
-            if(adgroups.length > 0){
-
-                 for (var j in  adgroups){
-                    adgroupsArr.push(makeKeywordFunc(subway_token,adgroups[j]));
-                }
-                Async.parallelLimit(adgroupsArr,5, function (err, res) {
-                   let data = res;
-                    resolve(data);
-                });
-
-
-            }      
-        }, (error) => {
-            Modal.toast("获取数据失败");
-        });
-    });
-}
-
-
-function makeKeywordFunc(subway_token,adgroup){
-    return function(callback){
-        getallKeywords(subway_token,adgroup.adgroup_id,adgroup.campaign_id,false).then((result) => {
-            callback(null,result);
-        }, (error) => {  
-               callback(error,null);
-        }); 
-    }
-}*/
-
-
 
 export function getAdgroupsByCid(subway_token,campaign_id,page_no){
      var page = page_no > 0 ? page_no : 1,
@@ -229,8 +191,8 @@ export function getAdgroupsByCid(subway_token,campaign_id,page_no){
             var rpt = {};
             var data = [];
             if(result.length === 3){
-
-                var adgroups = result[0].simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list.a_d_group;
+                var adgroups =  result[0].simba_adgroupsbycampaignid_get_response.adgroups.adgroup_list;
+                    adgroups = adgroups.a_d_group == undefined ? [] : adgroups.a_d_group;
                 var baseData = result[1].simba_rpt_campadgroupbase_get_response.rpt_campadgroup_base_list;
                 var effectData = result[2].simba_rpt_campadgroupeffect_get_response.rpt_campadgroup_effect_list;
                 
@@ -241,7 +203,7 @@ export function getAdgroupsByCid(subway_token,campaign_id,page_no){
             } 
             return data; 
         }, error => {
-            Modal.toast(error);
+           return error; 
         });
 }
 

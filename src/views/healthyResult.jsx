@@ -32,6 +32,7 @@ class HealthyResult extends Component{
             buttonText:'删除',
             isShowItems:false,
             littleKeyGroup:[],
+            showNodata:0
         }   
         showLoading();
         this.makeKeywordFunc = this.makeKeywordFunc.bind(this);
@@ -177,13 +178,17 @@ class HealthyResult extends Component{
         var adgroups = this.state.adgroups;
         var adgroupsArr = [],data = [];
         var self = this;
-     
+        
         if(adgroups.length > 0 && this.state.subway_token){
+            this.setState({showNodata:2});
             for (let j in  adgroups){
                 adgroupsArr.push(self.makeKeywordFunc(adgroups[j],self.state.subway_token));   
             }
             Async.parallelLimit(adgroupsArr,2, (err, res) => {
             });
+        }else{
+            hideLoading();
+            this.setState({showNodata:1});
         }
     }
     deleteGarbase(){
@@ -343,50 +348,63 @@ class HealthyResult extends Component{
     }
     render(){
         var self = this;
-        var nodata = false;
+        var nobadData = false;
         if(self.state.qscoreLowerCount == 0 && self.state.garbageCount == 0 && self.state.noImpressionsCount == 0 &&  self.state.littleKeycount == 0){
-            nodata = true;
+            nobadData = true;
         }
         return (
              <ScrollView style={style.scroller} >
                     <View>
                         <Text style={{fontSize:'32rem',padding:'30rem'}}>{arr.campaign_title}</Text>
                     </View>
-                   { nodata == true ? 
-                    <View style={{fontSize:'30rem',textAlign:'center'}}>Loding...</View> : 
-                    <View >
-                    {
-                        self.state.qscoreLowerCount == 0 ? '':
-                            <View style={style.item}>
-                            <Text style={style.text} >质量分少于3分：{self.state.qscoreLowerCount}个</Text>
-                            <Button style={style.button} onPress={this.press.bind(this,'qsource')} type="primary">删除</Button>
-                            </View>
-                    }  
+                   { this.state.showNodata == 1 ? 
+                    
+                    <View>
+                        <Text style={{fontSize:'30rem',textAlign:'center'}}> 
+                            该计划下还没有推广宝贝，赶紧去设置吧
+                        </Text>
+                    </View> 
+                    : 
+                        this.state.showNodata == 2  || nobadData == true? 
+                        <View>
+                            {
+                                self.state.qscoreLowerCount == 0 ? '':
+                                    <View style={style.item}>
+                                    <Text style={style.text} >质量分少于3分：{self.state.qscoreLowerCount}个</Text>
+                                    <Button style={style.button} onPress={this.press.bind(this,'qsource')} type="primary">删除</Button>
+                                    </View>
+                            }  
 
-                    {
-                        self.state.garbageCount == 0 ? '':
-                            <View style={style.item}>
-                            <Text style={style.text} >垃圾词：{self.state.garbageCount}个</Text>
-                            <Button style={style.button} onPress={this.press.bind(this,'garbage')} type="primary">删除</Button>
-                            </View> 
-                    }
-                           
-                    {
-                        self.state.noImpressionsCount == 0 ? '':
-                            <View style={style.item}>
-                            <Text style={style.text}>无展现关键词：{self.state.noImpressionsCount}个</Text>
-                            <Button style={style.button} onPress={this.press.bind(this,'noImpressions')} type="primary">删除</Button>
-                            </View>  
-                    }  
+                            {
+                                self.state.garbageCount == 0 ? '':
+                                    <View style={style.item}>
+                                    <Text style={style.text} >垃圾词：{self.state.garbageCount}个</Text>
+                                    <Button style={style.button} onPress={this.press.bind(this,'garbage')} type="primary">删除</Button>
+                                    </View> 
+                            }
+                                   
+                            {
+                                self.state.noImpressionsCount == 0 ? '':
+                                    <View style={style.item}>
+                                    <Text style={style.text}>无展现关键词：{self.state.noImpressionsCount}个</Text>
+                                    <Button style={style.button} onPress={this.press.bind(this,'noImpressions')} type="primary">删除</Button>
+                                    </View>  
+                            }  
 
-                    {
-                        self.state.littleKeycount == 0 ? '':
-                            <View style={style.item}>
-                            <Text style={style.text}>少于10个词的宝贝：{self.state.littleKeycount}个</Text>
-                            <Button style={style.button} onPress={this.press.bind(this,"showItems")} type="primary">查看</Button>
+                            {
+                                self.state.littleKeycount == 0 ? '':
+                                    <View style={style.item}>
+                                    <Text style={style.text}>少于10个词的宝贝：{self.state.littleKeycount}个</Text>
+                                    <Button style={style.button} onPress={this.press.bind(this,"showItems")} type="primary">查看</Button>
+                                    </View>
+                            }
+                        </View>
+
+                        :
+                            <View>
+                                <Text style={{fontSize:'30rem',color:'#056',textAlign:'center'}}>没有优化的数据，效果良好</Text>
                             </View>
-                    }
-                    </View>
+
                     }
                     {
                         self.state.isShowItems == false ? '' :

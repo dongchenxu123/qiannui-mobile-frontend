@@ -20,7 +20,6 @@ class CampaignsListView extends Component {
 		showLoading();
 	}
 	componentDidMount(){
-		console.log('计划')
 		getAuthSign().then((result) => {
 			   this.setState({
                         subway_token: result

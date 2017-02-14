@@ -24,7 +24,6 @@ class PlatformView extends Component {
     componentDidMount(){
 
 		  getPlatfrom(campaign_id).then((res) => {
-    		  Modal.alert(campaign_id);
   			  res.insitePC = res.outsitePC =  res.outsiteMO = res.insiteMO = res.outsiteNosearchPC = res.insiteNosearchPC = '';
   			  if(res.search_channels.number){
   	                res.insitePC =  _.indexOf(res.search_channels.number,1) >= 0 ? true: false;
@@ -54,7 +53,7 @@ class PlatformView extends Component {
 	}
     submitData(){
         var search_channels = [1];
-        var nonsearch_channels = [0];
+        var nonsearch_channels = [];
 
         if(this.state.sellerSatus){
             //pc站内搜索
@@ -103,10 +102,10 @@ class PlatformView extends Component {
                 'outside_discount':outside_discount,
                 'mobile_discount':mobile_discount
             };
-
+  
             setPlatfrom(param).then((res) => {
-              console.log(JSON.stringify(res),'++');
-                if(res.msg == undefined){
+          
+                if(res.campaign_id && res.campaign_id == campaign_id){
                     Modal.toast('设置投放平台成功');
                 }else{
                   Modal.alert('参数错误');
@@ -117,16 +116,13 @@ class PlatformView extends Component {
          }
     }
     changeValue(value,type){
-        
-        
+      
         switch(type){
             case "mobile_discount":
-                var v = value.target.attr.value;
-                this.state.datas.mobile_discount = v;
+                this.state.datas.mobile_discount = value;
                 break;
-            case "outside_discount":
-                var v = value.target.attr.value;
-                this.state.datas.outside_discount = v;
+            case "outside_discount": 
+                this.state.datas.outside_discount = value;
                 break;
             case "insitePC":
                 this.state.datas.insitePC = value;  
@@ -220,7 +216,7 @@ class PlatformView extends Component {
                   <TextInput
                     value={outside_discount}
                     keyboardType='numeric'
-                    onBlur={(value)=>{this.changeValue(value,"outside_discount")}}
+                    onChange={(e)=>{this.changeValue(e.value,"outside_discount")}}
                     style={{
                         width: '120rem',
                         height:'80rem',
@@ -263,7 +259,7 @@ class PlatformView extends Component {
                   <TextInput
                     value={mobile_discount}
                     keyboardType='number-pad'
-                    onBlur={(value)=>{this.changeValue(value,"mobile_discount")}}
+                    onChange={(e)=>{this.changeValue(e.value,"mobile_discount")}}
                     style={{
                         width: '120rem',
                         height:'80rem',

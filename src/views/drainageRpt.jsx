@@ -32,7 +32,7 @@ class DrainageRpt extends Component{
     getTodayReport(){
         getTodayReport(this.state.user_id).then((result)=>{
             if(result.report){
-                this.setState({todayRpt:result});
+                this.setState({todayRpt:result.report});
                 hideLoading();
             }
         },(error)=>{
@@ -55,6 +55,7 @@ class DrainageRpt extends Component{
 
         getHistoryReport(this.state.user_id,start_date,end_date).then((result)=>{
                 hideLoading();
+                this.setState({showLoading : false});
                if(result.error !== ""){
                     Modal.toast(result.error === 40060?'日期格式错误':result.error === 40010?'无效的用户':'获取失败');
                }else{
@@ -165,7 +166,7 @@ class DrainageRpt extends Component{
             )
     }
     selectData(v){
-        this.state.showLoading = true;
+        this.setState({showLoading : true});
         var minDate = formatDate(threeMonthAgo,'yy-mm-dd'),
             maxDate = formatDate(yesterday,'yy-mm-dd');
         TimePicker.show({
@@ -179,6 +180,7 @@ class DrainageRpt extends Component{
         }, (e) => {
            
         },(e)=>{
+
             if(e){
                 var date_selected = e.split(' ')[0].replace(/\//g,'-');
                 if(v == 1){
@@ -209,7 +211,7 @@ class DrainageRpt extends Component{
                     <View style={app.cellItemList}>
                         <Text style={app.itemTextList}>历史数据</Text> 
                     </View> 
-                   {/* <View style={app.dateList}>
+                    <View style={app.dateList}>
                         <Button style={app.amoutitemArrow} onPress={this.selectData.bind(this,1)}>
                             {this.state.start_date === ''
                                 ? '开始日期'
@@ -223,7 +225,7 @@ class DrainageRpt extends Component{
                             }
                         </Button>
                        
-                    </View>*/}
+                    </View>
                     { 
                         this.state.historyRpt.length == 0 || this.state.showLoading == true ? '加载中...':
                         this.state.historyRpt.map((item,index)=>{
@@ -236,7 +238,6 @@ class DrainageRpt extends Component{
                     }
                     </View>
                 </ScrollView>
-
             )
     }
 }

@@ -37,6 +37,8 @@ export function getCampaign(subway_token){
                     resolve(data);
                 });
             }
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -122,6 +124,8 @@ export function getCampaign_old(subway_token){
                  resolve(data);
             }
                    
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -209,6 +213,8 @@ export function setBuget(campaign_id,new_budget,is_smooth = 'true'){
             }
         }).then((result)=>{
             return result.simba_campaign_budget_update_response.campaign_budget.budget;        
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -229,6 +235,8 @@ export function setStatus(campaign_id,title,newstatus){
             }
         }).then((result)=>{
             return result.simba_campaign_update_response.campaign;        
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -246,6 +254,8 @@ export function getSchedule(campaign_id){
             }
         }).then((result)=>{
             return result.simba_campaign_schedule_get_response.campaign_schedule;        
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -269,6 +279,8 @@ export function setSchedule(campaign_id,val){
                 data = result.simba_campaign_schedule_update_response.campaign_schedule;  
              }
              return  data;      
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -287,6 +299,8 @@ export function getArea(campaign_id){
             }
         }).then((result)=>{
             return result.simba_campaign_area_get_response.campaign_area;        
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -306,6 +320,8 @@ export function setArea(campaign_id,val){
             }
         }).then((result)=>{
             return result.simba_campaign_area_update_response.campaign_area;        
+        },(error)=>{
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
@@ -325,7 +341,7 @@ export function getPlatfrom(campaign_id){
         }).then((result)=>{
             return result.simba_campaign_platform_get_response.campaign_platform;        
         },(error)=>{
-            return error;
+            return error.error_response;
         })
         .catch(error=>{
             Modal.toast(error);
