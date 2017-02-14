@@ -107,6 +107,13 @@ class PlatformView extends Component {
           
                 if(res.campaign_id && res.campaign_id == campaign_id){
                     Modal.toast('设置投放平台成功');
+                    QN.navigator.push({
+					    url: 'qap://views/campaignsList.js',
+					   	settings: {
+					        animate: true
+					       
+					    } 
+					});
                 }else{
                   Modal.alert('参数错误');
                 }

@@ -4,8 +4,12 @@ import { View, Text,TouchableHighlight, ScrollView} from 'nuke-components';
 
 import {mount} from 'nuke-mounter';
 import QN from 'QAP-SDK';
-import {getArea, setArea} from '../../api'
+import {getArea, setArea} from '../api'
 let {height} = Dimensions.get('window');
+
+let URL= document.URL;
+let arr= QN.uri.parseQueryString(URL.split('?')[1]);
+const campaign_id = arr.campaign_id;
 
 class GetAreaView extends Component {
     constructor(props) {
@@ -16,6 +20,7 @@ class GetAreaView extends Component {
         	areaStr: '',
         	checked: false,
         	areaId: '',
+        	campaign_id: campaign_id,
         	areaArrs:[1,2,3,4,5,6,7,8],
         	areas:{
         		1:{
@@ -231,9 +236,9 @@ class GetAreaView extends Component {
         	
         }
     }
-   showModal () {
+   componentDidMount () {
         var self = this;
-        getArea(this.props.localId).then((result) => {
+        getArea(this.state.campaign_id).then((result) => {
         	if(result.area === 'all') {
         		result.area='19,461,125,393,333,294,234,165,417,255,508,39,1,368,145,184,212,279,68,120,92,532,438,488,109,463,406,52,357,351,471,578,599,576,574'
         	}        	
@@ -261,16 +266,12 @@ class GetAreaView extends Component {
             Modal.alert(JSON.stringify(error));
 
         });
-        this.refs.modal.show();
+        
     }
-	hideModal = () => {
-        this.refs.modal.hide();
-    }
-    sureModal = () => {
-        this.refs.modal.hide();
+	sureModal = () => {
         var areaobj =this.state.areaobj;
         var areaItem = [];
-        var areaId= this.props.localId
+        var areaId= this.state.campaign_id
          for(var i in areaobj) {
          	if(areaobj[i].s == 1) {
          		areaItem.push(i)
@@ -278,18 +279,19 @@ class GetAreaView extends Component {
          }
          setArea(areaId, areaItem).then((result) => {
          		if(result.length !== 0) {
-         			Modal.toast('设置成功')
+         			Modal.toast('设置成功');
+         			QN.navigator.push({
+					    url: 'qap://views/campaignsList.js',
+					   	settings: {
+					        animate: true
+					       
+					    } 
+					});
          		}
              	}, (error) => {
 	                Modal.alert(JSON.stringify(error));
 	
 	            }); 
-    }
-    onShow() {
-      
-    }
-	onHide = (param) => {
-   
     }
     changeArea (id, value) {
     	var arrId = [];
@@ -303,10 +305,7 @@ class GetAreaView extends Component {
     	var self= this;
     	return (
             <View>
-                <View style={{marginRight: '60rem'}}>        
-                  <Button type="primary" onPress={this.showModal.bind(self)}>设置</Button>
-                </View>
-                <Dialog ref="modal" contentStyle={styles.modalStyle} onShow={this.onShow.bind(self)} onHide={this.onHide}>
+                <View style={styles.modalStyle}>
                     <ScrollView style={styles.body} onEndReachedThreshold={300}>
                     	<View>
 	                    	{this.state.areaArr.length === 0 ? <Text>Loading...</Text> : 
@@ -342,34 +341,24 @@ class GetAreaView extends Component {
                     <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
                             <Button style={{height:"80rem",marginBottom:'30rem'}}  onPress={this.sureModal} block="true" type="secondary">保存设置</Button>
                     </View>
-
-                    <TouchableHighlight style={styles.close} onPress={this.hideModal}>
-                        <Text style={styles.closeText}>x</Text>
-                    </TouchableHighlight>
-                </Dialog>
+				</View>
             </View>
         );
     }
 }
 var styles = {
  modalStyle: {
-    width: '700rem',
-    height: height-100
+    width: '750rem',
+    height: height-10
    
   },
   body: {
     alignItems: 'left',
     justifyContent: 'left',
     backgroundColor: '#fff',
-    height: height-260
+    height: height-60
   },
-  footer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '120rem',
-    flexDirection:"row",
-	display:'flex'
-  },
+  
   button: {
     width: '300rem',
     height: '60rem',
@@ -378,24 +367,6 @@ var styles = {
     borderColor: '#ccc',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  close: {
-    borderWidth: '1rem',
-    borderStyle: 'solid',
-    borderColor: '#ccc',
-    position: 'absolute',
-    top: '-18rem',
-    right: '-18rem',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40rem',
-    height: '40rem',
-    borderRadius: '20rem',
-    backgroundColor: '#ffffff'
-  },
-  closeText: {
-    fontSize: '28rem',
-    color: '#000000'
   },
   title: {
    	    padding: '30rem',
@@ -414,3 +385,5 @@ var styles = {
 };
 
 export default GetAreaView
+
+mount(<GetAreaView/>, 'body');

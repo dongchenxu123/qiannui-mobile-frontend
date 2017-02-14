@@ -157,11 +157,27 @@ class ScheduleView extends Component {
             setSchedule(campaign_id,schedule).then((result)=>{
                 if(result != ''){
                     Modal.toast('设置分时折扣成功');
+                    QN.navigator.push({
+					    url: 'qap://views/campaignsList.js',
+					   	settings: {
+					        animate: true
+					       
+					    } 
+					});
                 }
                
             },(error)=>{
                 Modal.toast('设置分时折扣失败');
             })
+        } else{
+        	Modal.toast('没有更改当前设置！');
+        	QN.navigator.push({
+					    url: 'qap://views/campaignsList.js',
+					   	settings: {
+					        animate: true
+					       
+					    } 
+					});
         }
     }
     render(){
