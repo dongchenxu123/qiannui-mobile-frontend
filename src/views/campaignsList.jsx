@@ -3,10 +3,10 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import {View, Text, Link, Image, Modal, ScrollView, Button, Navigator, TouchableHighlight } from 'nuke';
 import QN from 'QAP-SDK';
-import {getCampaign, getAuthSign, setBuget, getArea, setStatus} from '../../api';
+import {getCampaign, getAuthSign, setBuget, getArea, setStatus} from '../api';
 import _ from 'lodash';
-import { showLoading,hideLoading } from '../util';
-import GetAreaView from './getAreaView'
+import { showLoading,hideLoading } from './util';
+
 
 class CampaignsListView extends Component {
 	constructor() {
@@ -87,6 +87,9 @@ class CampaignsListView extends Component {
 	onPressPlat (tid) {
         Navigator.push('qap://views/platform.js?campaign_id='+tid);
     }
+	onPressGetArea (tid) {
+        Navigator.push('qap://views/getAreaView.js?campaign_id='+tid);
+    }
 	statusItem (tid, title, online_status) {
 		var new_status= online_status== 'online'?  'offline' : 'online'
 		setStatus(tid, title, new_status).then((res) => {
@@ -132,7 +135,7 @@ class CampaignsListView extends Component {
 							   			<View style={styles.dayArrow}>
 			  		   	                  <Text style={styles.setFontSize}>每日限额:</Text>  
 			   							</View>
-			  		   	              	 <View style={{left:'-30rem',fontSize:'30rem'}} >	
+			  		   	              	 <View style={{left:'-20rem',fontSize:'30rem'}} >	
 			  		   	                  <Button
 			  		   	                  	onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
 											id={this.state.budgetId}
@@ -141,7 +144,7 @@ class CampaignsListView extends Component {
 			  		   	                  </Button >
 			  		   	                </View>
 			  		   	                <View style={styles.itemArrow}>
-			  		   	                  <Text style={[styles.setFontSize,{left:'30rem'}]}>投放平台:</Text>
+			  		   	                  <Text style={styles.setFontSize}>投放平台:</Text>
 			  		   	                </View>
 			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}} >
 				  		   	                 <Button
@@ -156,7 +159,15 @@ class CampaignsListView extends Component {
 							   		    <View style={styles.dayArrow}>
 			  		   	                	<Text style={styles.setFontSize}>投放地域:</Text>
 			  		   	                </View>
-			  		   	                <GetAreaView style={styles.amoutitemArrow} localId={item.campaign_id}/>
+			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}}>
+				  		   	                 <Button
+				  		   	                  	onPress={this.onPressGetArea.bind(this, tid)}
+				  		   	                  	type="primary"
+												>
+				  		   	                 设置
+				  		   	                </Button>
+			  		   	                </View>
+			  		   	              
 			  		   	                <View style={styles.itemArrow}>
 			  		   	                	<Text style={styles.setFontSize}>投放时段:</Text>
 			  		   	                </View>
@@ -181,7 +192,7 @@ class CampaignsListView extends Component {
 		  		   	                   <Text style={styles.setFontSize}>{item.cost}</Text>
 		  		   	                </View>
 
-		  		   	                <View style={[styles.itemArrow,{left:'-10rem'}]}>
+		  		   	                <View style={[styles.itemArrow,{left:'-12rem'}]}>
 			  		   	                <Text style={styles.setFontSize}>展现量:</Text>
 			  		   	            </View>
 			  		   	            <View style={{left:'-90rem'}} >
@@ -310,3 +321,5 @@ const styles={
 	   }
 	 }
 export default CampaignsListView
+
+mount(<CampaignsListView/>, 'body');

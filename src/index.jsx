@@ -7,7 +7,7 @@ import QN from 'QAP-SDK';
 import HealthyView from './views/healthy';
 import LinkUs from './views/linkus';
 import UserView from './views/user';
-import CampaignsListView from './views/campaigns/campaignsList';
+import CampaignsListView from './views/campaignsList';
 import Drainage from './views/drainage';
 import {  localstoreUser} from './api/authsign';
 
