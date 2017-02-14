@@ -31,10 +31,10 @@ class RecommendKeywords extends Component {
 				    </View>
 				    <View style={styles.cellItemList}>
                         <Text style={styles.arrow}></Text>
-				     	<Text style={styles.arrow}>关键词</Text>
-				     	<Text style={styles.arrow}>展现指数</Text>
-				     	<Text style={styles.arrow}>平均出价</Text>
-				     	<Text style={styles.arrow}>相关度</Text>
+				     	<Text style={[styles.arrow,{left: '-40rem'}]}>关键词</Text>
+				     	<Text style={[styles.arrow,{left: '-40rem'}]}>展现指数</Text>
+				     	<Text style={[styles.arrow,{left: '-40rem'}]}>平均出价</Text>
+				     	<Text style={[styles.arrow,{left: '-40rem'}]}>相关度</Text>
 				    </View>
 				    {
 				    	keywords.length === 0 
