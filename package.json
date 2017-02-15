@@ -1,9 +1,9 @@
 {
-  "name": "qianniu-mobile-frontend",
+  "name": "wuxiancheshou",
   "version": "0.1.0",
   "readmeFilename": "README.md",
   "qapConfig": {
-    "appkey": "21588060",
+    "appkey": "12652886",
     "firstPage": "we://index.js",
     "h5Dir": "./h5",
     "packageDir": "./package",

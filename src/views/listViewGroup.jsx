@@ -131,10 +131,7 @@ class ListViewGroupView extends Component {
    render(){
         var self=this;
         var listGroup= this.props.data;
-        var showNodata = this.props.showNodata;
         return (
-        	showNodata == true ? 
-            <Text style={{fontSize:'30rem',padding:'100rem'}}>暂时还没有推广宝贝，赶快去推广吧</Text> : 
             <ListView
                 renderHeader={this.renderHeader}
                 renderFooter={this.renderFooter}

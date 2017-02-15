@@ -4,7 +4,7 @@ import { View, Text, TouchableHighlight,ScrollView   } from 'nuke-components';
 import { getAuthSign,getCampaign } from '../api';
 import { showLoading,hideLoading } from './util';
 import QN from 'QAP-SDK';
-
+ showLoading();
 class HealthyView extends Component{
    constructor() {
         super();   
@@ -14,7 +14,7 @@ class HealthyView extends Component{
             normal_val:'正常',
             too_low:'过低'
         }   
-       showLoading();
+      
     }
 
      componentWillMount(){

@@ -20,7 +20,7 @@ class CampaignsGroupView extends Component {
 			subway_token: '',
 			campaginsData: [],
 			campaign_id: campaign_id,
-      showNodata:false
+      showNodata:0
 		}
 		this.setNewSatusFunc = this.setNewSatusFunc.bind(this);
 		this.delItemsFunc = this.delItemsFunc.bind(this);
@@ -34,17 +34,16 @@ class CampaignsGroupView extends Component {
 
            	getAdgroupsByCid(this.state.subway_token, campaign_id, 1).then((res) => {
               if(_.isArray(res) && res.length > 0){
-                if( res.length > 0){
                   this.setState({
                         campaginsData: res,
+                        showNodata:2
+                    })    
+              }else{
+                 this.setState({
+                    showNodata: 1,
                     })
-                }else{
-                  this.setState({
-                    showNodata: true,
-                    })
-                }   
-              }	
                hideLoading();
+              }
            	}, (error) => {
                 hideLoading();
 	            Modal.alert(JSON.stringify(error));
@@ -87,15 +86,27 @@ class CampaignsGroupView extends Component {
 	}
    
 	render () {
+
 		return (
 			<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
 			   <View><Button type='primary' style={{margin: '20rem'}} onPress={this.addToView.bind(this, this.state.campaign_id)} block="true" type="secondary"> 新增宝贝推广</Button></View>
-			   <ListViewGroupView data={this.state.campaginsData} 	
-              showNodata={this.state.showNodata}				
+			   {
+         this.state.showNodata == 1 ? 
+          <View>
+               <Text style={{fontSize:'30rem',padding:'100rem'}}>暂时还没有推广宝贝，赶快去推广吧</Text> 
+          </View>
+           :
+          this.state.showNodata == 2  ?
+          <ListViewGroupView data={this.state.campaginsData}  
+              showNodata={this.state.showNodata}        
               callbackSetNewSatus={this.setNewSatusFunc}
-			        delItems={this.delItemsFunc}
-			        campaign_id={this.state.campaign_id}
-			    />
+              delItems={this.delItemsFunc}
+              campaign_id={this.state.campaign_id}
+          />
+          :
+          <Text></Text>
+         }
+         
 			</ScrollView>
 		)
 	}
