@@ -124,10 +124,10 @@ class CampaignsListView extends Component {
 				   			    	<TouchableHighlight onPress={this.onPress.bind(this, tid)} style={styles.itemTextList}>
 					   			    	<Text style={{color:"#0894EC",fontSize:'32rem'}}>{title}</Text>
 				   			    	</TouchableHighlight>
-				   			    	<View style={styles.Arrow}>
-				   			    		<Button style={{width: 150, margintLeft: '40rem'}} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
-					   			    	{itemStatus}
-					   			    	</Button>
+				   			    	<View style={[styles.Arrow, {margintLeft: '40rem'}]}>
+				   			    		<TouchableHighlight style={{width: 150 }} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
+					   			    		<Text style={{color: '#f50'}}>{itemStatus}</Text>
+					   			    	</TouchableHighlight>
 				   			    	</View>
 				   			    </View>
 				   			    <View style={styles.report}>
@@ -299,7 +299,7 @@ const styles={
 	        color:"#5F646E"
 	    },
 	   Arrow:{
-	    	flex: 7,
+	    	flex: 5,
 	    	fontSize:"24rem",
 	        color:"#5F646E" 
 	   },

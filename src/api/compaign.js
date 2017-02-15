@@ -80,7 +80,7 @@ export function getCompaignReport(subway_token,compaingn){
                     var rpt = {};
 
                     if(result.length === 3){
-                        var budget = result[0].simba_campaign_budget_get_response.campaign_budget;
+                    	var budget = result[0].simba_campaign_budget_get_response != undefined && result[0].simba_campaign_budget_get_response.campaign_budget != undefined ? result[0].simba_campaign_budget_get_response.campaign_budget : '';
                         var baseData = result[1].simba_rpt_campaignbase_get_response != undefined ? result[1].simba_rpt_campaignbase_get_response.rpt_campaign_base_list :[];
                         var effectData =  result[2].simba_rpt_campaigneffect_get_response != undefined ? result[2].simba_rpt_campaigneffect_get_response.rpt_campaign_effect_list :[];
                         rpt =  formatRptData(baseData, effectData);

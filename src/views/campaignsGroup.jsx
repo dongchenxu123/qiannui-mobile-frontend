@@ -32,7 +32,8 @@ class CampaignsGroupView extends Component {
            		subway_token: result
            	})
 
-           	getAdgroupsByCid(this.state.subway_token, campaign_id, 1).then((res) => {
+           	getAdgroupsByCid(this.state.subway_token, campaign_id, 1).then((res) => { 
+           		hideLoading();
               if(_.isArray(res) && res.length > 0){
                   this.setState({
                         campaginsData: res,
@@ -42,7 +43,7 @@ class CampaignsGroupView extends Component {
                  this.setState({
                     showNodata: 1,
                     })
-               hideLoading();
+              
               }
            	}, (error) => {
                 hideLoading();
