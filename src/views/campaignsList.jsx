@@ -126,7 +126,12 @@ class CampaignsListView extends Component {
 				   			    	</TouchableHighlight>
 				   			    	<View style={[styles.Arrow, {margintLeft: '40rem'}]}>
 				   			    		<TouchableHighlight style={{width: 150 }} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
-					   			    		<Text style={{color: '#f50'}}>{itemStatus}</Text>
+					   			    		{
+					   			    			online_status == 'online' ? 
+					   			    				<Text style={{color: '#1DC11D'}}>{itemStatus}</Text>:
+					   			    				<Text style={{color: '#f50'}}>{itemStatus}</Text>
+					   			    			}
+					   			    		
 					   			    	</TouchableHighlight>
 				   			    	</View>
 				   			    </View>

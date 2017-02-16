@@ -135,8 +135,7 @@ class AddCampaignView extends Component {
                 		<Image source={{uri: item.pic_url}} style={{width:'180rem',height:'180rem'}}/>
                 		<View style={app.itemTextList}>
                 			<Text style={{fontSize: '32rem', paddingBottom: '15rem'}}>{item.title}</Text>
-                			<Text style={{fontSize:'30rem', paddingBottom: '20rem'}}>状态: 未推广</Text>
-                		    <Button style={{color: '#3089dc'}} block="true" onPress={this.jointuiguang.bind(this,num_iid,title,imgUrl)}>参与推广</Button>
+                		  <Button style={{color: '#3089dc'}} block="true" onPress={this.jointuiguang.bind(this,num_iid,title,imgUrl)}>参与推广</Button>
                 		</View>
                 </View>
         		

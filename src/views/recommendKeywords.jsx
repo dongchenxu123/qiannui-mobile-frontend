@@ -24,31 +24,32 @@ class RecommendKeywords extends Component {
 		return (
 			    <View>
 				<ScrollView style={styles.scroller} onEndReachedThreshold={300}>
-				    <View style={[styles.cellItemList, {borderTopWidth:"2rem",borderTopStyle:"solid",borderTopColor:"#e8e8e8"}]}>
-				     	<Text style={{padding: '10rem',alignItems:"center", justifyContent: 'center',fontSize:'32rem'}}>推荐关键词数量为</Text>
-				     	<Text style={{padding: '20rem', color: '#3089dc',fontSize:'30rem'}}>{lengths}</Text>
-				     	<Text style={{paddingLeft: '20rem',fontSize:'30rem'}}>个</Text>
-				    </View>
 				    <View style={styles.cellItemList}>
-                        <Text style={styles.arrow}></Text>
-				     	<Text style={[styles.arrow,{left: '-40rem'}]}>关键词</Text>
-				     	<Text style={[styles.arrow,{left: '-40rem'}]}>展现指数</Text>
-				     	<Text style={[styles.arrow,{left: '-40rem'}]}>平均出价</Text>
-				     	<Text style={[styles.arrow,{left: '-40rem'}]}>相关度</Text>
+				     	<Text style={{padding: '10rem',alignItems:"center", justifyContent: 'center',fontSize:'32rem'}}>推荐关键词数量为</Text>
+				     	<Text style={{padding: '20rem', color: '#3089dc',fontSize:'32em'}}>{lengths}</Text>
+				     	<Text style={{paddingLeft: '20rem',fontSize:'32rem'}}>个</Text>
 				    </View>
+                     <View style={[styles.subCell,{backgroundColor:'#EBEBEB'}]}>       
+                       <View style={{flex:'30rem'}}><Text></Text></View>
+                       <View style={styles.col2}><Text style={styles.col4}>关键词</Text></View>
+                       <View style={styles.col2}><Text style={styles.col4}>展现指数</Text></View>
+                       <View style={styles.col2}><Text style={styles.col4}>平均出价</Text></View>
+                       <View style={styles.col1}><Text style={styles.col4}>相关度</Text></View>
+                    </View> 
+				    
 				    {
 				    	keywords.length === 0 
 				    	? ''
 				    	: <View>{
 				    		keywords.map((item, index) =>{
 				    			return (
-				    				<View style={styles.cellItemList}>
-				    				   	<Checkbox onChange={this.changeControl.bind(this, item)}/>
-				    					<Text style={styles.arrows}>{keywordObj[item].word}</Text>
-								     	<Text style={styles.arrows}>{keywordObj[item].pv ? number_format(keywordObj[item].pv) : 0}</Text>
-								     	<Text style={styles.arrows}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text>
-								     	<Text style={styles.arrows}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text>
-								     </View>
+			    				 <View style={styles.subCell}> 
+			    				   	<View style={{flex:'30rem'}}><Checkbox onChange={this.changeControl.bind(this, item)}/></View>
+			    					<View style={styles.col2}><Text style={styles.col3}>{keywordObj[item].word}</Text></View>
+							     	<View style={styles.col2}><Text style={styles.col3}>{keywordObj[item].pv ? number_format(keywordObj[item].pv) : 0}</Text></View>
+							     	<View style={styles.col2}><Text style={styles.col3}>{keywordObj[item].average_price? keywordObj[item].average_price : 0}</Text></View>
+							     	<View style={styles.col1}><Text style={styles.col3}>{keywordObj[item].pertinence ? keywordObj[item].pertinence : 0}</Text></View>
+							     </View>
 				    			)
 				    		})
 				    	}
@@ -78,28 +79,37 @@ const styles={
        	alignItems:"center",
         flexDirection:"row",
         display: 'flex',
-        padding: '10rem'
+        padding: '10rem',
+        borderTopWidth:"2rem",
+        borderTopStyle:"solid",
+        borderTopColor:"#e8e8e8"
   },
-  arrow: {
-  	flex: 3,
-    paddingRight:'10rem',
+   subCell:{
+    padding:'20rem 0 20rem 10rem',
+    borderBottomStyle:'solid',
+    borderBottomWidth:'1rem',
+    borderBottomColor:'#e8e8e8',  
+    flexDirection:"row",
+    display:'flex',
+  },
+   col1:{
+        fontSize:'30rem',
+        color:'#5F646E',
+        paddingRight:'5rem',
+        flex:45
+    },
+  col2:{
+        fontSize:'30rem',
+        color:'#5F646E',
+        paddingRight:'5rem',
+        flex:62
+  },
+  col3:{
+    fontSize:'26rem',
+  },
+   col4:{
     fontSize:'30rem'
-  },
-  arrows: {
-  	flex: 3,
-    paddingRight:'10rem',
-    fontSize:'28rem'
-  },
-  gridcell:{
-     height:'200rem',
-    'justifyContent':'center',
-    'alignItems':'center',
-    'border':'1rem',
-    'borderStyle':'solid',
-    'borderColor':'#e8e8e8',
-    'marginTop':'-1rem',
-    'marginLeft':'-1rem'
-    }
+  }
 }
 
 export default RecommendKeywords

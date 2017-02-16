@@ -87,7 +87,6 @@ class ListViewGroupView extends Component {
     	var online_status= item.online_status;
     	var adgroup_id= item.adgroup_id;
     	var self= this;
-    	var itemStatus= item.online_status == 'online' ? '推广中' : '暂停中';
     	var newStatus= item.online_status == 'online' ? '暂停宝贝' : '推广宝贝';
     	var campaign_id= this.props.campaign_id;
     	var title= item.title;
@@ -100,9 +99,20 @@ class ListViewGroupView extends Component {
                 		<View style={app.itemTextList}>
                 			<Text style={{fontSize: '32rem', paddingBottom: '15rem'}}>{item.title}</Text>
                 			<View style={{ flexDirection:"row",display: 'flex'}}>
-                				<Text style={{fontSize:'30rem',color:'#f50'}}>
-                					状态: {itemStatus}
+                				<Text style={{fontSize:'30rem'}}>
+                					状态:
                 				</Text>
+                                {
+                                    item.online_status == 'online' ?
+                                    <Text style={{fontSize:'30rem',color:'#1DC11D',paddingLeft:'10rem'}}>
+                                       推广中
+                                    </Text>
+                                    :
+                                    <Text style={{fontSize:'30rem',color:'#f50',paddingLeft:'10rem'}}>
+                                       暂停中
+                                    </Text>
+                                }
+                                
                 				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>昨日点击: {item.report.click}</Text>
                 			</View>
                 			<View style={{flexDirection:'row'}}>

@@ -305,9 +305,9 @@ class Drainage extends Component{
                 <View>
                     <View style={styles.cellItemList}>
                         <Text>淘外余额: {this.state.balance}</Text>
-                        <View style={{marginLeft: '60rem'}}>        
-                            <Button type="primary" onPress={this.linkrecharge.bind(this)}>充值</Button>
-                        </View>
+                        <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.linkrecharge.bind(this)}>
+                            <Text style={styles.title}>充值</Text>        
+                       </TouchableHighlight>
                         <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.showHandbook.bind(this)}>
                             <Text style={styles.title}> ? 帮助</Text>
                         </TouchableHighlight>

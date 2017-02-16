@@ -39,8 +39,12 @@ class HealthyView extends Component{
                 <View>
                     <TouchableHighlight style={app.cellItemList} onPress={this.onPress.bind(this,item.campaign_id,item.title)}>
                         <Text style={app.itemTextList}>{item.title}</Text>
-                        <Text style={app.itemArrow}>{item.online_status == 'online' ?'推广中':'暂停中'}</Text>
-                    </TouchableHighlight>
+                        {
+                            item.online_status == 'online' ?
+                             <Text style={[app.itemArrow,{color:'#1DC11D'}]}>推广中</Text>:
+                            <Text style={[app.itemArrow,{color:'#f50'}]}>暂停中</Text>
+                        }
+                     </TouchableHighlight>
 
                      <View style={app.subCell}>
                        <Grid style={app.subGid}>

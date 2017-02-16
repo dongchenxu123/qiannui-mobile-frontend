@@ -1,5 +1,5 @@
 'use strict';
-import { Radio} from 'nuke';
+import { Radio, Col, Grid} from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import {View, Text,Input,TextInput,Image, Modal, Dialog, TouchableHighlight, Navigator, Button, ScrollView, ListView, Dimensions, Checkbox} from 'nuke';
@@ -7,8 +7,8 @@ import { getAuthSign, getallKeywords, deleteKeywords ,setKeywordPricevon} from '
 import QN from 'QAP-SDK';
 import _ from 'lodash';
 import { showLoading,hideLoading,number_format } from './util';
-
 let {height} = Dimensions.get('window');
+
 class GetKeywordsView extends Component {
   constructor() {
     super()
@@ -221,8 +221,7 @@ class GetKeywordsView extends Component {
     var title= this.state.dataobj.name;
     var imgage= this.state.dataobj.imgage;
     var online_status= this.state.dataobj.online_status;
-    var itemStatus= online_status == 'online' ? '推广中' : '暂停中';
-   // var self = this;
+
     return (
       <View>
            <View style={styles.cellItemList}>
@@ -230,9 +229,19 @@ class GetKeywordsView extends Component {
                 <View style={styles.itemTextList}>
                   <Text style={{fontSize: '32rem', paddingBottom: '15rem', textOverflow:'ellipsis',lines:2,width:'480rem'}}>{title}</Text>
                   <View style={{ flexDirection:"row",display: 'flex'}}>
-                    <Text style={{color: '#3089dc',fontSize:'30rem'}}>
-                      状态: {itemStatus}
+                  <Text style={{fontSize:'30rem'}}>
+                          状态:
                     </Text>
+                    {
+                       online_status == 'online' ?
+                        <Text style={{fontSize:'30rem',color:'#1DC11D',paddingLeft:'10rem'}}>
+                             推广中
+                        </Text>
+                        :
+                        <Text style={{fontSize:'30rem',color:'#f50',paddingLeft:'10rem'}}>
+                            暂停中
+                        </Text>
+                    }
                     <Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>已添加关键词: {this.state.keywordList.length} 个</Text>
                     </View>
                   <View style={{flexDirection:'row', marginTop: '10rem', marginLeft: '10rem'}}>
@@ -246,27 +255,29 @@ class GetKeywordsView extends Component {
               </View>
               </View>
            </View>
+
            <ScrollView style={styles.scroller} onEndReachedThreshold={300}>
-              <View style={styles.cellItemList}>
-                <Text style={styles.arrow}></Text>
-                <Text style={styles.arrow}>关键词</Text>
-                <Text style={styles.arrow}>出价</Text>
-                <Text style={styles.arrow}>展现</Text>
-                <Text style={styles.arrow}>点击</Text>
-                <Text style={styles.arrow}>成交</Text>
-                <Text style={styles.arrow}>质量分</Text>
-              </View>
+                <View style={[styles.subCell,{backgroundColor:'#EBEBEB'}]}>      
+                  <View style={styles.col1}><Text></Text></View>
+                  <View style={styles.col2}><Text style={styles.col4}>关键词</Text></View>
+                  <View style={styles.col1}><Text style={styles.col4}>出价</Text></View>
+                  <View style={styles.col1}><Text style={styles.col4}>展现</Text></View>
+                  <View style={styles.col1}><Text style={styles.col4}>点击</Text></View>
+                  <View style={styles.col1}><Text style={styles.col4}>成交</Text></View>
+                  <View style={[styles.col2,{paddingRight:0}]}><Text style={styles.col4}>质量分</Text></View>
+                </View> 
               { this.state.keywordList.length == 0 ? <Text style={{fontSize:'30rem',padding:'200rem'}}>您还没有添加关键词</Text> : this.state.keywordList.map((item, index) =>{
                 return (
-                    <View style={styles.cellItemList}>
-                      <Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/>
-                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{item.word}</Text>
-                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{(item.max_price/100).toFixed(2)}</Text>
-                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{number_format(item.impressions)}</Text>
-                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{number_format(item.click)}</Text>
-                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{number_format(item.paycount)}</Text>
-                      <Text style={[styles.arrows,{fontSize:'28rem'}]}>{item.qscore}</Text>
-                    </View>
+                    <View style={styles.subCell}>
+                       <View style={styles.col1}><Checkbox onChange={this.itemCheck.bind(this, item)} checked={(item.checked && item.checked) == 1 ? true : false}/></View>
+                        <View style={styles.col2}><Text style={styles.col3}>{item.word}</Text></View>
+                        <View style={styles.col1}><Text style={styles.col3}>{(item.max_price/100).toFixed(2)}</Text></View>
+                        <View style={styles.col1}><Text style={styles.col3}>{number_format(item.impressions)}</Text></View>
+                        <View style={styles.col1}><Text style={styles.col3}>{number_format(item.click)}</Text></View>
+                        <View style={styles.col1}><Text style={styles.col3}>{number_format(item.paycount)}</Text></View>
+                        <View style={[styles.col2,{paddingRight:0}]}><Text style={styles.col3}>{item.qscore}</Text></View>
+                     
+                    </View>  
                   )
                 })    
               }
@@ -407,7 +418,33 @@ const styles={
   },
     delayValue:{
         color:'#383B3E'
-    }
+    },
+  subCell:{
+    padding:'20rem 0 20rem 10rem',
+    borderBottomStyle:'solid',
+    borderBottomWidth:'1rem',
+    borderBottomColor:'#e8e8e8',  
+    flexDirection:"row",
+    display:'flex',
+  },
+   col1:{
+        fontSize:'30rem',
+        color:'#5F646E',
+        paddingRight:'5rem',
+        flex:45
+    },
+  col2:{
+        fontSize:'30rem',
+        color:'#5F646E',
+        paddingRight:'5rem',
+        flex:62
+  },
+  col3:{
+    fontSize:'26rem',
+  },
+   col4:{
+    fontSize:'30rem'
+  }
 }
 
 mount(<GetKeywordsView />, 'body');

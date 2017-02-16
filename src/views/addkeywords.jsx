@@ -104,8 +104,8 @@ class AddKeyWordsView extends Component {
         value = value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的   
         value = value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");  
         value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数   
-        if(value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
-           obj.value= parseFloat(obj.value);  
+        if(value.indexOf(".")< 0 && value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+          value= parseFloat(value);  
         }  
         return value
     } 
@@ -148,9 +148,7 @@ class AddKeyWordsView extends Component {
                     return;
                 }else{
                     if(result.length >0){  
-                        Modal.alert("关键词添加成功",(e)=>{ 
-                            QN.navigator.reload();
-                        }) 
+                        Modal.alert("关键词添加成功");
                     }
                 }
             }, (error) => {
@@ -167,7 +165,7 @@ class AddKeyWordsView extends Component {
 			     <View style={styles.cellItemList}>
 	    		    <Text style={{fontSize:'32rem'}}>出价范围: </Text>
 	    		    <Input onChange={this.changeMinnum.bind(this)} value={this.state.minprice} keyboardType="number-pad" />
-	    		    <Text style={{paddingLeft: '10rem',fontSize:'32rem'}}>至</Text>
+	    		    <Text style={{paddingLeft: '10rem',paddingRight: '10rem',fontSize:'32rem'}}>至</Text>
 	    		    <Input style={{paddingLeft: '10rem'}} onChange={this.changeMaxnum.bind(this)} value={this.state.maxprice} keyboardType="number-pad"/>
 	    		    <Text style={{paddingLeft: '10rem',fontSize:'32rem'}}>元</Text>
     		    </View>

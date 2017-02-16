@@ -5,8 +5,7 @@ import {onlineChat,getFeedback } from '../api/dsp';
 import QN from 'QAP-SDK';
 
 QN.on('page.reload', function(data) {
-    QN.navigator.reload();
-   
+    QN.navigator.reload(); 
 });
 
 class LinkUs extends Component{
@@ -15,9 +14,7 @@ class LinkUs extends Component{
         this.state = {
            showfeedback:false,
            textAreaValue:''
-        }   
-
-       
+        }    
     }
 
     openChart(){
@@ -76,11 +73,10 @@ class LinkUs extends Component{
                           }}
                         />
                         <View style={{marginTop:'30rem'}}>
-                            <Button type="primary" onPress={this.feedBack.bind(this)}>提交</Button>
+                            <Button type="primary" onPress={this.feedBack.bind(this)}>提交了</Button>
                         </View>
                      </View>
-                    }
-                     
+                    }    
                 </ScrollView>
             )
      }

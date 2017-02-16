@@ -3,12 +3,13 @@ import {createElement, Component} from 'weex-rx';
 import { View, Text,TouchableHighlight, ScrollView} from 'nuke-components';
 import {mount} from 'nuke-mounter';
 import QN from 'QAP-SDK';
-import {number_format} from './util';
+import { getRechargeTempalte } from '../api/dsp';
+import { httphost } from '../api/date';
+import { showLoading,hideLoading,number_format } from './util';
 let {height} = Dimensions.get('window');
 let URL= document.URL;
 let params= QN.uri.parseQueryString(URL.split('?')[1]);
-import { getRechargeTempalte } from '../api/dsp';
-import { httphost } from '../api/date';
+
 var  ItemList={
         backgroundColor:"#fff",
         padding: '20rem',
@@ -35,17 +36,19 @@ class RechargeView extends Component {
         this.state={
         	defaultStyle: ItemList,
         	hightStyle: hightItemList,
-        	currentIndex: 0,
-        	rechargeMoney: 0.1,
+        	currentIndex: -1,
+        	rechargeMoney: '?',
         	user_id: params.user_id,
         	RechargeData: [],
             real_text: '',
             luckily_text_1: '',
             account_id: params.account_id
     	}
+      showLoading();
     }
     componentDidMount() {
     	getRechargeTempalte(this.state.user_id).then((res) => {
+                  hideLoading();
                 	this.setState({
                 		RechargeData: res.data.data.moneys,
                 		real_text: res.data.data.real_text,
@@ -60,7 +63,7 @@ class RechargeView extends Component {
     onShow() {
       
     }
-	onHide = (param) => {
+	  onHide = (param) => {
         console.log('modal hide', param);
     }
     changeHighlight (index, total_fee) {
@@ -74,7 +77,11 @@ class RechargeView extends Component {
         return index===this.state.currentIndex ? this.state.hightStyle : this.state.defaultStyle;
     }
     gopay () {
-    	this.refs.suremodal.show();
+    	if(this.state.rechargeMoney > 0) {
+        this.refs.suremodal.show();
+      } else{
+        Modal.alert('请选择充值金额')
+      }
     }
     gopaymoney () {
     	this.refs.suremodal.hide();
@@ -97,7 +104,7 @@ class RechargeView extends Component {
 	        	   <View>
 	            	 <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额  {this.state.rechargeMoney} 元</Text>
 	                 {
-	                    	  paymoneys.length ===0 ? <Text>Loading123...</Text> : paymoneys.map((item, index) => {
+	                    	  paymoneys.length ===0 ? <Text>Loading</Text> : paymoneys.map((item, index) => {
 	                    	  	var discount = parseInt(item.discount);
 	                            var total_fee = parseInt(item.total_fee);
 	                            var luckily_money_1 = parseInt(item.luckily_money_1);
@@ -107,7 +114,8 @@ class RechargeView extends Component {
 	                    	  	return (
 	                    	  		<View style={styles.cellItemList}>
 	                    	  			<TouchableHighlight 
-	                    	  				style={this.check_highlight_index(index)} 											onPress={this.changeHighlight.bind(this, index, total_fee)} 
+	                    	  				style={this.check_highlight_index(index)} 											
+                                  onPress={this.changeHighlight.bind(this, index, total_fee)} 
 	                    	  				>
 	                    	  				<View>
 	                    	  				    {discount == 1
@@ -155,24 +163,24 @@ class RechargeView extends Component {
 	               <View style={{marginLeft:'20rem',marginRight:'20rem'}} >
                             <Button style={{height:"80rem",marginBottom:'30rem', marginTop: '30rem'}} block="true" type="secondary" onPress={this.gopay.bind(this)}>支付宝充值</Button>
                     </View>
-  					<Dialog ref="suremodal" contentStyle={styles.minmodalStyle} onShow={this.onShow} onHide={this.onHide}>
-	                    <View style={styles.minbody}>
-	                        <View>
-	                          <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8',textAlign: 'center'}]}>温馨提示</Text>
-	                          <Text style={{padding: '30rem', color: '#333'}}>亲，此次充值将作为淘外流量的推广费</Text>
-	                          <Text style={{color: '#333', paddingLeft: '30rem'}}>用，而非直通车推广费用，请您确认后再</Text>
-	                          <Text style={{color: '#333', paddingLeft: '30rem', paddingTop: '30rem'}}>进行充值操作。</Text>
-	                        </View>
-	                    </View>
-	                    <View style={styles.minfooter}>
-	                        <TouchableHighlight style={styles.button} onPress={this.hideSureModal}>
-	                            <Text>取消</Text>
-	                        </TouchableHighlight>
-	                        <TouchableHighlight style={[styles.button,{marginLeft: '20rem'}]} onPress={this.gopaymoney.bind(this)}>
-	                            <Text style={{color: '#3089dc'}}>去充值</Text>
-	                        </TouchableHighlight>
-	                    </View>
-	                </Dialog>
+                   <Dialog ref="suremodal" contentStyle={styles.minmodalStyle} onShow={this.onShow} onHide={this.onHide}>
+                      <View style={styles.minbody}>
+                          <View>
+                            <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8',textAlign: 'center'}]}>温馨提示</Text>
+                            <Text style={{padding: '30rem', color: '#333'}}>亲，此次充值将作为淘外流量的推广费</Text>
+                            <Text style={{color: '#333', paddingLeft: '30rem'}}>用，而非直通车推广费用，请您确认后再</Text>
+                            <Text style={{color: '#333', paddingLeft: '30rem', paddingTop: '30rem'}}>进行充值操作。</Text>
+                          </View>
+                      </View>
+                      <View style={styles.minfooter}>
+                          <TouchableHighlight style={styles.button} onPress={this.hideSureModal}>
+                              <Text>取消</Text>
+                          </TouchableHighlight>
+                          <TouchableHighlight style={[styles.button,{marginLeft: '20rem'}]} onPress={this.gopaymoney.bind(this)}>
+                              <Text style={{color: '#3089dc'}}>去充值</Text>
+                          </TouchableHighlight>
+                      </View>
+                  </Dialog>
                </ScrollView>
             </View>
 
