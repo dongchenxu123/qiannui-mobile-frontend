@@ -4,7 +4,7 @@ import { View, Text, TouchableHighlight,ScrollView   } from 'nuke-components';
 import { getAuthSign,getCampaign } from '../api';
 import { showLoading,hideLoading } from './util';
 import QN from 'QAP-SDK';
- showLoading();
+  
 class HealthyView extends Component{
    constructor() {
         super();   
@@ -13,24 +13,32 @@ class HealthyView extends Component{
             campaigns:[],
             normal_val:'正常',
             too_low:'过低'
-        }   
-      
+        }  
+        showLoading();    
     }
 
      componentWillMount(){
         getAuthSign().then((result) => {
-     
-            this.setState({subway_token:result});
-            //获取推广计划
-            getCampaign(result).then((campaign) => {
-             hideLoading();
-               if(campaign.length >0){
-                    this.setState({campaigns:campaign});
-               }   
-            }, (error) => {
-               hideLoading();
-                Modal.toast(JSON.stringify(error));    
-            }); 
+            if(result.errorCode == undefined){
+                this.setState({subway_token:result});
+                //获取推广计划
+                getCampaign(result).then((campaign) => {
+                 hideLoading();
+                   if(campaign.length >0){
+                        this.setState({campaigns:campaign});
+                   }   
+                }, (error) => {
+                   hideLoading();
+                    Modal.toast(JSON.stringify(error));    
+                });
+            }else{
+                 hideLoading();
+                Modal.alert('登陆授权失败，请重新授权 或者您还没有订购该软件');
+            }
+    
+        },(error)=>{
+              hideLoading();
+             Modal.alert('出错了,请检查您是否已经订购该软件');
         });
     }
   

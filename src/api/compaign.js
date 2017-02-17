@@ -199,8 +199,13 @@ export function getArea(campaign_id){
                 campaign_id:campaign_id
             }
         }).then((result)=>{
+            Modal.alert(1)
+
+            Modal.alert(JSON.stringify(result))
             return result.simba_campaign_area_get_response.campaign_area;        
         },(error)=>{
+             Modal.alert(2)
+              Modal.alert(JSON.stringify(error))
             return error.error_response;
         })
         .catch(error=>{

@@ -18,15 +18,20 @@ export function getAuthSign(){
           
         }
     }).then((result)=>{
- 
+      
         if(result.data && result.data.subway_token){
             return result.data.subway_token;
         }else{
                return getSign().then((result)=>{ //获取subway_token
-                    storeSubwayToken(result); // 存储stoken
-                    return result;
+
+                    if(result.errorCode == undefined){
+                         storeSubwayToken(result); // 存储stoken
+                    }
+                   return result;
                 });  
              }      
+    },(error)=>{
+        return error;
     });
 }
 function getSign(){
@@ -36,6 +41,8 @@ function getSign(){
             }
         }).then((result)=>{
             return result.simba_login_authsign_get_response.subway_token;
+        },(error)=>{
+             return error;
         })
         .catch(error => {
            return false;
@@ -53,7 +60,7 @@ function storeSubwayToken(val){
            
             }
     }).then(result => {
-       
+      
     }, error => {
         
     });
@@ -92,7 +99,7 @@ export function getLocalstoreUser(){
            
         }
     }).then(result => {
-        if(result.code == "QAP_SUCCESS" && result.data){
+        if(result.data != undefined && result.data.userInfo != undefined && result.data.userInfo.access_token.length > 0){
             return result.data.userInfo;
         }
     }, error => {

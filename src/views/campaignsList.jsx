@@ -82,13 +82,34 @@ class CampaignsListView extends Component {
 			});
     }
 	onPressSche (tid) {
-        Navigator.push('qap://views/schedule.js?campaign_id='+tid);
+		QN.navigator.push({
+			    url: 'qap://views/schedule.js',
+			    query: { campaign_id: tid },
+			    settings: {
+			        animate: true,
+			        request: true,
+			    } 
+			});    
     }
 	onPressPlat (tid) {
-        Navigator.push('qap://views/platform.js?campaign_id='+tid);
+		QN.navigator.push({
+		    url: 'qap://views/platform.js',
+		    query: { campaign_id: tid },
+		    settings: {
+		        animate: true,
+		        request: true,
+		    } 
+		});
     }
 	onPressGetArea (tid) {
-        Navigator.push('qap://views/getAreaView.js?campaign_id='+tid);
+		QN.navigator.push({
+			    url: 'qap://views/getAreaView.js',
+			    query: { campaign_id: tid },
+			    settings: {
+			        animate: true,
+			        request: true,
+			    } 
+			});
     }
 	statusItem (tid, title, online_status) {
 		var new_status= online_status== 'online'?  'offline' : 'online'
