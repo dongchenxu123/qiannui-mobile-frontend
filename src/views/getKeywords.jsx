@@ -2,7 +2,7 @@
 import { Radio, Col, Grid} from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
-import {View, Text,Input,TextInput,Image, Modal, Dialog, TouchableHighlight, Navigator, Button, ScrollView, ListView, Dimensions, Checkbox} from 'nuke';
+import {View, Text,Input,Image, Modal, Dialog, TouchableHighlight, Navigator, Button, ScrollView, ListView, Dimensions, Checkbox} from 'nuke';
 import { getAuthSign, getallKeywords, deleteKeywords ,setKeywordPricevon} from '../api'
 import QN from 'QAP-SDK';
 import _ from 'lodash';

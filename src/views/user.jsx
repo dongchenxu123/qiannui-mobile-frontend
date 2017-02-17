@@ -316,7 +316,8 @@ const styles = {
     textCenter: {
         textAlign: 'center',
         marginTop: '100rem',
-        color: 'red'
+        color: '#F48608',
+        fontSize:'30rem'
     },
     slider: {
         width: '750rem',

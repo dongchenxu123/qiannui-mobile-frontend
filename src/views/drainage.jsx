@@ -192,18 +192,18 @@ class Drainage extends Component{
         var newdsp_onLineStatus = item.dsp_onLineStatus ==0 ? '未推广' : '推广中'
          return (<View>
                     <View style={styles.cellItemList}>
-                        <Image source={{uri: item.pic_url}} style={{width:'180rem',height:'180rem'}}/>
+                        <View style={{flex:'100rem'}}>
+                           <Image source={{uri: item.pic_url}} style={{width:'180rem',height:'180rem'}}/> 
+                        </View>
+                        
                         <View>
-                            <Text style={{width: '500rem',paddingLeft: '20rem'}}>{item.title}</Text>
-                            <View style={{flexDirection:"row",
-        display:'flex', paddingTop: '20rem', paddingLeft: '20rem'}}>
-                                <Text>单价: {item.price}</Text>
-                                <Text style={{paddingLeft: '30rem'}}>库存: {item.num}</Text>
+                            <Text style={{width: '500rem',paddingLeft: '20rem',fontSize:'32rem'}}>{item.title}</Text>
+                            <View style={styles.col1}>
+                                <Text style={styles.textSize}>单价: {item.price}</Text>
+                                <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>库存: {item.num}</Text>
                             </View>
-                            <View style={{marginTop: '20rem',flexDirection:"row",
-        display:'flex'}}>
-                                <Text style={{flex: 11}}></Text>
-                                <Button style={{flex: 4}} type="secondary" onPress={this.listStatus.bind(this, item)} size='small'>{newdsp_onLineStatus}</Button>
+                            <View style={{marginTop: '10rem',maringRight:'10rem'}}> 
+                                <Button style={{flex: 4,fontSize:'32rem'}} type="secondary" onPress={this.listStatus.bind(this, item)} size='small'>{newdsp_onLineStatus}</Button>
                             </View>
                         </View>
                     </View>
@@ -304,19 +304,19 @@ class Drainage extends Component{
         return (
                 <View>
                     <View style={styles.cellItemList}>
-                        <Text>淘外余额: {this.state.balance}</Text>
+                        <Text style={styles.textSize}>淘外余额: {this.state.balance}</Text>
                         <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.linkrecharge.bind(this)}>
                             <Text style={styles.title}>充值</Text>        
                        </TouchableHighlight>
                         <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.showHandbook.bind(this)}>
-                            <Text style={styles.title}> ? 帮助</Text>
+                            <Text style={styles.title}>帮助</Text>
                         </TouchableHighlight>
                     </View>
                     <View style={styles.cellItemList}>
-                        <Text>日限额: </Text>
-                        <Button type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
-                        <Text style={{paddingLeft: '30rem'}}>出价: </Text>
-                        <Button type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
+                        <Text style={styles.textSize}>日限额: </Text>
+                        <Button style={styles.textSize} type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
+                        <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>出价: </Text>
+                        <Button style={styles.textSize} type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
                         <TouchableHighlight style={{marginLeft: '30rem'}} onPress={this.drainageRpt.bind(this)}>
                             <Text style={styles.title}> 推广报表</Text>
                         </TouchableHighlight>
@@ -324,7 +324,10 @@ class Drainage extends Component{
                     <ScrollView style={styles.scroller}>
                         {
                             this.state.Items.length == 0 
-                            ? <Text>Loading...</Text>
+                            ? 
+                            <View>
+                                <Text style={{fontSize:'32rem',padding:'100rem'}}>加载中</Text> 
+                             </View>
                             : <ListView 
                                 renderRow={this.renderItem.bind(this)}
                                 dataSource={this.state.Items}
@@ -356,9 +359,18 @@ const styles={
         flexDirection:"row",
         display:'flex' 
     },
+    col1:{
+        flexDirection:"row",
+        display:'flex', 
+        paddingTop: '10rem', 
+        paddingLeft: '20rem'
+    },
     title: {
         color: '#0894EC',
-        fontSize: '30rem',
-       }
+        fontSize: '32rem',
+       },
+    textSize:{
+        fontSize:'32rem'
+    }
 }
 export default Drainage
