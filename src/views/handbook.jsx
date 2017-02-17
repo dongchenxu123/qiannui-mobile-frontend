@@ -87,7 +87,7 @@ export default class HandBook extends Component{
                     <View style={app.car}>
                         <View style={app.cardContent}>
                             <View style={app.cardContentInner}>
-                                <Text style={{textAlign:'center',padding:'10rem'}}>
+                                <Text style={{textAlign:'center',padding:'10rem', fontSize: '32rem'}}>
                                     电脑登陆网页版喜宝DSP可使用更多功能
                                 </Text>
                                 <Text  style={{textAlign:'center',padding:'10rem',fontSize:'40rem'}}>
@@ -101,35 +101,35 @@ export default class HandBook extends Component{
                     </View>
                     <View style={{padding:'20rem'}}>
                         <View style={{padding:'10rem'}}>
-                        <View style={app.contentBlockTitle}>什么是喜宝淘外流量？</View>
-                        <View style={app.listBlock}>喜宝DSP淘外流量是一款专门解决淘宝卖家站外投放难题的优化软件，简单地说您可以通过喜宝DSP平台获取到精准、高质、低价的淘外流量，低成本享受钻展般的高曝光量。您可以在电脑上用浏览器登陆 dsp.xibao100.com 享受完整版。</View> 
+                        <Text style={app.contentBlockTitle}>什么是喜宝淘外流量？</Text>
+                        <Text style={app.listBlock}>喜宝DSP淘外流量是一款专门解决淘宝卖家站外投放难题的优化软件，简单地说您可以通过喜宝DSP平台获取到精准、高质、低价的淘外流量，低成本享受钻展般的高曝光量。您可以在电脑上用浏览器登陆 dsp.xibao100.com 享受完整版。</Text> 
                         </View>
                          <View style={{padding:'10rem'}}>
-                            <View style={app.contentBlockTitle}>怎么推广？</View>
-                            <View style={app.listBlock}>您在软件内完成充值后，选中想推广的宝贝，点击【开始推广】按钮，软件即自动帮您帮把宝贝投放到站外众多知名网站广告位上。</View> 
+                            <Text style={app.contentBlockTitle}>怎么推广？</Text>
+                            <Text style={app.listBlock}>您在软件内完成充值后，选中想推广的宝贝，点击【开始推广】按钮，软件即自动帮您帮把宝贝投放到站外众多知名网站广告位上。</Text> 
                         </View>
                          <View style={{padding:'10rem'}}>
-                            <View style={app.contentBlockTitle}>在哪些网站上推广？</View>
-                            <View style={app.listBlock}> 您的宝贝将在折800、360购物、网易、新浪、阿里妈妈、百度、腾讯、阿里巴巴等数千个知名电商网站中3万以上广告展位精准投放。软件根据买家浏览、购物习惯等信息自动匹配潜在买家展示您的宝贝。</View> 
+                            <Text style={app.contentBlockTitle}>在哪些网站上推广？</Text>
+                            <Text style={app.listBlock}> 您的宝贝将在折800、360购物、网易、新浪、阿里妈妈、百度、腾讯、阿里巴巴等数千个知名电商网站中3万以上广告展位精准投放。软件根据买家浏览、购物习惯等信息自动匹配潜在买家展示您的宝贝。</Text> 
                         </View>
                          <View style={{padding:'10rem'}}>
-                            <View style={app.contentBlockTitle}>为什么需要先充值？</View>
-                            <View style={app.listBlock}>喜宝淘外流量根据买家看到宝贝后的点击行为收取推广费用，所以需要您预先充值，投放后软件将自动从余额里扣除点击广告费，没有点击不收费。</View> 
+                            <Text style={app.contentBlockTitle}>为什么需要先充值？</Text>
+                            <Text style={app.listBlock}>喜宝淘外流量根据买家看到宝贝后的点击行为收取推广费用，所以需要您预先充值，投放后软件将自动从余额里扣除点击广告费，没有点击不收费。</Text> 
                         </View>
                         <View style={{padding:'10rem'}}>
-                            <View style={app.contentBlockTitle}>怎么停止推广?</View>
-                            <View style={app.listBlock}>选中推广中的宝贝，点击【取消推广】按钮，即可暂停对该宝贝的投放推广。</View> 
+                            <Text style={app.contentBlockTitle}>怎么停止推广?</Text>
+                            <Text style={app.listBlock}>选中推广中的宝贝，点击【取消推广】按钮，即可暂停对该宝贝的投放推广。</Text> 
                         </View>
                         <View style={{padding:'10rem'}}>
-                            <View style={app.contentBlockTitle}>怎么优化投放效果？</View>
-                            <View style={app.listBlock}> 投放效果跟您的宝贝、店铺、出价、日限额等因素有关，在软件里您可以自行调整出价、日限额来控制预算，优化投放效果。</View> 
+                            <Text style={app.contentBlockTitle}>怎么优化投放效果？</Text>
+                            <Text style={app.listBlock}> 投放效果跟您的宝贝、店铺、出价、日限额等因素有关，在软件里您可以自行调整出价、日限额来控制预算，优化投放效果。</Text> 
                         </View>
                         <View style={{padding:'10rem'}}>
-                            <View style={app.contentBlockTitle}>什么是日限额、平均出价?</View>
-                            <View style={app.listBlock}> 
+                            <Text style={app.contentBlockTitle}>什么是日限额、平均出价?</Text>
+                            <Text style={app.listBlock}> 
                              和直通车类似，喜宝淘外流量根据买家的点击行为实时竞价广告位，您可以自由调整买家每次点击的竞价出价金额。
                              日限额是您每天推广宝贝的广告费最高额度限制，您可以自行修改， 确保每天的花费不超过自己的预算。
-                            </View> 
+                            </Text> 
                         </View>
 
                     </View>
@@ -200,16 +200,15 @@ const app = {
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-        fontSize: '0.8rem',
+        fontSize: '32rem',
         textTransform: 'uppercase',
-        lineHeight: 1,
         color: '#6d6d72',
         margin: '15rem',
         fontWeight: 'bold'
     },
     listBlock:{
         margin: 0,
-        fontSize: '0.7rem',
+        fontSize: '30rem',
         color:'#999999'
     },
     modalStyle: {

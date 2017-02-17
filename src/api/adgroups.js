@@ -136,7 +136,6 @@ function getAdgroups_sign(campaign_id,dataNum){
                             resolve(data);
                         }
                     }else{
-                        Modal.alert('错误');
                         if(ci == len){
                             resolve(data);
                         }

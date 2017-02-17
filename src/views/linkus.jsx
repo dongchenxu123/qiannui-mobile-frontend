@@ -43,13 +43,13 @@ class LinkUs extends Component{
                             <View style={{marginLeft:'80rem'}}>
                                 <Image source={{uri: url}}  style={{width:'160rem',height:'40rem',marginLeft:'20rem'}}/>
                             </View>
-                            <Text style={{marginLeft:'20rem',color: '#0894EC'}}>在线客服</Text>
+                            <Text style={{marginLeft:'20rem',color: '#0894EC', fontSize: '32rem'}}>在线客服</Text>
                         </TouchableHighlight>
                         <TouchableHighlight onPress={this.tel}>
-                            <View style={style.item}><Text style={{color: '#0894EC'}}>免费400电话：400-627-0003</Text></View>
+                            <View style={style.item}><Text style={{color: '#0894EC', fontSize: '32rem'}}>免费400电话：400-627-0003</Text></View>
                         </TouchableHighlight>
                         <TouchableHighlight onPress={()=>{this.setState({showfeedback:true})}}>
-                            <View style={style.item}><Text style={{color: '#0894EC'}}>给我留言</Text></View>
+                            <View style={style.item}><Text style={{color: '#0894EC', fontSize: '32rem'}}>给我留言</Text></View>
                         </TouchableHighlight>
                     </View>
                     {

@@ -53,7 +53,7 @@ class Drainage extends Component{
     }
     getUserInfo(){
         //其实就是检测了手机号
-        getDspUserInfo(this.state.user_id).then((res) => {  
+        getDspUserInfo(this.state.user_id).then((res) => {
                 if(res && res.id && !res.telephone){
                     this.setState({showPhone:true});//todo需要弹出填写手机号
                  }
@@ -202,8 +202,8 @@ class Drainage extends Component{
                                 <Text style={styles.textSize}>单价: {item.price}</Text>
                                 <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>库存: {item.num}</Text>
                             </View>
-                            <View style={{marginTop: '10rem',maringRight:'10rem'}}> 
-                                <Button style={{flex: 4,fontSize:'32rem'}} type="secondary" onPress={this.listStatus.bind(this, item)} size='small'>{newdsp_onLineStatus}</Button>
+                            <View style={[styles.col1, {marginTop: '10rem'}]}> 
+                                <Button style={{fontSize:'32rem'}} type="secondary" onPress={this.listStatus.bind(this, item)} size='small'>{newdsp_onLineStatus}</Button>
                             </View>
                         </View>
                     </View>
@@ -308,7 +308,7 @@ class Drainage extends Component{
                         <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.linkrecharge.bind(this)}>
                             <Text style={styles.title}>充值</Text>        
                        </TouchableHighlight>
-                        <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.showHandbook.bind(this)}>
+                        <TouchableHighlight style={{marginLeft: '140rem'}} onPress={this.showHandbook.bind(this)}>
                             <Text style={styles.title}>帮助</Text>
                         </TouchableHighlight>
                     </View>
@@ -342,11 +342,11 @@ class Drainage extends Component{
 const styles={
   scroller:{
           width: 750,
-          height: height-330,
+          height: height-400,
           flex: 1
        },
    listContainer: {
-        height: height-330
+        height: height-400
     },
   cellItemList:{
         backgroundColor:"#fff",

@@ -102,7 +102,7 @@ class RechargeView extends Component {
             <View>
                 <ScrollView style={styles.body} onEndReachedThreshold={300}>
 	        	   <View>
-	            	 <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8'}]}>选择充值金额  {this.state.rechargeMoney} 元</Text>
+	            	 <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8', fontSize: '32rem'}]}>选择充值金额  {this.state.rechargeMoney} 元</Text>
 	                 {
 	                    	  paymoneys.length ===0 ? <Text>Loading</Text> : paymoneys.map((item, index) => {
 	                    	  	var discount = parseInt(item.discount);
@@ -119,14 +119,14 @@ class RechargeView extends Component {
 	                    	  				>
 	                    	  				<View>
 	                    	  				    {discount == 1
-	                    	  				    	? <Text>{number_format(tl1l2)}元</Text>
-	                    	  				    	: <Text>{number_format(total_fee)}元</Text>
+	                    	  				    	? <Text style={styles.fontstyle}>{number_format(tl1l2)}元</Text>
+	                    	  				    	: <Text style={styles.fontstyle}>{number_format(total_fee)}元</Text>
 	                    	  				    }
 	                    	  				</View>
 	                    	  				<View>
 	                    	  				    {parseInt(item.discount) == 1 && total_fee > 0
 	                    	  				    	? <View>
-	                    	  				    														<Text> {(parseFloat(total_fee)/tl1l2 * 10).toFixed(1)} 折</Text>
+	                    	  				    														<Text style={styles.fontstyle}> {(parseFloat(total_fee)/tl1l2 * 10).toFixed(1)} 折</Text>
 	                    	  				    		<Text style={styles.highfont}>现仅需{
 	                    	  				    			item.total_fee
 	                    	  				    		}元</Text>
@@ -137,12 +137,12 @@ class RechargeView extends Component {
 	                    	  				</View>	
 	                    	  				<View>
 	                    	  					{luckily_money_1>0 
-	                    	  							? <Text>{real_text.replace(/\{money\}/gi, luckily_money_1)}</Text>
+	                    	  							? <Text style={styles.fontstyle}>{real_text.replace(/\{money\}/gi, luckily_money_1)}</Text>
 	                    	  							: ''
 	                    	  					}
 	                    	  					{
 	                    	  						luckily_money_2> 0
-	                    	  							? <Text>{luckily_text_1.replace(/\{money\}/gi, luckily_money_2)}</Text>
+	                    	  							? <Text style={styles.fontstyle}>{luckily_text_1.replace(/\{money\}/gi, luckily_money_2)}</Text>
 	                    	  							: ''
 	                    	  					}
 	                    	  					{
@@ -167,17 +167,17 @@ class RechargeView extends Component {
                       <View style={styles.minbody}>
                           <View>
                             <Text style={[styles.cellItemList,{backgroundColor: '#e8e8e8',textAlign: 'center'}]}>温馨提示</Text>
-                            <Text style={{padding: '30rem', color: '#333'}}>亲，此次充值将作为淘外流量的推广费</Text>
-                            <Text style={{color: '#333', paddingLeft: '30rem'}}>用，而非直通车推广费用，请您确认后再</Text>
-                            <Text style={{color: '#333', paddingLeft: '30rem', paddingTop: '30rem'}}>进行充值操作。</Text>
+                            <Text style={{padding: '30rem', color: '#333',fontSize: '30rem'}}>亲，此次充值将作为淘外流量的推广费</Text>
+                            <Text style={{color: '#333', paddingLeft: '30rem',fontSize: '30rem'}}>用，而非直通车推广费用，请您确认后再</Text>
+                            <Text style={{color: '#333', paddingLeft: '30rem', paddingTop: '30rem',fontSize: '30rem'}}>进行充值操作。</Text>
                           </View>
                       </View>
                       <View style={styles.minfooter}>
                           <TouchableHighlight style={styles.button} onPress={this.hideSureModal}>
-                              <Text>取消</Text>
+                              <Text style={styles.fontstyle}>取消</Text>
                           </TouchableHighlight>
                           <TouchableHighlight style={[styles.button,{marginLeft: '20rem'}]} onPress={this.gopaymoney.bind(this)}>
-                              <Text style={{color: '#3089dc'}}>去充值</Text>
+                              <Text style={{color: '#3089dc', fontSize: '30rem'}}>去充值</Text>
                           </TouchableHighlight>
                       </View>
                   </Dialog>
@@ -272,7 +272,11 @@ var styles = {
         display:'flex'
       },
    highfont: {
-   	color: '#FF6600'
+   	color: '#FF6600',
+   	fontSize: '30rem'
+   },
+   fontstyle: {
+   	fontSize: '30rem'
    }
 };
 

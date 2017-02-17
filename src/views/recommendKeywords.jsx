@@ -68,7 +68,7 @@ class RecommendKeywords extends Component {
 const styles={
 	scroller:{
 	      width: 750,
-	      height: height-330,
+	      height: height-400,
 	      flex: 1
 	   },
 	cellItemList:{

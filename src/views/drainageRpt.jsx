@@ -94,32 +94,32 @@ class DrainageRpt extends Component{
                 <View>
                      <View style={app.subCell}>
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>展现量</Text></Col>
-                         <Col style={app.col2}><Text>{number_format(pv) || 0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>展现量</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{number_format(pv) || 0}</Text></Col>
                         </Grid>
                    
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>点击量</Text></Col>
-                         <Col style={app.col2}><Text>{number_format(click) || 0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>点击量</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{number_format(click) || 0}</Text></Col>
                         </Grid>
               
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>点击率(%)</Text></Col>
-                         <Col style={app.col2}><Text>{ctr || 0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>点击率(%)</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{ctr || 0}</Text></Col>
                         </Grid>
                    
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>花费</Text></Col>
-                         <Col style={app.col2}><Text>{cost >0 ?number_format(parseFloat(cost).toFixed(2)):0 || 0}元</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>花费</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{cost >0 ?number_format(parseFloat(cost).toFixed(2)):0 || 0}元</Text></Col>
                         </Grid> 
                        <Grid>
-                         <Col style={app.col1}><Text>平均点击花费</Text></Col>
-                         <Col style={app.col2}><Text>{cpc || 0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>平均点击花费</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{cpc || 0}</Text></Col>
                         </Grid>
                    
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>千人成本</Text></Col>
-                         <Col style={app.col2}><Text>{cpm || 0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>千人成本</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{cpm || 0}</Text></Col>
                         </Grid>
                     </View>      
                 </View>
@@ -134,32 +134,32 @@ class DrainageRpt extends Component{
                     </View> 
                      <View style={app.subCell}>
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>展现量</Text></Col>
-                         <Col style={app.col2}><Text>{v.pv > 0 ? number_format(v.pv):0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>展现量</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{v.pv > 0 ? number_format(v.pv):0}</Text></Col>
                         </Grid>
                    
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>点击量</Text></Col>
-                         <Col style={app.col2}><Text>{v.clicks > 0 ? number_format(v.clicks) :0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>点击量</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{v.clicks > 0 ? number_format(v.clicks) :0}</Text></Col>
                         </Grid>
               
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>点击率(%)</Text></Col>
-                         <Col style={app.col2}><Text>{v.pv > 0 ?( v.clicks >0? ((v.clicks/v.pv * 100).toFixed(3)):0):0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>点击率(%)</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{v.pv > 0 ?( v.clicks >0? ((v.clicks/v.pv * 100).toFixed(3)):0):0}</Text></Col>
                         </Grid>
                    
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>花费</Text></Col>
-                         <Col style={app.col2}><Text>{v.cost/100}元</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>花费</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{v.cost/100}元</Text></Col>
                         </Grid> 
                        <Grid>
-                         <Col style={app.col1}><Text>平均点击花费</Text></Col>
-                         <Col style={app.col2}><Text>{v.clicks > 0? ((v.cost/100)/v.clicks).toFixed(3):0}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>平均点击花费</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{v.clicks > 0? ((v.cost/100)/v.clicks).toFixed(3):0}</Text></Col>
                         </Grid>
                    
                        <Grid style={app.subGid}>
-                         <Col style={app.col1}><Text>千人成本</Text></Col>
-                         <Col style={app.col2}><Text>{(v.pv > 0 ?( v.cost >0? ((v.cost/100/v.pv * 1000).toFixed(3)):0):0)}</Text></Col>
+                         <Col style={app.col1}><Text style={app.fontstyle}>千人成本</Text></Col>
+                         <Col style={app.col2}><Text style={app.fontstyle}>{(v.pv > 0 ?( v.cost >0? ((v.cost/100/v.pv * 1000).toFixed(3)):0):0)}</Text></Col>
                         </Grid>
                     </View>      
                 </View>
@@ -341,6 +341,9 @@ const app = {
         fontSize: "24rem",
         color: "#5F646E"
     },
+    fontstyle: {
+   	fontSize: '30rem'
+   }
 }
 mount(<DrainageRpt/>, 'body');
 

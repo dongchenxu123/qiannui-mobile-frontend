@@ -324,7 +324,7 @@ class GetAreaView extends Component {
 								                    					defaultChecked={city.s}
 								                   						onChange={this.changeArea.bind(this,cityid) }
 								                       				/>
-										                    		<Text>{city.name}</Text>
+										                    		<Text style={{fontSize: '32rem'}}>{city.name}</Text>
 							                    			    </View>
 		                    								)
 		                    							})
@@ -349,7 +349,7 @@ class GetAreaView extends Component {
 var styles = {
  modalStyle: {
     width: '750rem',
-    height: height-10
+    height: height-30
    
   },
   body: {
