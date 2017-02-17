@@ -1,6 +1,6 @@
 'use strict';
 import QN from 'QAP-SDK';
-import APIError from './checkerror';
+import checkAPIError from './checkerror';
 import * as DateAPi from './date';
 import {Modal } from 'nuke';
 import {getLocalstoreUser} from './authsign';
@@ -104,7 +104,7 @@ export function getProfileBalance(){
 }
 
 export function getProfileReport(subway_token, start_date= null, end_date= null){
-    start_date = start_date != null ? start_date :DateAPi.formatDate(DateAPi.lastMonth);
+    start_date = start_date != null ? start_date :DateAPi.formatDate(DateAPi.lastWeek);
     end_date = end_date != null ? end_date : DateAPi.formatDate(DateAPi.yesterday);
 
     return QN.top.batch({
@@ -112,14 +112,14 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
                 {
                     method:'taobao.simba.rpt.custbase.get',
                     fields:'start_time,end_time,subway_token,source',
-                    start_time:start_date, //todo 需要改成最近一周
+                    start_time:start_date, 
                     end_time:end_date,
                     subway_token:subway_token,
                     source:'SUMMARY'
                 }, {
                     method:'taobao.simba.rpt.custeffect.get',
                     fields:'start_time,end_time,subway_token,source',
-                    start_time:start_date,//todo 需要改成最近一周
+                    start_time:start_date,
                     end_time:end_date,
                     subway_token:subway_token,
                     source:'SUMMARY'
@@ -154,7 +154,7 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
 
         if(undefined !== db &&  undefined !== mm){
 
-             if(db.length === 0){
+            if(db.length === 0){
                 data.yesterday.push(daysago) ;
                 data.threedaysago.push(daysago);
                 data.alldays.push(daysago);
@@ -245,4 +245,34 @@ export function getProfileReport(subway_token, start_date= null, end_date= null)
             data.alldays.push(daysago);
         }
         return data;
+    }
+
+
+/*
+* 获取店铺基本报表数据
+*/
+export function getCustbaseRpt(subway_token){
+  return QN.top.invoke({
+            query: {
+                method:'taobao.simba.rpt.custbase.get',
+                fields:'start_time,end_time,subway_token,source',
+                start_time:DateAPi.formatDate(DateAPi.lastWeek), //todo 需要改成最近一周
+                end_time:DateAPi.formatDate(DateAPi.yesterday),
+                subway_token:subway_token,
+                source:'SUMMARY'            
+            }
+        }).then((result)=>{
+            var error = null,response = {};
+            error = checkAPIError(result);
+
+            if(error == null){
+                 response = res.simba_rpt_custbase_get_response.rpt_cust_base_list;
+            }
+             return  response;
+        },(error)=>{
+           return error.error_response;
+        })
+        .catch(error=>{
+            Modal.toast(error);
+        });
     }

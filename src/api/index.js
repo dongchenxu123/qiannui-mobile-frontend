@@ -3,7 +3,8 @@ import { getSellerUser,
         getUserInfo, 
         getProfileReport,
         getProfileBalance,
-        createNewDspUser 
+        createNewDspUser,
+        getCustbaseRpt
     } from './profile';
 
 import { getCampaign, 
@@ -48,7 +49,8 @@ import {checkIssetDspUser,
         setDspPassword,
         getRechargeTempalte,
         getTodayReport,
-        getHistoryReport
+        getHistoryReport,
+        getDspReport
     } from './dsp';
 
 
@@ -95,7 +97,8 @@ const api = {
     getRechargeTempalte:getRechargeTempalte,//充值模板
     setDspPassword:setDspPassword,//设置dsp登陆密码
     getTodayReport:getTodayReport,//dsp报表 今天
-    getHistoryReport:getHistoryReport //dsp 报表历史
+    getHistoryReport:getHistoryReport, //dsp 报表历史
+    getCustbaseRpt:getCustbaseRpt // 直通车基础数据报表
 
 }
 

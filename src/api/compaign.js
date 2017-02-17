@@ -37,7 +37,6 @@ export function getCampaign(subway_token){
                 });
             }
         },(error)=>{
-            console.log(JSON.stringify(getCampaign),'')
             return error.error_response;
         })
         .catch(error=>{

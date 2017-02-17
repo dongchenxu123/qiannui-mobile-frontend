@@ -489,5 +489,5 @@ export function setDspPassword(user_id,password){
                 .catch(error => {
                     resolve(error);
                 });
-    });
+    })
 }

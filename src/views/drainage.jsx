@@ -304,7 +304,7 @@ class Drainage extends Component{
         return (
                 <View>
                     <View style={styles.cellItemList}>
-                        <Text style={styles.textSize}>淘外余额: {this.state.balance}</Text>
+                        <Text style={styles.textSize}>淘外余额: {this.state.balance} 元</Text>
                         <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.linkrecharge.bind(this)}>
                             <Text style={styles.title}>充值</Text>        
                        </TouchableHighlight>
@@ -325,8 +325,8 @@ class Drainage extends Component{
                         {
                             this.state.Items.length == 0 
                             ? 
-                            <View>
-                                <Text style={{fontSize:'32rem',padding:'100rem'}}>加载中</Text> 
+                            <View style={styles.textCenter}>
+                                <Text style={{fontSize:'32rem'}}>加载中</Text> 
                              </View>
                             : <ListView 
                                 renderRow={this.renderItem.bind(this)}
@@ -371,6 +371,10 @@ const styles={
        },
     textSize:{
         fontSize:'32rem'
-    }
+    },
+     textCenter: {
+        textAlign: 'center',
+        marginTop: '100rem',
+    },
 }
 export default Drainage
