@@ -273,7 +273,7 @@ export function setKeywordPricevon(keywordid_prices){
             }
         })
         .catch(error=>{
-            Modal.alert(11111);
+           
             Modal.alert(JSON.stringify(error));
         });
 }

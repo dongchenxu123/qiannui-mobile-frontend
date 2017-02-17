@@ -148,7 +148,7 @@ class KeywordslistView extends Component {
 	    		    <Text style={{paddingLeft: '10rem'}}>元</Text>
     		    </View>
     		    <TabSlider width={750} style={styles.barStyle} active={this.state.active}  index={this.state.index} onChange={this.sliderChange.bind(this)}  customBar={false} navTop={true}>
-		            <Pane title={'推荐关键词库'}  style={{width:750}}>
+		            <Pane title={'推荐关键词库'}  style={{width:750, fontSize: '32rem'}}>
               			<View style={styles.tab}>
               				<KeywordsView 
                             keywords={keywords} 										 										  changecheckbox={this.changecheckbox.bind(this)}
