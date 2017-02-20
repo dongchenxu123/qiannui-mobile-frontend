@@ -340,7 +340,7 @@ class Drainage extends Component{
                             <Text style={styles.title}> 推广报表</Text>
                         </TouchableHighlight>
                         <TouchableHighlight style={{marginLeft: '140rem'}} onPress={this.dspcontrast.bind(this)}>
-                            <Text style={styles.title}> 对比数据</Text>
+                            <Text style={styles.title}>流量数据</Text>
                         </TouchableHighlight>
                     </View>
                     <ScrollView style={styles.scroller}>
