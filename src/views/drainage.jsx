@@ -3,7 +3,7 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
-import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc } from '../api';
+import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
 import _ from 'lodash';
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
@@ -23,7 +23,8 @@ class Drainage extends Component{
                 Items:[],
                 RechargeData: [],
                 real_text: '',
-                luckily_text_1: ''
+                luckily_text_1: '',
+                subway_token: ''
         } 
         showLoading();   
     }
@@ -50,6 +51,13 @@ class Drainage extends Component{
 
             }  
         });
+        getAuthSign().then((result) => {
+                this.setState({subway_token: result})
+
+            }, (error) => {
+                Modal.alert(JSON.stringify(error));
+
+            });
     }
     getUserInfo(){
         //其实就是检测了手机号
@@ -300,25 +308,39 @@ class Drainage extends Component{
              }
         })
    }
+   dspcontrast () {
+   		QN.navigator.push({
+            url:'qap://views/dspcontrast.js',
+            query:{subway_token: this.state.subway_token, user_id: this.state.user_id},
+            settings: {
+                    animate: true
+             }
+        })
+   }
     render(){
         return (
                 <View>
                     <View style={styles.cellItemList}>
                         <Text style={styles.textSize}>淘外余额: {this.state.balance} 元</Text>
-                        <TouchableHighlight style={{marginLeft: '60rem'}} onPress={this.linkrecharge.bind(this)}>
+                        <TouchableHighlight style={{marginLeft: '310rem'}} onPress={this.linkrecharge.bind(this)}>
                             <Text style={styles.title}>充值</Text>        
                        </TouchableHighlight>
-                        <TouchableHighlight style={{marginLeft: '140rem'}} onPress={this.showHandbook.bind(this)}>
-                            <Text style={styles.title}>帮助</Text>
-                        </TouchableHighlight>
                     </View>
                     <View style={styles.cellItemList}>
                         <Text style={styles.textSize}>日限额: </Text>
                         <Button style={styles.textSize} type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
-                        <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>出价: </Text>
+                        <Text style={{paddingLeft: '180rem',fontSize:'32rem'}}>出价: </Text>
                         <Button style={styles.textSize} type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
-                        <TouchableHighlight style={{marginLeft: '30rem'}} onPress={this.drainageRpt.bind(this)}>
+                    </View>
+                    <View style={styles.cellItemList}>
+                    	<TouchableHighlight style={{marginLeft: '10rem'}} onPress={this.showHandbook.bind(this)}>
+                            <Text style={styles.title}>帮助</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={{marginLeft: '150rem'}} onPress={this.drainageRpt.bind(this)}>
                             <Text style={styles.title}> 推广报表</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={{marginLeft: '140rem'}} onPress={this.dspcontrast.bind(this)}>
+                            <Text style={styles.title}> 对比数据</Text>
                         </TouchableHighlight>
                     </View>
                     <ScrollView style={styles.scroller}>

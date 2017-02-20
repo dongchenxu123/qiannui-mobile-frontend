@@ -346,7 +346,7 @@ export function getHistoryReport(user_id,start_date,end_date){
             .then(response => {     
                 return response.json(); // => 返回一个 `Promise` 对象
             })
-            .then(data => {
+            .then(data => {   
                 resolve(data);
             })
             .catch(error => {

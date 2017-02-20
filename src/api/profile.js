@@ -1,6 +1,6 @@
 'use strict';
 import QN from 'QAP-SDK';
-import checkAPIError from './checkerror';
+import { checkAPIError } from './checkerror';
 import * as DateAPi from './date';
 import {Modal } from 'nuke';
 import {getLocalstoreUser} from './authsign';
@@ -262,15 +262,20 @@ export function getCustbaseRpt(subway_token){
                 source:'SUMMARY'            
             }
         }).then((result)=>{
-            var error = null,response = {};
+        	
+        	var error = null,response = [];
             error = checkAPIError(result);
-
+           
             if(error == null){
                  response = res.simba_rpt_custbase_get_response.rpt_cust_base_list;
             }
+            
              return  response;
+             
         },(error)=>{
+        	
            return error.error_response;
+           
         })
         .catch(error=>{
             Modal.toast(error);
