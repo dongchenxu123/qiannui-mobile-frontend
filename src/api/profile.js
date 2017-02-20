@@ -263,13 +263,13 @@ export function getCustbaseRpt(subway_token){
             }
         }).then((result)=>{
         	
-        	var error = null,response = [];
+        	var error = null,response = {};
             error = checkAPIError(result);
            
             if(error == null){
-                 response = res.simba_rpt_custbase_get_response.rpt_cust_base_list;
+                 response = result.simba_rpt_custbase_get_response.rpt_cust_base_list;
             }
-            
+           
              return  response;
              
         },(error)=>{

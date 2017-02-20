@@ -14,18 +14,27 @@ const subway_token = params.subway_token;
 const user_id = params.user_id;
 
 class DspcontrastView extends Component{
+     constructor() {
+        super();   
+        this.state = {
+          
+        }  
+
+        this.formatEchartsData = this.formatEchartsData.bind(this); 
+    }
+   
 	componentDidMount () {
-		this.getReports()
+		this.getReports();
 	}
 	getReports() {
-  
+        var self = this;
         Async.parallel({
             baserpt:function(callback){
                 getCustbaseRpt (subway_token).then((result) => {
+                   
 					callback(null,result);
 				}, (error) => {
 		            callback(error,[]);
-		
 		        })
             },
             dsprpt:function(callback){
@@ -50,17 +59,15 @@ class DspcontrastView extends Component{
                    
 				}, (error) => {
 		            callback(error,[]);
-		
 		        })
                 
             }
         },function(error,result){
-        	
-        	Modal.alert(result.length )
-        	var obj={};
-            if(result.length > 0 )
+ 
+            if(error === null)
             {
-                obj = this.formatEchartsData(result);//正序 
+                var obj = self.formatEchartsData(result);//正序 
+             
             }else
             {
               
@@ -69,14 +76,12 @@ class DspcontrastView extends Component{
             
         });
     }
-    formatEchartsData(report)
-    {
-    	Modal.alert(3);
-        var 
-            date_temp = [],//日期数据
+    formatEchartsData(report){
+        var self = this;
+        var date_temp = [],//日期数据
             dsp_temp = {pv:[],click:[],cost:[],cpc:[]},  // dsp数据
             ztc_temp = {pv:[],click:[],cost:[],cpc:[]}; //直通车数据
-        var ztc_length = report.baserpt.length;
+        var ztc_length = report.baserpt == undefined ? 0 :report.baserpt.length;
 
         report.dsprpt.map((v,i) => {
             v.clicks = parseInt(v.clicks);
