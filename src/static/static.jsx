@@ -10,5 +10,7 @@ export var shareLight = require('../img/forward.png');
 
 export var shareLightActive = require('../img/forward_active.png');
 
+export var more = require('../img/more.png');
+
 
 

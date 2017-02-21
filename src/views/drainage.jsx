@@ -210,7 +210,7 @@ class Drainage extends Component{
                                 <Text style={styles.textSize}>单价: {item.price}</Text>
                                 <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>库存: {item.num}</Text>
                             </View>
-                            <View style={[styles.col1, {marginTop: '10rem'}]}> 
+                            <View style={[styles.col1, {marginTop: '10rem', marginLeft: '260rem'}]}> 
                                 <Button style={{fontSize:'32rem'}} type="secondary" onPress={this.listStatus.bind(this, item)} size='small'>{newdsp_onLineStatus}</Button>
                             </View>
                         </View>
@@ -308,39 +308,34 @@ class Drainage extends Component{
              }
         })
    }
-   dspcontrast () {
-   		QN.navigator.push({
-            url:'qap://views/dspcontrast.js',
-            query:{subway_token: this.state.subway_token, user_id: this.state.user_id},
-            settings: {
-                    animate: true
-             }
-        })
-   }
+// dspcontrast () {
+// 		QN.navigator.push({
+//          url:'qap://views/dspcontrast.js',
+//          query:{subway_token: this.state.subway_token, user_id: this.state.user_id},
+//          settings: {
+//                  animate: true
+//           }
+//      })
+// }
     render(){
         return (
                 <View>
                     <View style={styles.cellItemList}>
                         <Text style={styles.textSize}>淘外余额: {this.state.balance} 元</Text>
-                        <TouchableHighlight style={{marginLeft: '310rem'}} onPress={this.linkrecharge.bind(this)}>
+                        <TouchableHighlight style={{marginLeft: '100rem'}} onPress={this.linkrecharge.bind(this)}>
                             <Text style={styles.title}>充值</Text>        
                        </TouchableHighlight>
+                       <TouchableHighlight style={{marginLeft: '100rem'}} onPress={this.showHandbook.bind(this)}>
+                            <Text style={styles.title}>帮助</Text>
+                        </TouchableHighlight>
                     </View>
                     <View style={styles.cellItemList}>
                         <Text style={styles.textSize}>日限额: </Text>
                         <Button style={styles.textSize} type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
-                        <Text style={{paddingLeft: '180rem',fontSize:'32rem'}}>出价: </Text>
+                        <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>出价: </Text>
                         <Button style={styles.textSize} type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
-                    </View>
-                    <View style={styles.cellItemList}>
-                    	<TouchableHighlight style={{marginLeft: '10rem'}} onPress={this.showHandbook.bind(this)}>
-                            <Text style={styles.title}>帮助</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={{marginLeft: '150rem'}} onPress={this.drainageRpt.bind(this)}>
+                        <TouchableHighlight style={{marginLeft: '30rem'}} onPress={this.drainageRpt.bind(this)}>
                             <Text style={styles.title}> 推广报表</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={{marginLeft: '140rem'}} onPress={this.dspcontrast.bind(this)}>
-                            <Text style={styles.title}>流量数据</Text>
                         </TouchableHighlight>
                     </View>
                     <ScrollView style={styles.scroller}>

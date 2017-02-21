@@ -6,7 +6,7 @@ import QN from 'QAP-SDK';
 import {getCampaign, getAuthSign, setBuget, getArea, setStatus} from '../api';
 import _ from 'lodash';
 import { showLoading,hideLoading } from './util';
-
+import {more} from '../static/static';
 
 class CampaignsListView extends Component {
 	constructor() {
@@ -145,68 +145,38 @@ class CampaignsListView extends Component {
 				   			    	<TouchableHighlight onPress={this.onPress.bind(this, tid)} style={styles.itemTextList}>
 					   			    	<Text style={{color:"#0894EC",fontSize:'32rem'}}>{title}</Text>
 				   			    	</TouchableHighlight>
-				   			    	<View style={[styles.Arrow, {margintLeft: '40rem'}]}>
-				   			    		<TouchableHighlight style={{width: 150 }} onPress={this.statusItem.bind(this, tid, title, online_status)} type="secondary">
-					   			    		{
-					   			    			online_status == 'online' ? 
-					   			    				<Text style={{color: '#1DC11D', fontSize: '32rem'}}>{itemStatus}</Text>:
-					   			    				<Text style={{color: '#f50', fontSize: '32rem'}}>{itemStatus}</Text>
-					   			    			}
-					   			    		
-					   			    	</TouchableHighlight>
+				   			    	<View>
+				   			    		<Button onPress={this.statusItem.bind(this, tid, title, online_status)} type="primary">
+					   			    		{itemStatus}
+					   			    	</Button>
 				   			    	</View>
 				   			    </View>
-				   			    <View style={styles.report}>
-							   		<View style={styles.amoutList}>
-							   			<View style={styles.dayArrow}>
-			  		   	                  <Text style={styles.setFontSize}>每日限额:</Text>  
-			   							</View>
-			  		   	              	 <View style={{left:'-20rem',fontSize:'30rem'}} >	
-			  		   	                  <Button
-			  		   	                  	onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
-											id={this.state.budgetId}
-											type="primary">
-			  		   	                  ￥{this.state.budget !== '' && this.state.budgetId === tid ? this.state.budget : item.budget}
-			  		   	                  </Button >
-			  		   	                </View>
-			  		   	                <View style={styles.itemArrow}>
-			  		   	                  <Text style={styles.setFontSize}>投放平台:</Text>
-			  		   	                </View>
-			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}} >
-				  		   	                 <Button
-				  		   	                  	onPress={this.onPressPlat.bind(this, tid)}
-				  		   	                  	type="primary"
-												>
-				  		   	                 设置
-				  		   	                </Button>
-			  		   	                </View>
-			  		   	            </View>
-					                <View style={styles.amoutList}>
-							   		    <View style={styles.dayArrow}>
-			  		   	                	<Text style={styles.setFontSize}>投放地域:</Text>
-			  		   	                </View>
-			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}}>
-				  		   	                 <Button
-				  		   	                  	onPress={this.onPressGetArea.bind(this, tid)}
-				  		   	                  	type="primary"
-												>
-				  		   	                 设置
-				  		   	                </Button>
-			  		   	                </View>
-			  		   	              
-			  		   	                <View style={styles.itemArrow}>
-			  		   	                	<Text style={styles.setFontSize}>投放时段:</Text>
-			  		   	                </View>
-			  		   	                <View style={{left:'-20rem',fontSize:'30rem'}} >
-			  		   	                	<Button
-			  		   	                  	onPress={this.onPressSche.bind(this, tid)}
-			  		   	                  	type="primary"
-											>
-			  		   	                 		设置
-			  		   	                	</Button>
-			  		   	                </View>
-					                </View>
-				                </View>
+				   			    <View>
+							   		<TouchableHighlight style={styles.setItemList} 	onPress={this.prompt.bind(this, tid, is_smooth, itemcost)}
+							   			id={this.state.budgetId}>
+			  		   	                  <Text style={styles.setitemTextList}>每日限额:</Text>
+			  		   	                  <Text style={styles.setitemArrow}>￥{this.state.budget !== '' && this.state.budgetId === tid ? this.state.budget : item.budget}</Text>
+			   						</TouchableHighlight>
+			  		   	            <TouchableHighlight style={styles.setItemList} onPress={this.onPressPlat.bind(this, tid)}>
+		  		   	                  <Text style={styles.setitemTextList}>投放平台</Text>
+		  		   	                  <View style={styles.setmoreArrow}>
+		  		   	                		<Image style={{width: '50rem', height: '50rem'}} source={{uri: more}} ></Image >
+		  		   	                 </View>
+		  		   	                </TouchableHighlight>
+		  		   	                <TouchableHighlight style={styles.setItemList} onPress={this.onPressGetArea.bind(this, tid)}>
+		  		   	                	<Text style={styles.setitemTextList}>投放地域</Text>
+		  		   	                	<View style={styles.setmoreArrow}>
+		  		   	                		<Image style={{width: '50rem', height: '50rem'}} source={{uri: more}} ></Image >
+		  		   	                	</View>
+		  		   	                </TouchableHighlight>
+		  		   	                <TouchableHighlight style={styles.setItemList} onPress={this.onPressSche.bind(this, tid)}>
+		  		   	                	<Text style={styles.setitemTextList}>投放时段</Text>
+		  		   	                	<View style={styles.setmoreArrow}>
+		  		   	                		<Image style={{width: '50rem', height: '50rem'}} source={{uri: more}} ></Image >
+		  		   	                	</View>
+		  		   	                	 
+		  		   	                </TouchableHighlight>
+			  		   	        </View>
 			                </View>
 
 			                <View style={styles.report}>
@@ -218,16 +188,16 @@ class CampaignsListView extends Component {
 		  		   	                   <Text style={styles.setFontSize}>{item.cost}</Text>
 		  		   	                </View>
 
-		  		   	                <View style={[styles.itemArrow,{left:'-12rem'}]}>
+		  		   	                <View style={[styles.itemArrow,{left:'10rem'}]}>
 			  		   	                <Text style={styles.setFontSize}>展现量:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-90rem'}} >
+			  		   	            <View style={{left:'-70rem'}} >
 			  		   	                <Text style={styles.setFontSize}>{item.pv}</Text>
 			  		   	            </View>
-			  		   	            <View style={styles.itemArrow}>
+			  		   	            <View style={[styles.itemArrow,{left:'30rem'}]}>
 			  		   	                <Text style={styles.setFontSize}>点击量:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-80rem'}} >
+			  		   	            <View style={{left:'-20rem'}} >
 			  		   	                <Text style={styles.setFontSize}>{item.click}</Text>
 			  		   	             </View>
 			  		   	                	
@@ -240,17 +210,17 @@ class CampaignsListView extends Component {
 		  		   	                   <Text style={styles.setFontSize}>{item.pay}</Text>
 		  		   	                </View>
 
-		  		   	                <View style={styles.itemArrow}>
+		  		   	                <View style={[styles.itemArrow,{left:'20rem'}]}>
 			  		   	                <Text style={styles.setFontSize}>点击率:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-80rem'}} >
+			  		   	            <View style={{left:'-40rem'}} >
 			  		   	                <Text style={styles.setFontSize}>{item.ctr +'%'}</Text>
 			  		   	            </View>
-			  		   	            <View style={styles.itemArrow}>
+			  		   	            <View style={[styles.itemArrow,{left:'40rem'}]}>
 			  		   	                <Text style={styles.setFontSize}>转化率:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-80rem'}} >
-			  		   	                <Text style={styles.setFontSize}>{item.click_ROi}</Text>
+			  		   	            <View style={{left:'-20rem'}} >
+			  		   	                <Text style={styles.setFontSize}>{item.click_ROi +'%'}</Text>
 			  		   	             </View>
 			  		   	                	
 			                	</View>
@@ -290,7 +260,19 @@ const styles={
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
         borderBottomColor:"#e8e8e8",
-        padding:"10rem 30rem",
+        paddingRight:"30rem",
+        paddingLeft:"30rem",
+        alignItems:"center",
+        flexDirection:"row",
+        display:'flex' 
+    },
+    setItemList:{
+        backgroundColor:"#ffffff",
+        height:"90rem",
+        borderBottomWidth:"2rem",
+        borderBottomStyle:"solid",
+        borderBottomColor:"#e8e8e8",
+        paddingRight:"30rem",
         paddingLeft:"30rem",
         alignItems:"center",
         flexDirection:"row",
@@ -344,7 +326,26 @@ const styles={
 	   },
 	   setFontSize:{
 	   	fontSize:'30rem'
-	   }
+	   },
+	   setitemTextList:{
+        fontSize:"30rem",
+        color:"#000",
+        flex:15
+    	},
+	   setitemArrow:{
+    	flex: 4,
+    	fontSize:"32rem",
+        color:"#000" ,
+        textAlign: 'right',
+        marginRight:'3rem'
+       },
+       setmoreArrow:{
+    	flex: 1,
+    	fontSize:"32rem",
+        color:"#000" ,
+        textAlign: 'right',
+        marginRight:'3rem'
+        }
 	 }
 export default CampaignsListView
 

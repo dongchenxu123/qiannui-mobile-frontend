@@ -49,8 +49,8 @@ class HealthyView extends Component{
                         <Text style={app.itemTextList}>{item.title}</Text>
                         {
                             item.online_status == 'online' ?
-                             <Text style={[app.itemArrow,{color:'#1DC11D'}]}>推广中</Text>:
-                            <Text style={[app.itemArrow,{color:'#f50'}]}>暂停中</Text>
+                             <Text style={[app.itemArrow,{color:'#000'}]}>推广中</Text>:
+                            <Text style={[app.itemArrow,{color:'#000'}]}>暂停中</Text>
                         }
                      </TouchableHighlight>
 
