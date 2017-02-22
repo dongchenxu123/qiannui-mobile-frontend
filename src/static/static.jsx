@@ -11,6 +11,9 @@ export var shareLight = require('../img/forward.png');
 export var shareLightActive = require('../img/forward_active.png');
 
 export var more = require('../img/more.png');
-
+export var report = require('../img/report.png');
+export var save = require('../img/save.png');
+export var help = require('../img/help.png');
+export var data = require('../img/data.png');
 
 

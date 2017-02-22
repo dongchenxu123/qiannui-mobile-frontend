@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
 import { getRechargeTempalte } from '../api/dsp';
+import { report, help, save, data } from '../static/static';
 class Drainage extends Component{
     constructor() {
         super();   
@@ -320,26 +321,34 @@ class Drainage extends Component{
     render(){
         return (
                 <View>
-                    <View style={styles.cellItemList}>
-                        <Text style={styles.textSize}>淘外余额: {this.state.balance} 元</Text>
-                        <TouchableHighlight style={{marginLeft: '100rem'}} onPress={this.linkrecharge.bind(this)}>
-                            <Text style={styles.title}>充值</Text>        
-                       </TouchableHighlight>
-                       <TouchableHighlight style={{marginLeft: '100rem'}} onPress={this.showHandbook.bind(this)}>
-                            <Text style={styles.title}>帮助</Text>
-                        </TouchableHighlight>
-                        {<TouchableHighlight style={{marginLeft: '10rem'}} onPress={this.dspcontrast.bind(this)}>
-                            <Text style={styles.title}>数据对比</Text>
-                        </TouchableHighlight>}
+                    <View style={styles.titleItemList}>
+                        <Text style={[styles.textSize, {flex: 11, paddingLeft: '30rem'}]}>淘外余额: </Text>
+                        <Text style={[styles.textSize, {flex: 4}]}>￥  {this.state.balance} </Text>
                     </View>
                     <View style={styles.cellItemList}>
                         <Text style={styles.textSize}>日限额: </Text>
                         <Button style={styles.textSize} type="primary" size='small' onPress={this.changebudget.bind(this)}>{this.state.budget}</Button>
-                        <Text style={{paddingLeft: '30rem',fontSize:'32rem'}}>出价: </Text>
+                        <Text style={{fontSize:'32rem'}}>出价: </Text>
                         <Button style={styles.textSize} type="primary" size='small' onPress={this.changecpc.bind(this)}>{this.state.cpc}</Button>
-                        <TouchableHighlight style={{marginLeft: '30rem'}} onPress={this.drainageRpt.bind(this)}>
-                            <Text style={styles.title}> 推广报表</Text>
-                        </TouchableHighlight>
+                       
+                    </View>
+                    <View style={styles.cellItemList}>
+                    	<TouchableHighlight onPress={this.linkrecharge.bind(this)} style={styles.flexbox}>
+                    		<Image source={{uri: save}} style={styles.imgStyle}/>
+                    		<Text style={{fontSize: '30rem'}}>充值</Text>
+                    	</TouchableHighlight>
+                    	<TouchableHighlight onPress={this.showHandbook.bind(this)} style={styles.flexbox}>
+                    		<Image source={{uri: help}} style={styles.imgStyle}/>
+                    		<Text style={{fontSize: '30rem'}}>帮助</Text>
+                    	</TouchableHighlight>
+                    	<TouchableHighlight onPress={this.drainageRpt.bind(this)} style={styles.flexbox}>
+                    		<Image source={{uri: report}} style={styles.imgStyle}/>
+                    		<Text style={{fontSize: '30rem'}}>报表</Text>
+                    	</TouchableHighlight>
+                    	<TouchableHighlight onPress={this.dspcontrast.bind(this)} style={styles.flexbox}>
+                    		<Image source={{uri: data}} style={styles.imgStyle}/>
+                    		<Text style={{fontSize: '30rem'}}>对比</Text>
+                    	</TouchableHighlight>
                     </View>
                     <ScrollView style={styles.scroller}>
                         {
@@ -365,19 +374,29 @@ const styles={
           height: height-400,
           flex: 1
        },
-   listContainer: {
+   	listContainer: {
         height: height-400
     },
-  cellItemList:{
+    titleItemList:{
         backgroundColor:"#fff",
         padding: '20rem',
         borderBottomWidth:"2rem",
         borderBottomStyle:"solid",
         borderBottomColor:"#e8e8e8",
-        paddingLeft:"30rem",
-        alignItems:"center",
+       	alignItems:"center",
         flexDirection:"row",
-        display:'flex' 
+        display:'flex'
+    },
+  	cellItemList:{
+        backgroundColor:"#fff",
+        padding: '20rem',
+        borderBottomWidth:"2rem",
+        borderBottomStyle:"solid",
+        borderBottomColor:"#e8e8e8",
+       	alignItems:"center",
+        flexDirection:"row",
+        display:'flex',
+        justifyContent: 'space-around'
     },
     col1:{
         flexDirection:"row",
@@ -396,5 +415,15 @@ const styles={
         textAlign: 'center',
         marginTop: '100rem',
     },
+    flexbox: {
+    	
+    	textAlign: 'center'
+    },
+    imgStyle: {
+    	width:'60rem',
+    	height:'60rem', 
+    	marginBottom: '20rem',
+    	textAlign: 'center'
+    }
 }
 export default Drainage
