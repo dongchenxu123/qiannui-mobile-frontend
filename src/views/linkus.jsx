@@ -38,42 +38,38 @@ class LinkUs extends Component{
         
         return (
                 <ScrollView style={style.scroller}  onEndReachedThreshold={300}>
-                    <View style={{marginTop:'200rem'}}>
+                    <View style={{marginTop:'100rem'}}>
                         <TouchableHighlight style={[style.item, {flexDirection:"row",display:'flex' }]} onPress={this.openChart.bind(this)}>
                             <View style={{marginLeft:'80rem'}}>
                                 <Image source={{uri: url}}  style={{width:'160rem',height:'40rem',marginLeft:'20rem'}}/>
                             </View>
                             <Text style={{marginLeft:'20rem',color: '#0894EC', fontSize: '32rem'}}>在线客服</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight onPress={()=>{this.setState({showfeedback:true})}}>
+                       {/* <TouchableHighlight onPress={()=>{this.setState({showfeedback:true})}}>
                             <View style={style.item}><Text style={{color: '#0894EC', fontSize: '32rem'}}>给我留言</Text></View>
-                        </TouchableHighlight>
+                        </TouchableHighlight>*/}
                     </View>
-                    {
-                      this.state.showfeedback == false ?'':
                       <View style={{margin:'20rem'}}>
                         <TextInput
                           placeholder="请在此填写留言反馈"
-                          multiline="true"
+                          multiline
                           maxNumberOfLines="20"
                           numberOfLines="20"
-                          onFocus={() => console.log('onFocus')}
                           onBlur={this.changeValue.bind(this)}
-                          onInput={() => console.log('onInput')}
                           style={{
-                              width: '710rem',
-                              height: '200rem',
+                              width: '700rem',
+                              height: '400rem',
                               borderWidth: '1rem',
                               borderStyle:'solid',
                               borderColor:'#dddddd',
 
                           }}
                         />
-                        <View style={{marginTop:'30rem'}}>
-                            <Button type="primary" onPress={this.feedBack.bind(this)}>提交</Button>
+                        <View style={{margin:'50rem',marginLeft:'100rem',margRight:'100rem'}}>
+                            <Button type="primary"  block="true" onPress={this.feedBack.bind(this)}>提交</Button>
                         </View>
                      </View>
-                    }    
+                    
                 </ScrollView>
             )
      }

@@ -73,7 +73,7 @@ let WuXianCheShou = class WuXianCheShou extends Component {
                     </Tabbar.Item>
                     <Tabbar.Item
                     
-                      title="联系我们"
+                      title="意见反馈"
                       tabKey="m5"
                       icon={{src: my, selected: myActive}}
                       >

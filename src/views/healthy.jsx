@@ -214,7 +214,7 @@ const app = {
         borderBottomColor:'#e8e8e8'
     },
     subCell:{
-        height:'440rem',
+        padding:'15rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',  
