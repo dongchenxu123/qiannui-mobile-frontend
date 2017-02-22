@@ -1,12 +1,13 @@
-import {Button,ListView, Modal, Dimensions, Dialog, Picker } from 'nuke';
+import {Button, Modal, Dimensions,Picker } from 'nuke';
 import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
-import { View, Text, TouchableHighlight,ScrollView } from 'nuke-components';
+import { View, Text,ScrollView } from 'nuke-components';
 import Async from 'async';
 import _ from 'lodash';
 import { getCustbaseRpt, getHistoryReport } from '../api';
 import { number_format } from './util';
+import { showLoading,hideLoading } from './util';
 
 let URL= document.URL;
 let params= QN.uri.parseQueryString(URL.split('?')[1]);
@@ -23,13 +24,13 @@ class DspcontrastView extends Component{
      constructor() {
         super();   
         this.state = {
-            selectValue: 'pv',
+            selectKey: 'pv',
+            selectValue:'展现量',
             report:{},
             selectReport:{}
         }  
-
+        showLoading();
         this.formatEchartsData = this.formatEchartsData.bind(this); 
-        this.selectedItem = this.selectedItem.bind(this); 
     }
    
 	componentDidMount () {
@@ -48,34 +49,31 @@ class DspcontrastView extends Component{
             dsprpt:function(callback){
             	 getHistoryReport(user_id).then((res) => {
             	 	var items = [];
-        
                         //注：report 结果是按照日期倒叙排列的
-                        if(_.keys(res.report).length >0)
-                        {
-                             var index =  _.findLastIndex(res.report,function(item){
+                        if(_.keys(res.report).length >0) {
+                            var index =  _.findLastIndex(res.report,function(item){
                                 return item.pv > 0;
                              });
 
-                             if(index > -1)
-                             {
+                            if(index > -1){
                                 var itemslist = res.report.slice(0,index+1);
                                 items=  _.sortBy(itemslist,'record_on');//正
                              }
                         }
-                    
                     callback(null,items);  
 				}, (error) => {
 		            callback(error,[]);
 		        })   
             }
         },function(error,result){
-            self.selectedItem();
             if(error === null){
                 var obj = self.formatEchartsData(result);//正序 
                 self.setState({report:obj});
-                self.showTableList(self.state.selectValue);
+                self.showTableList(self.state.selectKey);
+                hideLoading();
             }else {
-              
+                Modal.toast('获取数据出错了，请稍后再试');
+              hideLoading();
             }  
         });
     }
@@ -117,27 +115,18 @@ class DspcontrastView extends Component{
     }
     presshandle() {
     	var self= this;
-        Picker.show({title:'请选择',dataSource:ds,selectedKey:'1',maskClosable:true},(e)=>{
-	        console.log('select item ',e)
-	        self.setState({
-           		selectValue: e.key
-           })
+        Picker.show({title:'请选择对比数据',dataSource:ds,selectedKey:'pv',maskClosable:true},(e)=>{
 	       self.showTableList(e.key);
 	    },(e)=>{
-	        // {cancel:true}
-	        self.setState({
-           		selectValue: e.key
-           })
-	        self.showTableList(e.key);
+	       console.log(JSON.stringify(e));
 	    },(e)=>{
-	    	Modal.alert(1)
-	        console.log('success rendered')
+	        console.log(JSON.stringify(e));
 	    },(e)=>{
-	        console.log('fail to render picker')
+	       console.log(JSON.stringify(e));
 	    });
     }
     showTableList(attribute){
-        var self = this;
+        var self = this, selectValue = '';
         var dspData = self.state.report.dsp_data[attribute],
             ztcData = self.state.report.ztc_data[attribute];
         var xAxis = [],dsp = [],ztc=[];
@@ -145,52 +134,49 @@ class DspcontrastView extends Component{
             xAxis.push(self.state.report.date_data[i]);
             dsp.push((attribute === 'pv' || attribute === 'click' ) ? number_format(dspData[i]) : dspData[i]);
             ztc.push((attribute === 'pv' || attribute === 'click' ) ? number_format(ztcData[i]) : ztcData[i]);
-        }
-        self.setState({selectReport:{date: xAxis,dsp: dsp,ztc: ztc}});
-    }   
-    selectedItem(){
-        var self = this,item = '';
+        }  
+      
         ds.map((item,index)=>{
-            if(item.key == self.state.selectValue){
-                item = item.value;
-              
+            if(item.key == attribute){
+                selectValue = item.value;
+                return;
             }
         })
-console.log(item,'333');
-        return item;
-    }
+        self.setState({selectReport:{date: xAxis,dsp: dsp,ztc: ztc},selectValue:selectValue});
+    }   
 	render () {
 		var self = this;
-        console.log(JSON.stringify(self.state.selectReport));
 		return (
-			<ScrollView style={styles.scroller}>
+			<ScrollView style={styles.scroller} >
 				<View style={styles.amoutList}>
-					<Text style={styles.amoutTextList}>当前数据</Text>
+					<Text style={styles.amoutTextList}>当前对比数据</Text>
 					<Button onPress={this.presshandle.bind(this)} style={{flex: 5}} type="secondary">
-						{/*self.selectedItem.bind(this)*/}
+						{self.state.selectValue}
 					</Button>
 				</View>
-				<View style={styles.amoutList}>
-					<Text style={styles.textStyle}>日期</Text>
-					<Text style={styles.textStyle}>淘外引流</Text>
-					<Text style={styles.textStyle}>直通车</Text>
-				</View>
-				<View>
-					{
-						/*self.state.selectReport
-						? self.state.selectReport.date.map((item,i) => {
-							return (
-                                <View style={styles.amoutList}>
-    								<Text style={styles.comStyle}>{item}</Text>
-                                    <Text style={styles.comStyle}>{self.state.selectReport.dsp[i] ? self.state.selectReport.dsp[i]:0 }</Text>
-                                    <Text style={styles.comStyle}>{self.state.selectReport.ztc[i] ? self.state.selectReport.ztc[i]:0 }</Text>
-                                </View>
-							)
-						})
-                        :
-                        <Text>Loading...</Text>*/
-					}
-				</View>
+                <View style={{paddingTop:'50rem'}}>
+                    <View style={styles.amoutList}>
+                        <Text style={styles.textStyle}>日期</Text>
+                        <Text style={styles.textStyle}>淘外引流</Text>
+                        <Text style={styles.textStyle}>直通车</Text>
+                    </View>
+    				<View>
+                        {
+                            (self.state.selectReport.date != undefined && self.state.selectReport.date.length > 0)
+                            ? self.state.selectReport.date.map((item,i) => {
+                                return (
+                                    <View style={styles.cellList}>
+                                        <Text style={styles.comStyle}>{item}</Text>
+                                        <Text style={styles.comStyle}>{self.state.selectReport.dsp[i] ? self.state.selectReport.dsp[i]:0 }</Text>
+                                        <Text style={styles.comStyle}>{self.state.selectReport.ztc[i] ? self.state.selectReport.ztc[i]:0 }</Text>
+                                    </View>
+                                )
+                            })
+                            :
+                            <Text></Text>
+                        }
+                    </View>
+                </View>
 			</ScrollView>
 		)
 	}
@@ -203,32 +189,28 @@ const styles={
           flex: 1
        },
 	amoutList: {
-        backgroundColor: "#ffffff",
-       	padding: '30rem',
+        backgroundColor: "#e8e8e8",
+       	padding: '20rem 20rem',
         borderBottomWidth: "2rem",
         borderBottomStyle: "solid",
         borderBottomColor: "#e8e8e8",
-        paddingTop: "40rem",
         alignItems: "center",
         flexDirection: "row",
         display: 'flex'
     },
     cellList: {
-        backgroundColor: "#ffffff",
-       	padding: '30rem',
+         backgroundColor: "#ffffff",
+        padding: '10rem 20rem',
         borderBottomWidth: "2rem",
         borderBottomStyle: "solid",
         borderBottomColor: "#e8e8e8",
-        paddingTop: "40rem",
         alignItems: "center",
         flexDirection: "row",
         display: 'flex'
     },
     amoutTextList: {
         fontSize: "32rem",
-        color: "#5F646E",
         flex: 11
-
     },
     textStyle: {
     	flex: 7,
@@ -238,7 +220,8 @@ const styles={
     comStyle: {
     	flex: 4,
     	fontSize: '30rem',
-    	textAlign: 'center'
+    	textAlign: 'center',
+        padding:'10rem'
     }
 }
 

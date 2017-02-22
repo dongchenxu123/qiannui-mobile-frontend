@@ -308,15 +308,15 @@ class Drainage extends Component{
              }
         })
    }
-// dspcontrast () {
-// 		QN.navigator.push({
-//          url:'qap://views/dspcontrast.js',
-//          query:{subway_token: this.state.subway_token, user_id: this.state.user_id},
-//          settings: {
-//                  animate: true
-//           }
-//      })
-// }
+    dspcontrast () {
+    		QN.navigator.push({
+             url:'qap://views/dspcontrast.js',
+             query:{subway_token: this.state.subway_token, user_id: this.state.user_id},
+             settings: {
+                     animate: true
+              }
+         })
+    }
     render(){
         return (
                 <View>
@@ -328,6 +328,9 @@ class Drainage extends Component{
                        <TouchableHighlight style={{marginLeft: '100rem'}} onPress={this.showHandbook.bind(this)}>
                             <Text style={styles.title}>帮助</Text>
                         </TouchableHighlight>
+                        {<TouchableHighlight style={{marginLeft: '10rem'}} onPress={this.dspcontrast.bind(this)}>
+                            <Text style={styles.title}>数据对比</Text>
+                        </TouchableHighlight>}
                     </View>
                     <View style={styles.cellItemList}>
                         <Text style={styles.textSize}>日限额: </Text>
