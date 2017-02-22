@@ -49,8 +49,8 @@ class HealthyView extends Component{
                         <Text style={app.itemTextList}>{item.title}</Text>
                         {
                             item.online_status == 'online' ?
-                             <Text style={[app.itemArrow,{color:'#000'}]}>推广中</Text>:
-                            <Text style={[app.itemArrow,{color:'#000'}]}>暂停中</Text>
+                             <Text style={[app.itemArrow,{color:'#5F646E'}]}>推广中</Text>:
+                            <Text style={[app.itemArrow,{color:'#5F646E'}]}>暂停中</Text>
                         }
                      </TouchableHighlight>
 
@@ -214,7 +214,7 @@ const app = {
         borderBottomColor:'#e8e8e8'
     },
     subCell:{
-        height:'490rem',
+        height:'440rem',
         borderBottomStyle:'solid',
         borderBottomWidth:'1rem',
         borderBottomColor:'#e8e8e8',  

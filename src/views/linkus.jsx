@@ -45,9 +45,6 @@ class LinkUs extends Component{
                             </View>
                             <Text style={{marginLeft:'20rem',color: '#0894EC', fontSize: '32rem'}}>在线客服</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight onPress={this.tel}>
-                            <View style={style.item}><Text style={{color: '#0894EC', fontSize: '32rem'}}>免费400电话：400-627-0003</Text></View>
-                        </TouchableHighlight>
                         <TouchableHighlight onPress={()=>{this.setState({showfeedback:true})}}>
                             <View style={style.item}><Text style={{color: '#0894EC', fontSize: '32rem'}}>给我留言</Text></View>
                         </TouchableHighlight>
@@ -73,7 +70,7 @@ class LinkUs extends Component{
                           }}
                         />
                         <View style={{marginTop:'30rem'}}>
-                            <Button type="primary" onPress={this.feedBack.bind(this)}>提交了</Button>
+                            <Button type="primary" onPress={this.feedBack.bind(this)}>提交</Button>
                         </View>
                      </View>
                     }    
@@ -92,7 +89,8 @@ const style={
         color:'#3089DC',
         alignItems:"center",
         padding: '20rem',
-        paddingLeft:'100rem'
+        paddingLeft:'100rem',
+        textAlign:'center'
     }
 }
 export default LinkUs

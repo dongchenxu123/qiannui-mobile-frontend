@@ -160,19 +160,19 @@ class CampaignsListView extends Component {
 			  		   	            <TouchableHighlight style={styles.setItemList} onPress={this.onPressPlat.bind(this, tid)}>
 		  		   	                  <Text style={styles.setitemTextList}>投放平台</Text>
 		  		   	                  <View style={styles.setmoreArrow}>
-		  		   	                		<Image style={{width: '50rem', height: '50rem'}} source={{uri: more}} ></Image >
+		  		   	                		<Image style={styles.imageRight} source={{uri: more}} ></Image >
 		  		   	                 </View>
 		  		   	                </TouchableHighlight>
 		  		   	                <TouchableHighlight style={styles.setItemList} onPress={this.onPressGetArea.bind(this, tid)}>
 		  		   	                	<Text style={styles.setitemTextList}>投放地域</Text>
 		  		   	                	<View style={styles.setmoreArrow}>
-		  		   	                		<Image style={{width: '50rem', height: '50rem'}} source={{uri: more}} ></Image >
+		  		   	                		<Image style={styles.imageRight} source={{uri: more}} ></Image >
 		  		   	                	</View>
 		  		   	                </TouchableHighlight>
 		  		   	                <TouchableHighlight style={styles.setItemList} onPress={this.onPressSche.bind(this, tid)}>
 		  		   	                	<Text style={styles.setitemTextList}>投放时段</Text>
 		  		   	                	<View style={styles.setmoreArrow}>
-		  		   	                		<Image style={{width: '50rem', height: '50rem'}} source={{uri: more}} ></Image >
+		  		   	                		<Image style={styles.imageRight} source={{uri: more}} ></Image >
 		  		   	                	</View>
 		  		   	                	 
 		  		   	                </TouchableHighlight>
@@ -344,7 +344,11 @@ const styles={
     	fontSize:"32rem",
         color:"#000" ,
         textAlign: 'right',
-        marginRight:'3rem'
+        marginRight:'8rem'
+        },
+        imageRight:{
+            width: '40rem',
+            height: '40rem'
         }
 	 }
 export default CampaignsListView

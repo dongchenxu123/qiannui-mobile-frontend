@@ -342,8 +342,8 @@ class Drainage extends Component{
                         {
                             this.state.Items.length == 0 
                             ? 
-                            <View style={styles.textCenter}>
-                                <Text style={{fontSize:'32rem'}}>加载中</Text> 
+                            <View >
+                               
                              </View>
                             : <ListView 
                                 renderRow={this.renderItem.bind(this)}

@@ -51,7 +51,7 @@ class HealthyResult extends Component{
           
         });
          
-        });
+        }); 
     }
     makeKeywordFunc(adgroup,subway_token){
         var self = this;

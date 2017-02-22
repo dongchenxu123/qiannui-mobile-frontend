@@ -98,7 +98,7 @@ const styles = {
 }
 
 const app = {
-    activeBorder: {borderTopWidth: "5rem", borderTopStyle: "solid", borderTopColor: "#337838"},
+    activeBorder: {borderTopWidth: "5rem", borderTopStyle: "solid", borderTopColor: "#3089dc"},
     inactiveBorder: {borderTopWidth: "5rem", borderTopStyle: "solid", borderTopColor: "#eeeeee"},
     listHeader:{height:'300rem', display:'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', },
     listHeaderText:{fontSize: '60rem', color:'#333333', },

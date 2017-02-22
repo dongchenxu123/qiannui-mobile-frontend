@@ -6,30 +6,30 @@ import { View, Text, TouchableHighlight,ScrollView } from 'nuke-components';
 import Async from 'async';
 import _ from 'lodash';
 import { getCustbaseRpt, getHistoryReport } from '../api';
+import { number_format } from './util';
 
 let URL= document.URL;
 let params= QN.uri.parseQueryString(URL.split('?')[1]);
 const subway_token = params.subway_token;
 let {height} = Dimensions.get('window');
 const user_id = params.user_id;
-let ds=[{key:'1',value:'展现量'},{key:'2',value:'点击量'},{key:'3',value:'花费'},{key:'4',value:'平均点击花费'}]
+
+var ds=[{key:'pv',value:'展现量'},
+        {key:'click',value:'点击量'},
+        {key:'cost',value:'花费'},
+        {key:'cpc',value:'平均点击花费'}
+        ];
 class DspcontrastView extends Component{
      constructor() {
         super();   
         this.state = {
-          date_data: [],
-          dsp_dataPv: [],
-          dsp_dataClick: [],
-          dsp_dataCost: [],
-          dsp_dataCpc: [],
-          ztc_dataPv: [],
-          ztc_dataClick: [],
-          ztc_dataCost: [],
-          ztc_dataCpc: [],
-          selectValue: '展现量'
+            selectValue: 'pv',
+            report:{},
+            selectReport:{}
         }  
 
         this.formatEchartsData = this.formatEchartsData.bind(this); 
+        this.selectedItem = this.selectedItem.bind(this); 
     }
    
 	componentDidMount () {
@@ -40,7 +40,6 @@ class DspcontrastView extends Component{
         Async.parallel({
             baserpt:function(callback){
                 getCustbaseRpt (subway_token).then((result) => {
-                   
 					callback(null,result);
 				}, (error) => {
 		            callback(error,[]);
@@ -64,37 +63,20 @@ class DspcontrastView extends Component{
                              }
                         }
                     
-                    callback(null,items);
-                   
+                    callback(null,items);  
 				}, (error) => {
 		            callback(error,[]);
-		        })
-                
+		        })   
             }
         },function(error,result){
- 
-            if(error === null)
-            {
+            self.selectedItem();
+            if(error === null){
                 var obj = self.formatEchartsData(result);//正序 
-                Modal.alert(JSON.stringify(obj))
-                self.setState({
-                	date_data: obj.date_data,
-                	dsp_dataPv: obj.dsp_data.pv,
-                	dsp_dataClick: obj.dsp_data.click,
-			        dsp_dataCost: obj.dsp_data.cost,
-			        dsp_dataCpc: obj.dsp_data.cpc,
-                	ztc_dataPv: obj.ztc_data.pv,
-                	ztc_dataClick: obj.ztc_data.click,
-			        ztc_dataCost: obj.ztc_data.cost,
-			        ztc_dataCpc: obj.ztc_data.cpc,
-                })
-             
-            }else
-            {
+                self.setState({report:obj});
+                self.showTableList(self.state.selectValue);
+            }else {
               
-            }
-         
-            
+            }  
         });
     }
     formatEchartsData(report){
@@ -115,13 +97,11 @@ class DspcontrastView extends Component{
             dsp_temp.cpc.push( (v.clicks!==0)?((v.cost/100)/v.clicks).toFixed(3):0);
             var zpv = 0,zclick= 0,zcost= 0,zcpc = 0;
 
-            if(ztc_length >0)
-            {
+            if(ztc_length >0) {
                 var item =  _.find( report.baserpt,function(m){
                     return m.date.toString() === v.record_on.toString();
                 });
-                if(item !== undefined)
-                {
+                if(item !== undefined){
                     zpv = item.impressions ? item.impressions :0;
                     zclick = item.click ? item.click :0;
                     zcost = item.cost ? item.cost :0;
@@ -139,23 +119,16 @@ class DspcontrastView extends Component{
     	var self= this;
         Picker.show({title:'请选择',dataSource:ds,selectedKey:'1',maskClosable:true},(e)=>{
 	        console.log('select item ',e)
-	        //选择某一项
-	        // [{key:'2',value:'第二排'}]
-	        // 级联的情况
-	        // [{key:'11222',value:'江苏'},{key:'210000',value: '南京'}]
-          
-	        this.setState({
-           		selectValue: e.value
+	        self.setState({
+           		selectValue: e.key
            })
-	       if(e.value == '展现量') {
-	       	 self.renderdspPv()
-	       }
+	       self.showTableList(e.key);
 	    },(e)=>{
 	        // {cancel:true}
-	        this.setState({
-           		selectValue: e.value
+	        self.setState({
+           		selectValue: e.key
            })
-	        
+	        self.showTableList(e.key);
 	    },(e)=>{
 	    	Modal.alert(1)
 	        console.log('success rendered')
@@ -163,18 +136,38 @@ class DspcontrastView extends Component{
 	        console.log('fail to render picker')
 	    });
     }
-    renderdspPv() {
-    	var self= this
-    	this.state.dsp_dataPv
+    showTableList(attribute){
+        var self = this;
+        var dspData = self.state.report.dsp_data[attribute],
+            ztcData = self.state.report.ztc_data[attribute];
+        var xAxis = [],dsp = [],ztc=[];
+        for(var i = self.state.report.date_data.length-1; i>=0  ;i--){
+            xAxis.push(self.state.report.date_data[i]);
+            dsp.push((attribute === 'pv' || attribute === 'click' ) ? number_format(dspData[i]) : dspData[i]);
+            ztc.push((attribute === 'pv' || attribute === 'click' ) ? number_format(ztcData[i]) : ztcData[i]);
+        }
+        self.setState({selectReport:{date: xAxis,dsp: dsp,ztc: ztc}});
+    }   
+    selectedItem(){
+        var self = this,item = '';
+        ds.map((item,index)=>{
+            if(item.key == self.state.selectValue){
+                item = item.value;
+              
+            }
+        })
+console.log(item,'333');
+        return item;
     }
 	render () {
-		Modal.alert(JSON.stringify(this.state.date_data))
+		var self = this;
+        console.log(JSON.stringify(self.state.selectReport));
 		return (
 			<ScrollView style={styles.scroller}>
 				<View style={styles.amoutList}>
 					<Text style={styles.amoutTextList}>当前数据</Text>
 					<Button onPress={this.presshandle.bind(this)} style={{flex: 5}} type="secondary">
-						{this.state.selectValue}
+						{/*self.selectedItem.bind(this)*/}
 					</Button>
 				</View>
 				<View style={styles.amoutList}>
@@ -182,15 +175,20 @@ class DspcontrastView extends Component{
 					<Text style={styles.textStyle}>淘外引流</Text>
 					<Text style={styles.textStyle}>直通车</Text>
 				</View>
-				<View style={styles.cellList}>
+				<View>
 					{
-						this.state.date_data.length == 0 
-						? <Text>Loading...</Text>
-						: this.state.date_data.map((item,i) => {
+						/*self.state.selectReport
+						? self.state.selectReport.date.map((item,i) => {
 							return (
-								<Text style={styles.comStyle}>{item}</Text>
+                                <View style={styles.amoutList}>
+    								<Text style={styles.comStyle}>{item}</Text>
+                                    <Text style={styles.comStyle}>{self.state.selectReport.dsp[i] ? self.state.selectReport.dsp[i]:0 }</Text>
+                                    <Text style={styles.comStyle}>{self.state.selectReport.ztc[i] ? self.state.selectReport.ztc[i]:0 }</Text>
+                                </View>
 							)
 						})
+                        :
+                        <Text>Loading...</Text>*/
 					}
 				</View>
 			</ScrollView>
@@ -223,7 +221,7 @@ const styles={
         borderBottomColor: "#e8e8e8",
         paddingTop: "40rem",
         alignItems: "center",
-        flexDirection: "column",
+        flexDirection: "row",
         display: 'flex'
     },
     amoutTextList: {

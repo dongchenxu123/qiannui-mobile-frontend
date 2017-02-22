@@ -100,17 +100,17 @@ class ListViewGroupView extends Component {
                 			<Text style={{fontSize: '32rem', paddingBottom: '15rem'}}>{item.title}</Text>
                 			<View style={{ flexDirection:"row",display: 'flex'}}>
                 				<Text style={{fontSize:'30rem'}}>
-                					状态:
+                					状态: {item.online_status == 'online' ? '推广中' :'暂停中'}
                 				</Text>
                                 {
-                                    item.online_status == 'online' ?
+                                   /* item.online_status == 'online' ?
                                     <Text style={{fontSize:'30rem',color:'#1DC11D',paddingLeft:'10rem'}}>
                                        推广中
                                     </Text>
                                     :
                                     <Text style={{fontSize:'30rem',color:'#f50',paddingLeft:'10rem'}}>
                                        暂停中
-                                    </Text>
+                                    </Text>*/
                                 }
                                 
                 				<Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>昨日点击: {item.report.click}</Text>

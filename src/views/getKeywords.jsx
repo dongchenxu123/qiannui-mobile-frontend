@@ -230,9 +230,9 @@ class GetKeywordsView extends Component {
                   <Text style={{fontSize: '32rem', paddingBottom: '15rem', textOverflow:'ellipsis',lines:2,width:'480rem'}}>{title}</Text>
                   <View style={{ flexDirection:"row",display: 'flex'}}>
                   <Text style={{fontSize:'30rem'}}>
-                          状态:
+                          状态: {online_status == 'online' ? '推广中' :'暂停中'}
                     </Text>
-                    {
+                 {/*   {
                        online_status == 'online' ?
                         <Text style={{fontSize:'30rem',color:'#1DC11D',paddingLeft:'10rem'}}>
                              推广中
@@ -241,7 +241,7 @@ class GetKeywordsView extends Component {
                         <Text style={{fontSize:'30rem',color:'#f50',paddingLeft:'10rem'}}>
                             暂停中
                         </Text>
-                    }
+                    }*/}
                     <Text style={{paddingLeft: '40rem',paddingBottom: '20rem', fontSize:'30rem'}}>已添加关键词: {this.state.keywordList.length} 个</Text>
                     </View>
                   <View style={{flexDirection:'row', marginTop: '10rem', marginLeft: '10rem'}}>
