@@ -221,7 +221,8 @@ const styles={
     	flex: 4,
     	fontSize: '30rem',
     	textAlign: 'center',
-        padding:'10rem'
+        padding:'10rem',
+        color:'#5F646E'
     }
 }
 

@@ -334,20 +334,20 @@ class Drainage extends Component{
                     </View>
                     <View style={styles.cellItemList}>
                     	<TouchableHighlight onPress={this.linkrecharge.bind(this)} style={styles.flexbox}>
-                    		<Image source={{uri: save}} style={styles.imgStyle}/>
-                    		<Text style={{fontSize: '30rem'}}>充值</Text>
+                    		   <Image source={{uri: save}} style={styles.imgStyle}/>
+                    		<Text style={{fontSize: '30rem',textAlign:'center'}}>充 值</Text>
                     	</TouchableHighlight>
                     	<TouchableHighlight onPress={this.showHandbook.bind(this)} style={styles.flexbox}>
                     		<Image source={{uri: help}} style={styles.imgStyle}/>
-                    		<Text style={{fontSize: '30rem'}}>帮助</Text>
+                    		<Text style={{fontSize: '30rem',textAlign:'center'}}>帮 助</Text>
                     	</TouchableHighlight>
                     	<TouchableHighlight onPress={this.drainageRpt.bind(this)} style={styles.flexbox}>
                     		<Image source={{uri: report}} style={styles.imgStyle}/>
-                    		<Text style={{fontSize: '30rem'}}>报表</Text>
+                    		<Text style={{fontSize: '30rem',textAlign:'center'}}>报 表</Text>
                     	</TouchableHighlight>
                     	<TouchableHighlight onPress={this.dspcontrast.bind(this)} style={styles.flexbox}>
                     		<Image source={{uri: data}} style={styles.imgStyle}/>
-                    		<Text style={{fontSize: '30rem'}}>对比</Text>
+                    		<Text style={{fontSize: '30rem',textAlign:'center'}}>对 比</Text>
                     	</TouchableHighlight>
                     </View>
                     <ScrollView style={styles.scroller}>
@@ -371,11 +371,12 @@ class Drainage extends Component{
 const styles={
   scroller:{
           width: 750,
-          height: height-400,
+          height: height-500,
           flex: 1
        },
    	listContainer: {
-        height: height-400
+          flex:1,
+          height: height-550,
     },
     titleItemList:{
         backgroundColor:"#fff",
@@ -420,10 +421,11 @@ const styles={
     	textAlign: 'center'
     },
     imgStyle: {
-    	width:'60rem',
-    	height:'60rem', 
-    	marginBottom: '20rem',
-    	textAlign: 'center'
+    	width:'50rem',
+    	height:'50rem', 
+    	marginBottom: '10rem',
+    	textAlign: 'center',
+        marginLeft:'10rem'
     }
 }
 export default Drainage

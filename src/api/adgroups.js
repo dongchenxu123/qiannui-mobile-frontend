@@ -150,10 +150,8 @@ function getAdgroups_sign(campaign_id,dataNum){
     });
 }
 
-export function getAdgroupsByCid(subway_token,campaign_id,page_no){
-     var page = page_no > 0 ? page_no : 1,
-        page_size = 200;
-
+export function getAdgroupsByCid(subway_token,campaign_id,page_no,page_size=200){
+    var page = page_no > 0 ? page_no : 1;
     return QN.top.batch({
             query: [
                 {

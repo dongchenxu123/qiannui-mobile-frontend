@@ -441,6 +441,7 @@ const styles={
   },
   col3:{
     fontSize:'26rem',
+    color:'#5F646E'
   },
    col4:{
     fontSize:'30rem'

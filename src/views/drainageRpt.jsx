@@ -342,7 +342,8 @@ const app = {
         color: "#5F646E"
     },
     fontstyle: {
-   	fontSize: '30rem'
+       	fontSize: '30rem',
+        color:'#5F646E'
    }
 }
 mount(<DrainageRpt/>, 'body');

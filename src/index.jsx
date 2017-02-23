@@ -1,6 +1,5 @@
-import { Tabbar, Button, Icon, ListView, Iconfont, Link,Modal } from 'nuke';
+import { Tabbar, Button, View, Iconfont } from 'nuke';
 import {createElement, Component} from 'weex-rx';
-import { View, Text, Image, TouchableHighlight} from 'nuke-components';
 import {mount} from 'nuke-mounter';
 import {browser, browserActive, appCont, appContActive, home, homeActive, my, myActive, shareLight, shareLightActive} from './static/static';
 import QN from 'QAP-SDK';
@@ -86,36 +85,13 @@ let WuXianCheShou = class WuXianCheShou extends Component {
     }
 }
 const styles = {
-    icon1:{fontFamily: 'iconfont1', fontSize: '36rem', color:'blue', alignItems:'center'},
-    tabContent: {flex: 1, alignItems: 'center'},
-    tabText: {color: 'white', margin: 50, },
     container: {flex: 1 },
-    text: {color: 'white', margin: 50 },
-    customRender: {fontSize: '10rem', color: 'blue'},
     view: {flex: 1 },
-    top: {height: '80rem', paddingLeft: 10, paddingRight: 10,marginBottom: 20, flexDirection: 'row'},
-    header: {height: 100, marginTop: 100}
 }
 
 const app = {
     activeBorder: {borderTopWidth: "5rem", borderTopStyle: "solid", borderTopColor: "#3089dc"},
     inactiveBorder: {borderTopWidth: "5rem", borderTopStyle: "solid", borderTopColor: "#eeeeee"},
-    listHeader:{height:'300rem', display:'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', },
-    listHeaderText:{fontSize: '60rem', color:'#333333', },
-    listHeaderSub:{fontSize: '30rem', color:'#888888', },
-    listContainer:{flex: 1, backgroundColor:'#f8f8f8', },
-    footer:{paddingTop: '50rem', paddingBottom: '50rem', backgroundColor: '#efefef', textAlign: 'center', },
-    link:{fontSize: '32rem', },
-    titleLink:{backgroundColor: '#ff4200', display: 'block', padding: '10rem', },
-    img:{width: '100rem', height: '100rem', backgroundColor: '#ff4200', },
-    cellItemIndex:{backgroundColor:'#ffffff', height: '130rem', display:'flex', paddingLeft:'20px', alignItems: 'center', flexDirection:'row', },
-    cellItemList:{backgroundColor:'#ffffff', height:'110rem', borderBottom:'1px solid #e8e8e8', display:'flex', alignItems:' center', flexDirection:'row', },
-    itemTextList:{flex:13, fontSize:'30rem', color:'#333333', },
-    itemIcon:{width:'60rem', height:'60rem', flex: 2, justifyContent:'center', },
-    cellTextView:{flex:13, display:'flex', },
-    itemMainTitle:{fontSize:'34rem', color:'#333333', marginBottom:'10px', },
-    itemSubTitle:{fontSize:'24rem', color:'#333333', },
-    itemArrow:{flex: 1, width:'18px', height:'18px', }
 }
 
 mount(<WuXianCheShou/>, 'body');
