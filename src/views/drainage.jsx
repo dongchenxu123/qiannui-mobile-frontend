@@ -50,7 +50,9 @@ class Drainage extends Component{
                     
                 })
 
-            }  
+            } else {
+                Modal.alert('该功能暂时不能访问');
+            } 
         });
         getAuthSign().then((result) => {
                 this.setState({subway_token: result})

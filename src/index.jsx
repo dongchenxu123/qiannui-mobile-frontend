@@ -12,10 +12,13 @@ import {  localstoreUser} from './api/authsign';
 
 let URL= document.URL
 let arr= QN.uri.parseQueryString(URL);
-let authString = JSON.parse(arr.authString);
-localstoreUser(authString).then((result)=>{
+if(arr.authString != undefined){
+  let authString = JSON.parse(arr.authString);
+  localstoreUser(authString).then((result)=>{
 
-});
+  });
+}
+
 
 let WuXianCheShou = class WuXianCheShou extends Component {
     constructor() {
