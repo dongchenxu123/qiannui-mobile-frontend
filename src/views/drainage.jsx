@@ -3,11 +3,11 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
-import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
+import { checkIssetDspUser, getHistoryReport, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
 import _ from 'lodash';
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
-import { getRechargeTempalte } from '../api/dsp';
+import { getRechargeTempalte  } from '../api/dsp';
 import { report, help, save, data } from '../static/static';
 class Drainage extends Component{
     constructor() {
@@ -38,6 +38,7 @@ class Drainage extends Component{
                     nick:value.nick,
                     name:value.name
                 });
+                this.showContrast();
                 this.getUserInfo();
                 this.getDspUserData();
                 this.getDspOnsaleItems();
@@ -61,6 +62,15 @@ class Drainage extends Component{
                 Modal.alert(JSON.stringify(error));
 
             });
+    }
+    showContrast(){
+         getHistoryReport(this.state.user_id).then((res) => {
+                    console.log(JSON.stringify(res),'--');
+                    Modal.alert(JSON.stringify(res));
+                }, (error) => {
+                    console.log(JSON.stringify(error),'--');
+                    Modal.alert(JSON.stringify(error));
+                })  
     }
     getUserInfo(){
         //其实就是检测了手机号
