@@ -335,7 +335,7 @@ export function getHistoryReport(user_id,start_date,end_date){
                 start_date:start_date,
                 end_date:end_date
             };
-            
+            Modal.alert(JSON.sstringify(param))
             QN.fetch(DateAPi.httphost+'/getDspReport', {
               
                 method: 'POST',
@@ -346,7 +346,8 @@ export function getHistoryReport(user_id,start_date,end_date){
             .then(response => {     
                 return response.json(); // => 返回一个 `Promise` 对象
             })
-            .then(data => {   
+            .then(data => {
+            	
                 resolve(data);
             })
             .catch(error => {

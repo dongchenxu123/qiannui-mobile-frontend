@@ -179,51 +179,52 @@ class CampaignsListView extends Component {
 			  		   	        </View>
 			                </View>
 
-			                <View style={styles.report}>
+			               
 			                	<View style={styles.amoutList}>
-		                			<View style={styles.dayArrow}>
+		                			<View>
 		  		   	                	<Text style={styles.setFontSize}>花费:</Text>
 		  		   	                </View>
-		  		   	                <View style={{left:'-120rem'}} >
+		  		   	                <View>
 		  		   	                   <Text style={styles.setFontSize}>{item.cost}</Text>
 		  		   	                </View>
 
-		  		   	                <View style={[styles.itemArrow,{left:'10rem'}]}>
+		  		   	                <View>
 			  		   	                <Text style={styles.setFontSize}>展现量:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-70rem'}} >
+			  		   	            <View>
 			  		   	                <Text style={styles.setFontSize}>{item.pv}</Text>
 			  		   	            </View>
-			  		   	            <View style={[styles.itemArrow,{left:'30rem'}]}>
+			  		   	            
+			  		   	        </View>
+			  		   	        <View style={styles.amoutList}>
+			  		   	        	<View>
 			  		   	                <Text style={styles.setFontSize}>点击量:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-20rem'}} >
+			  		   	            <View>
 			  		   	                <Text style={styles.setFontSize}>{item.click}</Text>
 			  		   	             </View>
-			  		   	                	
-			                	</View>
-			                	<View style={styles.amoutList}>
-		                			<View style={styles.dayArrow}>
+			  		   	             <View>
 		  		   	                	<Text style={styles.setFontSize}>成交金额:</Text>
 		  		   	                </View>
-		  		   	                <View style={{left:'-40rem'}} >
+		  		   	                <View>
 		  		   	                   <Text style={styles.setFontSize}>{item.pay}</Text>
 		  		   	                </View>
-
-		  		   	                <View style={[styles.itemArrow,{left:'20rem'}]}>
+			  		   	        </View>
+			                	<View style={styles.amoutList}>
+		                			<View>
 			  		   	                <Text style={styles.setFontSize}>点击率:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-40rem'}} >
+			  		   	            <View>
 			  		   	                <Text style={styles.setFontSize}>{item.ctr +'%'}</Text>
 			  		   	            </View>
-			  		   	            <View style={[styles.itemArrow,{left:'40rem'}]}>
+			  		   	            <View>
 			  		   	                <Text style={styles.setFontSize}>转化率:</Text>
 			  		   	            </View>
-			  		   	            <View style={{left:'-20rem'}} >
+			  		   	            <View>
 			  		   	                <Text style={styles.setFontSize}>{item.click_ROi +'%'}</Text>
 			  		   	             </View>
 			  		   	                	
-			                	</View>
+			                	
 				          	</View>
 						</View>
 			   		)
@@ -289,7 +290,8 @@ const styles={
 	        padding:"15rem 10rem",
 	       	alignItems:"center",
 	        flexDirection:"row",
-	        display:'flex'
+	        display:'flex',
+	        justifyContent: 'space-around'
 	    },
 	  	amoutitemArrow:{
 	    	flex: 2,

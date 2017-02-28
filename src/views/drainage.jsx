@@ -3,7 +3,7 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
-import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
+import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign, getHistoryReport } from '../api';
 import _ from 'lodash';
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
@@ -56,6 +56,13 @@ class Drainage extends Component{
         });
         getAuthSign().then((result) => {
                 this.setState({subway_token: result})
+
+            }, (error) => {
+                Modal.alert(JSON.stringify(error));
+
+            });
+        getHistoryReport(this.state.user_id).then((result) => {
+               Modal.alert(JSON.stringify(result))
 
             }, (error) => {
                 Modal.alert(JSON.stringify(error));
