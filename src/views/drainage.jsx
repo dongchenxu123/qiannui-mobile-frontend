@@ -4,7 +4,8 @@ import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
 import { checkIssetDspUser, getHistoryReport, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
-import _ from 'lodash';
+import findIndex from 'lodash/findIndex';
+import sortBy from 'lodash/sortBy';
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
 import { getRechargeTempalte  } from '../api/dsp';
@@ -65,11 +66,10 @@ class Drainage extends Component{
     }
     showContrast(){
          getHistoryReport(this.state.user_id).then((res) => {
-                    console.log(JSON.stringify(res),'--');
-                    Modal.alert(JSON.stringify(res));
+                   
+
                 }, (error) => {
-                    console.log(JSON.stringify(error),'--');
-                    Modal.alert(JSON.stringify(error));
+                   
                 })  
     }
     getUserInfo(){
@@ -135,11 +135,11 @@ class Drainage extends Component{
                     onlineItem[i].img_url = v.pic_url+'_150x150.jpg';
                      onlineItem[i].dsp_onLineStatus = 0;
 
-                    if(dspItem.total > 0 && _.findIndex(dspItem.Items,{item_id:v.num_iid.toString()}) > -1){
+                    if(dspItem.total > 0 && findIndex(dspItem.Items,{item_id:v.num_iid.toString()}) > -1){
                          onlineItem[i].dsp_onLineStatus = 1;
                     }  
                 });
-            itemList =  _.sortBy(onlineItem,[function(o) { return -o.dsp_onLineStatus; }]);
+            itemList =  sortBy(onlineItem,[function(o) { return -o.dsp_onLineStatus; }]);
             this.setState({Items:itemList});
             });
         })
@@ -155,7 +155,7 @@ class Drainage extends Component{
             var itemevent =[];
             var newstatus= item.dsp_onLineStatus ==1 ? 0 : 1;
             itemevent.push(item.num_iid)
-            var index= _.findIndex(this.state.Items,function(v){
+            var index= findIndex(this.state.Items,function(v){
                         return v.num_iid == item.num_iid ;
                         
                 })
