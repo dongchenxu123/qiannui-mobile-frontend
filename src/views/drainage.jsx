@@ -3,14 +3,13 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
-<<<<<<< HEAD
+
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign, getHistoryReport } from '../api';
-import _ from 'lodash';
-=======
-import { checkIssetDspUser, getHistoryReport, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
+
+
 import findIndex from 'lodash/findIndex';
 import sortBy from 'lodash/sortBy';
->>>>>>> e8603504496a09c03e0da277ebcc7231d68026c7
+
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
 import { getRechargeTempalte  } from '../api/dsp';
