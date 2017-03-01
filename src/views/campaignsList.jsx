@@ -178,54 +178,34 @@ class CampaignsListView extends Component {
 		  		   	                </TouchableHighlight>
 			  		   	        </View>
 			                </View>
-
-			               
-			                	<View style={styles.amoutList}>
-		                			<View>
-		  		   	                	<Text style={styles.setFontSize}>花费:</Text>
-		  		   	                </View>
-		  		   	                <View>
-		  		   	                   <Text style={styles.setFontSize}>{item.cost}</Text>
-		  		   	                </View>
-
-		  		   	                <View>
-			  		   	                <Text style={styles.setFontSize}>展现量:</Text>
-			  		   	            </View>
-			  		   	            <View>
-			  		   	                <Text style={styles.setFontSize}>{item.pv}</Text>
-			  		   	            </View>
-			  		   	            
-			  		   	        </View>
-			  		   	        <View style={styles.amoutList}>
-			  		   	        	<View>
-			  		   	                <Text style={styles.setFontSize}>点击量:</Text>
-			  		   	            </View>
-			  		   	            <View>
-			  		   	                <Text style={styles.setFontSize}>{item.click}</Text>
-			  		   	             </View>
-			  		   	             <View>
-		  		   	                	<Text style={styles.setFontSize}>成交金额:</Text>
-		  		   	                </View>
-		  		   	                <View>
-		  		   	                   <Text style={styles.setFontSize}>{item.pay}</Text>
-		  		   	                </View>
-			  		   	        </View>
-			                	<View style={styles.amoutList}>
-		                			<View>
-			  		   	                <Text style={styles.setFontSize}>点击率:</Text>
-			  		   	            </View>
-			  		   	            <View>
-			  		   	                <Text style={styles.setFontSize}>{item.ctr +'%'}</Text>
-			  		   	            </View>
-			  		   	            <View>
-			  		   	                <Text style={styles.setFontSize}>转化率:</Text>
-			  		   	            </View>
-			  		   	            <View>
-			  		   	                <Text style={styles.setFontSize}>{item.click_ROi +'%'}</Text>
-			  		   	             </View>
-			  		   	                	
-			                	
-				          	</View>
+							<View style={styles.amoutList}>
+	                			<View>
+	  		   	                	<Text style={styles.setFontSize}>花费</Text>
+	  		   	                	 <Text style={styles.setFontSize}>￥{item.cost}</Text>
+	  		   	                </View>
+	  		   	               <View>
+		  		   	                <Text style={styles.setFontSize}>展现量</Text>
+		  		   	                <Text style={styles.setFontSize}>{item.pv}</Text>
+		  		   	            </View>
+		  		   	            <View>
+		  		   	                <Text style={styles.setFontSize}>点击量</Text>
+		  		   	                 <Text style={styles.setFontSize}>{item.click}</Text>
+		  		   	            </View>
+		  		   	        </View>
+		  		   	        <View style={styles.amoutList}>
+		                	    <View>
+	  		   	                	<Text style={styles.setFontSize}>成交金额</Text>
+	  		   	                	<Text style={styles.setFontSize}>￥{item.pay}</Text>
+	  		   	                </View>
+	                			<View>
+		  		   	                <Text style={styles.setFontSize}>点击率</Text>
+		  		   	                <Text style={styles.setFontSize}>{item.ctr +'%'}</Text>
+		  		   	            </View>
+		  		   	            <View>
+		  		   	                <Text style={styles.setFontSize}>转化率</Text>
+		  		   	                <Text style={styles.setFontSize}>{item.click_ROi +'%'}</Text>
+		  		   	            </View>
+		  		   	     	</View>
 						</View>
 			   		)
 			   	})
@@ -279,13 +259,11 @@ const styles={
         flexDirection:"row",
         display:'flex' 
     },
-	   report: {
-	   	borderBottomWidth:"2rem",
-        borderBottomStyle:"solid",
-        borderBottomColor:"#e8e8e8",
-        marginBottom: '20rem'
-	   },
-	   amoutList:{
+	  amoutList:{
+   	    	borderBottomWidth:"2rem",
+	        borderBottomStyle:"solid",
+	        borderBottomColor:"#e8e8e8",
+	        marginBottom: '20rem',
 	        backgroundColor:"#ffffff",
 	        padding:"15rem 10rem",
 	       	alignItems:"center",
@@ -293,12 +271,7 @@ const styles={
 	        display:'flex',
 	        justifyContent: 'space-around'
 	    },
-	  	amoutitemArrow:{
-	    	flex: 2,
-	    	fontSize:"30rem",
-	    	right: '20rem'
-	    },
-	    itemTextList:{
+	  	itemTextList:{
         		fontSize:"30rem",
         		color:"#0894EC",
         		flex:18
@@ -327,7 +300,9 @@ const styles={
 	        marginLeft: '20rem'
 	   },
 	   setFontSize:{
-	   	fontSize:'30rem'
+	   	fontSize:'30rem',
+	   	textAlign: 'center',
+	   	marginBottom: '10rem'
 	   },
 	   setitemTextList:{
         fontSize:"30rem",
