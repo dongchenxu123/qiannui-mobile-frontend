@@ -156,7 +156,7 @@ export function getDspOnsaleItems(q){
                 });
             }                  
     }, (error) => {
-       
+       reject(error);
     });
 
   });
@@ -197,7 +197,7 @@ export function setItemsOnline(user_id,items){
               resolve(data);                
             })
             .catch(error => {
-                Modal.toast(JSON.stringify(error));
+               reject(error);
             });         
     });
 }
@@ -225,7 +225,7 @@ export function setItemsOffline(user_id,items){
               resolve(data);
             })
             .catch(error => {
-                Modal.toast(JSON.stringify(error));
+               reject(error);
             });
 
     });
@@ -256,7 +256,7 @@ export function setCpc(user_id,cpc){
                 resolve(data);
             })
             .catch(error => {
-                Modal.toast(JSON.stringify(error));
+                reject(error);
             });            
     });
 }
@@ -287,7 +287,7 @@ export function setBudget(user_id,budget){
                 resolve(data);
             })
             .catch(error => {
-                Modal.toast(JSON.stringify(error));
+                reject(error);
             });
     });
 } 
@@ -315,7 +315,7 @@ export function getTodayReport(user_id){
                 resolve(data);
             })
             .catch(error => {
-               resolve(error);;
+               reject(error);;
             });
     });
 }
@@ -335,7 +335,11 @@ export function getHistoryReport(user_id,start_date,end_date){
                 start_date:start_date,
                 end_date:end_date
             };
+<<<<<<< HEAD
             Modal.alert(JSON.sstringify(param))
+=======
+           
+>>>>>>> e8603504496a09c03e0da277ebcc7231d68026c7
             QN.fetch(DateAPi.httphost+'/getDspReport', {
               
                 method: 'POST',
@@ -351,7 +355,7 @@ export function getHistoryReport(user_id,start_date,end_date){
                 resolve(data);
             })
             .catch(error => {
-               resolve(error);
+               reject(error);
             });
     });
 }

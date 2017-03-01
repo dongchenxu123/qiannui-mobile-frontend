@@ -3,11 +3,17 @@ import {mount} from 'nuke-mounter';
 import {createElement, Component} from 'weex-rx';
 import QN from 'QAP-SDK';
 import { View, Text, TouchableHighlight,ScrollView,Image } from 'nuke-components';
+<<<<<<< HEAD
 import { checkIssetDspUser, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign, getHistoryReport } from '../api';
 import _ from 'lodash';
+=======
+import { checkIssetDspUser, getHistoryReport, getDspUserInfo, getDspUserMarket, getOnsaleItem, setItemsOffline, setItemsOnline, setBudget, setCpc, getAuthSign } from '../api';
+import findIndex from 'lodash/findIndex';
+import sortBy from 'lodash/sortBy';
+>>>>>>> e8603504496a09c03e0da277ebcc7231d68026c7
 import { showLoading,hideLoading } from './util';
 let {height} = Dimensions.get('window');
-import { getRechargeTempalte } from '../api/dsp';
+import { getRechargeTempalte  } from '../api/dsp';
 import { report, help, save, data } from '../static/static';
 class Drainage extends Component{
     constructor() {
@@ -38,6 +44,7 @@ class Drainage extends Component{
                     nick:value.nick,
                     name:value.name
                 });
+                this.showContrast();
                 this.getUserInfo();
                 this.getDspUserData();
                 this.getDspOnsaleItems();
@@ -68,6 +75,14 @@ class Drainage extends Component{
                 Modal.alert(JSON.stringify(error));
 
             });
+    }
+    showContrast(){
+         getHistoryReport(this.state.user_id).then((res) => {
+                   
+
+                }, (error) => {
+                   
+                })  
     }
     getUserInfo(){
         //其实就是检测了手机号
@@ -132,11 +147,11 @@ class Drainage extends Component{
                     onlineItem[i].img_url = v.pic_url+'_150x150.jpg';
                      onlineItem[i].dsp_onLineStatus = 0;
 
-                    if(dspItem.total > 0 && _.findIndex(dspItem.Items,{item_id:v.num_iid.toString()}) > -1){
+                    if(dspItem.total > 0 && findIndex(dspItem.Items,{item_id:v.num_iid.toString()}) > -1){
                          onlineItem[i].dsp_onLineStatus = 1;
                     }  
                 });
-            itemList =  _.sortBy(onlineItem,[function(o) { return -o.dsp_onLineStatus; }]);
+            itemList =  sortBy(onlineItem,[function(o) { return -o.dsp_onLineStatus; }]);
             this.setState({Items:itemList});
             });
         })
@@ -152,7 +167,7 @@ class Drainage extends Component{
             var itemevent =[];
             var newstatus= item.dsp_onLineStatus ==1 ? 0 : 1;
             itemevent.push(item.num_iid)
-            var index= _.findIndex(this.state.Items,function(v){
+            var index= findIndex(this.state.Items,function(v){
                         return v.num_iid == item.num_iid ;
                         
                 })
