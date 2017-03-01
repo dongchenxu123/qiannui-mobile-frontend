@@ -326,23 +326,15 @@ export function getTodayReport(user_id){
 */
 export function getHistoryReport(user_id,start_date,end_date){
     return new Promise((resolve, reject) => {
-      
-            start_date = start_date !== undefined ? start_date : DateAPi.formatDate(DateAPi.lastWeek);
+      start_date = start_date !== undefined ? start_date : DateAPi.formatDate(DateAPi.lastWeek);
             end_date = end_date !== undefined ? end_date :DateAPi.formatDate(DateAPi.yesterday);
-    
-            var param = {
+    	var param = {
                 user_id:user_id,
                 start_date:start_date,
                 end_date:end_date
             };
-<<<<<<< HEAD
-            Modal.alert(JSON.sstringify(param))
-=======
-           
->>>>>>> e8603504496a09c03e0da277ebcc7231d68026c7
-            QN.fetch(DateAPi.httphost+'/getDspReport', {
-              
-                method: 'POST',
+		QN.fetch(DateAPi.httphost+'/getDspReport', {
+              	method: 'POST',
                 mode: 'cors',
                 dataType: 'json',
                 body:QN.uri.toQueryString(param)
@@ -351,8 +343,7 @@ export function getHistoryReport(user_id,start_date,end_date){
                 return response.json(); // => 返回一个 `Promise` 对象
             })
             .then(data => {
-            	
-                resolve(data);
+            	resolve(data);
             })
             .catch(error => {
                reject(error);

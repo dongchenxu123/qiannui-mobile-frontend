@@ -30,7 +30,8 @@ class Drainage extends Component{
                 RechargeData: [],
                 real_text: '',
                 luckily_text_1: '',
-                subway_token: ''
+                subway_token: '',
+                historyReport: []
         } 
         showLoading();   
     }
@@ -67,18 +68,10 @@ class Drainage extends Component{
                 Modal.alert(JSON.stringify(error));
 
             });
-        getHistoryReport(this.state.user_id).then((result) => {
-               Modal.alert(JSON.stringify(result))
-
-            }, (error) => {
-                Modal.alert(JSON.stringify(error));
-
-            });
     }
     showContrast(){
          getHistoryReport(this.state.user_id).then((res) => {
-                   
-
+                this.setState({historyReport: res.report})
                 }, (error) => {
                    
                 })  
@@ -368,10 +361,21 @@ class Drainage extends Component{
                     		<Image source={{uri: report}} style={styles.imgStyle}/>
                     		<Text style={{fontSize: '30rem',textAlign:'center'}}>报 表</Text>
                     	</TouchableHighlight>
-                    	<TouchableHighlight onPress={this.dspcontrast.bind(this)} style={styles.flexbox}>
-                    		<Image source={{uri: data}} style={styles.imgStyle}/>
-                    		<Text style={{fontSize: '30rem',textAlign:'center'}}>对 比</Text>
-                    	</TouchableHighlight>
+                    	{
+                    		this.state.historyReport.length === 0 ? '' : this.state.historyReport.map((item, index) => {
+                    			if(item.pv > 0) {
+                    				return (
+                    					<TouchableHighlight onPress={this.dspcontrast.bind(this)} style={styles.flexbox}>
+				                    		<Image source={{uri: data}} style={styles.imgStyle}/>
+				                    		<Text style={{fontSize: '30rem',textAlign:'center'}}>对 比</Text>
+                    					</TouchableHighlight>
+                    				)
+                    			} else{
+                    				return 
+                    			}
+                    		})
+                    	}
+                    	
                     </View>
                     <ScrollView style={styles.scroller}>
                         {
