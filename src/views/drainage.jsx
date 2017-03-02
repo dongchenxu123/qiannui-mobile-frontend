@@ -239,7 +239,11 @@ class Drainage extends Component{
         Modal.prompt('修改日限额',[ 
                     {
                         onPress:(result)=>{
-                            var data = result.data *1;
+                            var budget = parseInt(result.data);
+                            if(!Number.isNaN(budget) && budget < 50 ){
+                                Modal.alert('日限额不能低于50元的整数');
+                                return;
+                            }
                             checkIssetDspUser().then((value) => {
                                 if(value && value.user_id != undefined){
                                     this.setState({
@@ -247,6 +251,7 @@ class Drainage extends Component{
                                       })
                                    }
                                 setBudget(this.state.user_id, data).then((res) => {
+                                    Modal.alert(JSON.stringify(res));
                                     var newbudget= res.budget;
                                     this.setState({
                                         budget: newbudget

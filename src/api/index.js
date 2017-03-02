@@ -3,7 +3,6 @@ import { getSellerUser,
         getUserInfo, 
         getProfileReport,
         getProfileBalance,
-        createNewDspUser,
         getCustbaseRpt
     } from './profile';
 
@@ -83,7 +82,7 @@ const api = {
     getItemNumByKeyword:getItemNumByKeyword,//获取使用该关键词的宝贝数量
     localstoreUser:localstoreUser,//设置登陆用户存储信息
     getLocalstoreUser:getLocalstoreUser,//获取登陆用户存储信息
-    createNewDspUser:createNewDspUser,//创建dsp用户
+   
     checkIssetDspUser:checkIssetDspUser,//检测是否存在dsp用户id
     getDspUserMarket:getDspUserMarket,//获取dsp用户日限额 、余额、dsp在线推广的宝贝
     getDspOnsaleItems:getDspOnsaleItems,//整理完成的 淘外引流列表数据,

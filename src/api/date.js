@@ -1,6 +1,6 @@
 'use strict';
 
-export const httphost = 'http://qianniu.why.xibao100.com';
+export const httphost = 'https://qianniu.xibao100.com';
 
 var date = new Date();
     date.setDate(date.getDate() - 1);

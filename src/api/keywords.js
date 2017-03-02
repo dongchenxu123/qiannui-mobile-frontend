@@ -277,27 +277,6 @@ export function setKeywordPricevon(keywordid_prices){
             Modal.alert(JSON.stringify(error));
         });
 }
-/*
-* 获取使用该关键词的宝贝数量
-*/
-export function getItemNumByKeyword(word){
 
-     var headers = {
-                'Accept': 'application/json,text/javascript',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            };
-     return QN.fetch(DateAPi.httphost+'/getSeachIteamsNew', {
-            headers:headers,
-            method: 'POST',
-            mode: 'cors',
-            dataType: 'text',
-            body:'word='+word
-        })
-        .then(response => {     
-            return response.json(); // => 返回一个 `Promise` 对象
 
-        }) .catch(error => {
-           Modal.alert(JSON.stringify(error));
-        });
-}
 

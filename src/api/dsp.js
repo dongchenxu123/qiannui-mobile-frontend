@@ -4,7 +4,7 @@ import * as DateAPi from './date';
 import {checkAPIError} from './checkerror';
 import { Modal } from 'nuke';
 import {getLocalstoreUser} from './authsign';
-import {createNewDspUser,getProfileReport} from './profile';
+import {getProfileReport} from './profile';
 import {getOnsaleItem} from  './onsale-item'
 import Async from 'async';
 import _ from 'lodash';
@@ -32,19 +32,20 @@ export function checkIssetDspUser(){
                     return response.json(); // => 返回一个 `Promise` 对象
                 })
                 .then(data => {
-                 
-                 	if(data.user_id == undefined){
-                        createNewDspUser().then((value) => {
+                   
+                    if(data.user_id == undefined){
+                        createNewDspUser(res.taobao_user_id,res.taobao_user_nick).then((value) => {
                           if(value.user_id){
                         	resolve(value);
                           }else{
                             resolve([]);
                           }
+                        },(error)=>{
+                           reject(error);
                         });
                     }else{
                         resolve(data);
                     }
-                 
                 })
                 .catch(error => {
                     Modal.toast(JSON.stringify(error));
@@ -55,6 +56,26 @@ export function checkIssetDspUser(){
     });
 }
 
+function createNewDspUser(account_id,nick){
+    return new Promise((resolve, reject) => {
+        QN.fetch(DateAPi.httphost+'/createNewUser', {
+          
+            method: 'POST',
+            mode: 'cors',
+            dataType: 'json',
+            body:"account_id="+account_id+'&nick='+nick
+        })
+        .then(response => {     
+            return response.json(); // => 返回一个 `Promise` 对象
+        })
+        .then(data => {
+           resolve(data);    
+        })
+        .catch(error => {
+           resolve(error);
+        });
+    });
+}
 /*
 * 获取dsp 用户余额 cpc type = 1;  日限额: type= 2 ； dsp推广中的宝贝 type =3
 */
